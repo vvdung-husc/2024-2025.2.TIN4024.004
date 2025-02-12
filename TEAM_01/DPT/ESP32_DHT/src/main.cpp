@@ -17,9 +17,8 @@
 #define LED_BLUE    15
 #define LED_YELLOW  2
 #define LED_RED     4
-#define LED_CAM     5
 
-////**************** VVDUNG ********** */
+
 // create an OLED display object connected to I2C
 
 Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
@@ -37,12 +36,10 @@ void setup() {
   pinMode(LED_BLUE, OUTPUT);
   pinMode(LED_YELLOW, OUTPUT);
   pinMode(LED_RED, OUTPUT);
-  pinMode(LED_CAM, OUTPUT);
 
   digitalWrite(LED_BLUE, LOW);//OFF
   digitalWrite(LED_YELLOW, LOW);//OFF
   digitalWrite(LED_RED, LOW);//OFF
-  digitalWrite(LED_CAM, LOW);//OFF
 
   dht.begin();
 
@@ -76,11 +73,10 @@ void loop() {
   oled.clearDisplay();
   
   strTemp = String("Temperature: ");
-  bool bCamON = true;
+
   if (t < 0.0){    
     strTemp += "Too COOL";
     ledNumber = LED_YELLOW;
-    bCamON = false;
   }
   else if (t < 40.0){
     strTemp += "Normal";
@@ -114,10 +110,8 @@ void loop() {
   
   oled.display();   
   
-  if (bCamON) digitalWrite(LED_CAM, HIGH);
   digitalWrite(ledNumber, HIGH);
   delay(500);
   digitalWrite(ledNumber, LOW);  
-  if (!bCamON) digitalWrite(LED_CAM, LOW);
 }
 
