@@ -19,7 +19,7 @@
 #define LED_RED     4
 #define LED_CAM     5
 
-////**************** VVDUNG ********** */
+
 // create an OLED display object connected to I2C
 
 Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
