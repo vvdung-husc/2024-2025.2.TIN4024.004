@@ -1,9 +1,9 @@
 #include <Arduino.h>
 
 //Pin
-#define rLED  23
-#define yLED  22
-#define gLED  21
+#define rLED  5
+#define yLED  17
+#define gLED  16
 
 //1000 ms = 1 seconds
 uint rTIME = 5000;   //5 seconds
