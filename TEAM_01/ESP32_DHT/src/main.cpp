@@ -17,6 +17,7 @@
 #define LED_BLUE    15
 #define LED_YELLOW  2
 #define LED_RED     4
+#define LED_ORANGE  5
 
 
 // create an OLED display object connected to I2C
@@ -36,11 +37,12 @@ void setup() {
   pinMode(LED_BLUE, OUTPUT);
   pinMode(LED_YELLOW, OUTPUT);
   pinMode(LED_RED, OUTPUT);
+  pinMode(LED_ORANGE, OUTPUT);
 
   digitalWrite(LED_BLUE, LOW);//OFF
   digitalWrite(LED_YELLOW, LOW);//OFF
   digitalWrite(LED_RED, LOW);//OFF
-
+  digitalWrite(LED_ORANGE, LOW);//OFF
   dht.begin();
 
   TwoWire* _Wire = &Wire;
@@ -73,15 +75,17 @@ void loop() {
   oled.clearDisplay();
   
   strTemp = String("Temperature: ");
-
+  bool bORANGEON = true;
   if (t < 0.0){    
     strTemp += "Too COOL";
     ledNumber = LED_YELLOW;
+    bORANGEON = false;
   }
   else if (t < 40.0){
     strTemp += "Normal";
     ledNumber = LED_BLUE;
   }
+ 
   else {    
     strTemp += "Too HOT";
     ledNumber = LED_RED;
@@ -109,9 +113,11 @@ void loop() {
   oled.print(" %"); 
   
   oled.display();   
+  if (bORANGEON) digitalWrite(LED_ORANGE, HIGH);
   
   digitalWrite(ledNumber, HIGH);
   delay(500);
-  digitalWrite(ledNumber, LOW);  
+  digitalWrite(ledNumber, LOW); 
+  if (!bORANGEON) digitalWrite(LED_ORANGE, LOW); 
 }
 
