@@ -1,9 +1,16 @@
 #include <Arduino.h>
+#include <TM1637Display.h>
 
 //Pin
 #define rLED  23
 #define yLED  22
 #define gLED  21
+
+// Pin TM1637
+#define CLK 16
+#define DIO 17
+
+TM1637Display display(CLK, DIO);
 
 //1000 ms = 1 seconds
 uint rTIME = 5000;   //5 seconds
@@ -14,14 +21,15 @@ ulong currentMiliseconds = 0;
 ulong ledTimeStart = 0;
 ulong nextTimeTotal = 0;
 int currentLED = rLED;
+int remainingTime = rTIME / 1000; // Thời gian còn lại (giây)
 
 bool IsReady(ulong &ulTimer, uint32_t milisecond);
 void NonBlocking_Traffic_Light();
 void NonBlocking_Traffic_Light_TM1637();
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
+
   pinMode(rLED, OUTPUT);
   pinMode(yLED, OUTPUT);
   pinMode(gLED, OUTPUT);
@@ -29,62 +37,72 @@ void setup() {
   digitalWrite(yLED, LOW);
   digitalWrite(gLED, LOW);
   digitalWrite(rLED, HIGH);
-  currentLED = rLED;
-  nextTimeTotal += rTIME;
+
+  display.setBrightness(7); // Đặt độ sáng tối đa
+  display.showNumberDec(remainingTime, false); // Hiển thị thời gian ban đầu
   
   Serial.println("== START ==>");  
-  Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");
-
+  Serial.print("1. RED    => GREEN  "); Serial.println("5s");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   currentMiliseconds = millis();
   NonBlocking_Traffic_Light();
-  //NonBlocking_Traffic_Light_TM1637();
+  NonBlocking_Traffic_Light_TM1637();
 }
 
-// put function definitions here:
-bool IsReady(ulong &ulTimer, uint32_t milisecond)
-{
+// Kiểm tra xem đã đủ thời gian chưa
+bool IsReady(ulong &ulTimer, uint32_t milisecond) {
   if (currentMiliseconds - ulTimer < milisecond) return false;
   ulTimer = currentMiliseconds;
   return true;
 }
+
 void NonBlocking_Traffic_Light(){
-  switch (currentLED) {
-    case rLED: // Đèn đỏ: 5 giây
-      if (IsReady(ledTimeStart, rTIME)) {
+  if (remainingTime == 0) { // Khi hết thời gian, đổi sang đèn tiếp theo
+    switch (currentLED) {
+      case rLED:
         digitalWrite(rLED, LOW);
         digitalWrite(gLED, HIGH);
         currentLED = gLED;
         nextTimeTotal += gTIME;
-        Serial.print("2. GREEN  => YELLOW "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");
-      } 
-      break;
-
-    case gLED: // Đèn xanh: 7 giây
-      if (IsReady(ledTimeStart,gTIME)) {        
+        remainingTime = gTIME / 1000;
+        Serial.print("2. GREEN  => YELLOW "); Serial.println("7s");
+        break;
+  
+      case gLED:    
         digitalWrite(gLED, LOW);
         digitalWrite(yLED, HIGH);
         currentLED = yLED;
         nextTimeTotal += yTIME;
-        Serial.print("3. YELLOW => RED    "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");        
-      }
-      break;
-
-    case yLED: // Đèn vàng: 2 giây
-      if (IsReady(ledTimeStart,yTIME)) {        
+        remainingTime = yTIME / 1000;
+        Serial.print("3. YELLOW => RED    "); Serial.println("3s");        
+        break;
+  
+      case yLED:
         digitalWrite(yLED, LOW);
         digitalWrite(rLED, HIGH);
         currentLED = rLED;
         nextTimeTotal += rTIME;
-        Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");        
-      }
-      break;
-  }  
+        remainingTime += rTIME / 1000;
+        Serial.print("1. RED    => GREEN  "); Serial.println("5s");        
+        break;
+    }
+    display.showNumberDec(remainingTime, false); // Hiển thị ngay số mới
+    ledTimeStart = millis(); // Reset lại bộ đếm
+  }
 }
 
-void NonBlocking_Traffic_Light_TM1637(){
+// Hiển thị trên TM1637
+void NonBlocking_Traffic_Light_TM1637() {
+  static ulong lastUpdate = millis();
 
+  if (millis() - lastUpdate >= 1000) { // Cập nhật mỗi giây
+    lastUpdate = millis();
+
+    if (remainingTime > 0) {
+      remainingTime--;
+      display.showNumberDec(remainingTime, false); // Cập nhật màn hình
+    }
+  }
 }
