@@ -8,8 +8,8 @@
       "path": ".."
     },
     {
-      "name": "ESP32_TRAFFIC_LIGHT",
-      "path": "../../ESP32_TRAFFIC_LIGHT"
+      "name": "ESP_TRAFFIC_LIGHT",
+      "path": "../../ESP_TRAFFIC_LIGHT"
     }
   ],
   "settings": {}
