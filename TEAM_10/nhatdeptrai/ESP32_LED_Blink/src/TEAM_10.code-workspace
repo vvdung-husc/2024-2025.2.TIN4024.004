@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "../../.."
+    },
+    {
+      "name": "ESP32_LED_Blink",
+      "path": ".."
+    },
+    {
+      "name": "ESP_TRAFFIC_LIGHT",
+      "path": "../../ESP_TRAFFIC_LIGHT"
+    },
+    {
+      "name": "ESP32_TRAFFIC_LIGHT_ADVANCES",
+      "path": "../../ESP32_TRAFFIC_LIGHT_ADVANCES"
+    }
+  ],
+  "settings": {}
+}

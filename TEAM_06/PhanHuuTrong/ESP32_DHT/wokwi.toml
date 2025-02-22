@@ -2,3 +2,4 @@
 version = 1
 firmware = '.pio/build/nodemcu-32s/firmware.bin'
 elf = '.pio/build/nodemcu-32s/firmware.elf'
+
