@@ -59,7 +59,7 @@
 + [Wokwi for VS Code](https://docs.wokwi.com/vscode/getting-started)
 
   
-
++ [Cài đặt thư viện cho PlatformIO](https://khuenguyencreator.com/huong-dan-cai-dat-platform-io-lap-trinh-esp32/#Cai_dat_thu_vien_cho_Platformio)
 -------------------------------
 
 ![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/diagram_one.png)
