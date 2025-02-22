@@ -8,8 +8,9 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_TRAFFIC_LIGHT/include",
-                "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_TRAFFIC_LIGHT/src",
+                "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_Traffic_Light/include",
+                "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_Traffic_Light/src",
+                "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_Traffic_Light/.pio/libdeps/nodemcu-32s/TM1637",
                 "C:/Users/Thangg/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
                 "C:/Users/Thangg/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include",
                 "C:/Users/Thangg/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include/esp_additions/freertos",
@@ -244,8 +245,9 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_TRAFFIC_LIGHT/include",
-                    "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_TRAFFIC_LIGHT/src",
+                    "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_Traffic_Light/include",
+                    "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_Traffic_Light/src",
+                    "D:/workspace/2024-2025.2.TIN4024.004/TEAM_10/ntvtthang/ESP32_Traffic_Light/.pio/libdeps/nodemcu-32s/TM1637",
                     "C:/Users/Thangg/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
                     "C:/Users/Thangg/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include",
                     "C:/Users/Thangg/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include/esp_additions/freertos",
