@@ -6,7 +6,7 @@
 	- Tạo dự án có tên **ESP32_Traffic_Light** tại thư mục của nhóm mình
 	
 		> ví dụ: ..\TEAM_X\ESP32_Traffic_Light
-	- Thời gian đến hết ngày **03/03/2025**
+	- Thời gian đến hết ngày **02/03/2025**
 	
 		> Sau thời gian này các commit thay đổi nội dung của dự án sẽ không được tính.
 ---
