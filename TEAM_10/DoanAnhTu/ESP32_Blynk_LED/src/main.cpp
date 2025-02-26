@@ -2,8 +2,8 @@
 #include <TM1637Display.h>
 
 /* Fill in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL64YL8fJrk"
-#define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
+#define BLYNK_TEMPLATE_ID "TMPL6dKlK6ZgV"
+#define BLYNK_TEMPLATE_NAME "ESMARTT"
 #define BLYNK_AUTH_TOKEN "C_PX4c2g4Z1boOw0EDh0ESHzetRuI7RU"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
