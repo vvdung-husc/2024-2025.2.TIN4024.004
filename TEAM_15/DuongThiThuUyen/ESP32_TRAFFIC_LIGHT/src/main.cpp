@@ -1,90 +1,119 @@
 #include <Arduino.h>
+#include <TM1637Display.h>
 
-//Pin
+// Khai báo chân LED
 #define rLED  23
 #define yLED  22
 #define gLED  21
 
-//1000 ms = 1 seconds
-uint rTIME = 5000;   //5 seconds
-uint yTIME = 3000;
-uint gTIME = 7000;
+// Khai báo chân TM1637
+#define CLK 15
+#define DIO 2
 
+// Thời gian cho từng đèn (milliseconds)
+uint rTIME = 5000;   // 5 giây
+uint yTIME = 3000;   // 3 giây
+uint gTIME = 7000;   // 7 giây
+
+// Biến thời gian
 ulong currentMiliseconds = 0;
 ulong ledTimeStart = 0;
 ulong nextTimeTotal = 0;
 int currentLED = rLED;
+int timeLeft = 0;  // Biến lưu thời gian đếm ngược
+
+// Khởi tạo TM1637
+TM1637Display display(CLK, DIO);
 
 bool IsReady(ulong &ulTimer, uint32_t milisecond);
 void NonBlocking_Traffic_Light();
 void NonBlocking_Traffic_Light_TM1637();
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
+
+  // Cấu hình chân LED
   pinMode(rLED, OUTPUT);
   pinMode(yLED, OUTPUT);
   pinMode(gLED, OUTPUT);
 
+  // Tắt tất cả đèn, bật đèn đỏ đầu tiên
   digitalWrite(yLED, LOW);
   digitalWrite(gLED, LOW);
   digitalWrite(rLED, HIGH);
+  
   currentLED = rLED;
   nextTimeTotal += rTIME;
-  
-  Serial.println("== START ==>");  
-  Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");
+  timeLeft = rTIME / 1000; // Chuyển đổi sang giây
 
+  // Khởi tạo TM1637
+  display.setBrightness(7); // Độ sáng tối đa (0-7)
+  display.showNumberDec(timeLeft);
+
+  Serial.println("== START ==>");  
+  Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (s)");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   currentMiliseconds = millis();
   NonBlocking_Traffic_Light();
-  //NonBlocking_Traffic_Light_TM1637();
+  NonBlocking_Traffic_Light_TM1637();
 }
 
-// put function definitions here:
-bool IsReady(ulong &ulTimer, uint32_t milisecond)
-{
+// Hàm kiểm tra thời gian đã trôi qua hay chưa
+bool IsReady(ulong &ulTimer, uint32_t milisecond) {
   if (currentMiliseconds - ulTimer < milisecond) return false;
   ulTimer = currentMiliseconds;
   return true;
 }
-void NonBlocking_Traffic_Light(){
+
+// Điều khiển đèn giao thông
+void NonBlocking_Traffic_Light() {
   switch (currentLED) {
-    case rLED: // Đèn đỏ: 5 giây
+    case rLED: // Đèn đỏ
       if (IsReady(ledTimeStart, rTIME)) {
         digitalWrite(rLED, LOW);
         digitalWrite(gLED, HIGH);
         currentLED = gLED;
         nextTimeTotal += gTIME;
-        Serial.print("2. GREEN  => YELLOW "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");
+        timeLeft = gTIME / 1000; // Đếm ngược
+        Serial.print("2. GREEN  => YELLOW "); Serial.print(nextTimeTotal/1000); Serial.println(" (s)");
       } 
       break;
 
-    case gLED: // Đèn xanh: 7 giây
-      if (IsReady(ledTimeStart,gTIME)) {        
+    case gLED: // Đèn xanh
+      if (IsReady(ledTimeStart, gTIME)) {        
         digitalWrite(gLED, LOW);
         digitalWrite(yLED, HIGH);
         currentLED = yLED;
         nextTimeTotal += yTIME;
-        Serial.print("3. YELLOW => RED    "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");        
+        timeLeft = yTIME / 1000; // Đếm ngược
+        Serial.print("3. YELLOW => RED    "); Serial.print(nextTimeTotal/1000); Serial.println(" (s)");        
       }
       break;
 
-    case yLED: // Đèn vàng: 2 giây
-      if (IsReady(ledTimeStart,yTIME)) {        
+    case yLED: // Đèn vàng
+      if (IsReady(ledTimeStart, yTIME)) {        
         digitalWrite(yLED, LOW);
         digitalWrite(rLED, HIGH);
         currentLED = rLED;
         nextTimeTotal += rTIME;
-        Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");        
+        timeLeft = rTIME / 1000; // Đếm ngược
+        Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (s)");        
       }
       break;
   }  
 }
 
-void NonBlocking_Traffic_Light_TM1637(){
+// Hàm hiển thị đếm ngược trên TM1637
+void NonBlocking_Traffic_Light_TM1637() {
+  static ulong lastUpdate = 0;
 
+  if (millis() - lastUpdate >= 1000) { // Cập nhật mỗi giây
+    lastUpdate = millis();
+    if (timeLeft > 0) {
+      timeLeft--;
+    }
+    display.showNumberDec(timeLeft);
+  }
 }
