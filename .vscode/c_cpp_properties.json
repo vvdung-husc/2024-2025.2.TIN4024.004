@@ -6,6 +6,11 @@
                 "${workspaceFolder}/**",
                 "C:/Users/PC/.platformio/packages/framework-arduinoespressif32/cores/esp32"
             ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
             "compilerPath": "gcc",
             "cStandard": "${default}",
             "cppStandard": "${default}",
