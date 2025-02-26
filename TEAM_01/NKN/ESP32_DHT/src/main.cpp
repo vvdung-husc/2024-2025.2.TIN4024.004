@@ -1,117 +1,151 @@
 #include <Arduino.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#include <Adafruit_Sensor.h>
-#include <DHT.h>
+#include <TM1637Display.h>
+//Pin
+#define rLED  17
+#define yLED  16
+#define gLED  4
 
-#define SCREEN_WIDTH 128 // OLED width,  in pixels
-#define SCREEN_HEIGHT 64 // OLED height, in pixels
+// Pin TM1637
+#define CLK 18
+#define DIO 5
 
-#define OLED_SDA    13
-#define OLED_SCL    12
+// Cảm biến ánh sáng (LDR)
+#define LDR_PIN 15
+#define LDR_THRESHOLD 1000  // Ngưỡng để kích hoạt nhấp nháy vàng
 
-#define DHTPIN      16     // Digital pin connected to the DHT sensor
-#define DHTTYPE    DHT22   // DHT 22 (AM2302)
+// Thời gian đèn
+//1000 ms = 1 seconds
+uint rTIME = 5000;   //5 seconds
+uint yTIME = 3000;
+uint gTIME = 7000;
+uint blinkInterval = 500; // Thời gian nhấp nháy
 
-#define LED_BLUE    15
-#define LED_YELLOW  2
-#define LED_RED     4
+ulong currentMiliseconds = 0;
+ulong ledTimeStart = 0;
+ulong nextTimeTotal = 0;
+ulong blinkStartTime = 0;
+bool isBlinking = false;
+bool yellowState = false;
 
+int currentLED = rLED;
+uint remainingTime = 0;
 
-// create an OLED display object connected to I2C
+TM1637Display display(CLK, DIO);
 
-Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
-
-DHT dht(DHTPIN, DHTTYPE);
-
-String strTemp;
-bool ledState = false;
-int8_t ledNumber = LED_BLUE;
+bool IsReady(ulong &ulTimer, uint32_t milisecond);
+void NonBlocking_Traffic_Light();
+void NonBlocking_Traffic_Light_TM1637();
+void Check_Light_Sensor();
+void Blink_Yellow_Light();
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);//115200
+  Serial.begin(115200);
+  pinMode(rLED, OUTPUT);
+  pinMode(yLED, OUTPUT);
+  pinMode(gLED, OUTPUT);
+  pinMode(LDR_PIN, INPUT);
   
-  pinMode(LED_BLUE, OUTPUT);
-  pinMode(LED_YELLOW, OUTPUT);
-  pinMode(LED_RED, OUTPUT);
+  display.setBrightness(0x0F);
 
-  digitalWrite(LED_BLUE, LOW);//OFF
-  digitalWrite(LED_YELLOW, LOW);//OFF
-  digitalWrite(LED_RED, LOW);//OFF
+  digitalWrite(yLED, LOW);
+  digitalWrite(gLED, LOW);
+  digitalWrite(rLED, HIGH);
 
-  dht.begin();
-
-  TwoWire* _Wire = &Wire;
-  _Wire->setPins(OLED_SDA, OLED_SCL);
-  // initialize OLED display with I2C address 0x3C
-  if (!oled.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    Serial.println(F("failed to start SSD1306 OLED"));
-    while (1);
-  }
+  currentLED = rLED;
+  nextTimeTotal += rTIME;
+  remainingTime = rTIME / 1000;
   
+  Serial.println("== START ==>");  
+  Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");
 
-  delay(2000);         // wait two seconds for initializing
-  oled.clearDisplay(); // clear display
-
-  oled.setTextSize(2);         // set text size
-  oled.setTextColor(WHITE);    // set text color
-  oled.setCursor(0, 2);       // set position to display (x,y)
-  oled.println("   IOT\n Welcome!"); // set text
-  oled.display();              // display on OLED  
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  delay(1000);
-  float t = dht.readTemperature();
-  float h = dht.readHumidity();
-  if (isnan(h) || isnan(t)) {
-    Serial.println("Failed to read from DHT sensor!");
-  }
-  oled.clearDisplay();
-  
-  strTemp = String("Temperature: ");
-
-  if (t < 0.0){    
-    strTemp += "Too COOL";
-    ledNumber = LED_YELLOW;
-  }
-  else if (t < 40.0){
-    strTemp += "Normal";
-    ledNumber = LED_BLUE;
-  }
-  else {    
-    strTemp += "Too HOT";
-    ledNumber = LED_RED;
-  }      
-
-  oled.setTextSize(1);
-  oled.setCursor(0,0);
-  oled.print(strTemp.c_str());
-  oled.setTextSize(2);
-  oled.setCursor(0,10);
-  oled.print(t);
-  oled.print(" ");
-  oled.setTextSize(1);
-  oled.cp437(true);
-  oled.write(167);//*C
-  oled.setTextSize(2);
-  oled.print("C");
-  
-  oled.setTextSize(1);
-  oled.setCursor(0, 35);
-  oled.print("Humidity: ");
-  oled.setTextSize(2);
-  oled.setCursor(0, 45);
-  oled.print(h);
-  oled.print(" %"); 
-  
-  oled.display();   
-  
-  digitalWrite(ledNumber, HIGH);
-  delay(500);
-  digitalWrite(ledNumber, LOW);  
+    currentMiliseconds = millis();
+    Check_Light_Sensor();
+    
+    if (isBlinking) {
+        Blink_Yellow_Light();
+    } else {
+        NonBlocking_Traffic_Light();
+        NonBlocking_Traffic_Light_TM1637();
+    }
 }
 
+// put function definitions here:
+bool IsReady(ulong &ulTimer, uint32_t milisecond)
+{
+  if (currentMiliseconds - ulTimer < milisecond) return false;
+  ulTimer = currentMiliseconds;
+  return true;
+}
+void NonBlocking_Traffic_Light(){
+  switch (currentLED) {
+    case rLED: // Đèn đỏ: 5 giây
+      if (IsReady(ledTimeStart, rTIME)) {
+        digitalWrite(rLED, LOW);
+        digitalWrite(gLED, HIGH);
+        currentLED = gLED;
+        nextTimeTotal += gTIME;
+        Serial.print("2. GREEN  => YELLOW "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");
+      } 
+      break;
+
+    case gLED: // Đèn xanh: 7 giây
+      if (IsReady(ledTimeStart,gTIME)) {        
+        digitalWrite(gLED, LOW);
+        digitalWrite(yLED, HIGH);
+        currentLED = yLED;
+        nextTimeTotal += yTIME;
+        Serial.print("3. YELLOW => RED    "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");        
+      }
+      break;
+
+    case yLED: // Đèn vàng: 2 giây
+      if (IsReady(ledTimeStart,yTIME)) {        
+        digitalWrite(yLED, LOW);
+        digitalWrite(rLED, HIGH);
+        currentLED = rLED;
+        nextTimeTotal += rTIME;
+        Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");        
+      }
+      break;
+  }  
+}
+
+void NonBlocking_Traffic_Light_TM1637(){
+  remainingTime = (ledTimeStart + (currentLED == rLED ? rTIME : (currentLED == gLED ? gTIME : yTIME)) - currentMiliseconds) / 1000;
+  display.showNumberDec(remainingTime, true);
+}
+void Check_Light_Sensor() {
+  int lightValue = analogRead(LDR_PIN);
+  Serial.print("LDR Value: "); Serial.println(lightValue);
+  
+  if (lightValue < LDR_THRESHOLD) {
+      if (!isBlinking) {
+          isBlinking = true;
+          blinkStartTime = millis();
+          digitalWrite(rLED, LOW);
+          digitalWrite(gLED, LOW);
+          digitalWrite(yLED, LOW);
+          Serial.println("Low light detected - Blinking Yellow Mode");
+      }
+  } else {
+      if (isBlinking) {
+          isBlinking = false;
+          digitalWrite(yLED, LOW);
+          currentLED = rLED;
+          ledTimeStart = millis();
+          Serial.println("Light restored - Returning to normal mode");
+      }
+  }
+}
+
+void Blink_Yellow_Light() {
+  if (IsReady(blinkStartTime, blinkInterval)) {
+      yellowState = !yellowState;
+      digitalWrite(yLED, yellowState);
+  }
+}
