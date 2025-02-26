@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "ESP32_Blynk_LED",
+			"path": "../../../TEAM_01/PP/ESP32_Blynk_LED"
+		}
+	],
+	"settings": {}
+}
