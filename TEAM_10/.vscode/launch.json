@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "c:/Users/ACER/Downloads/iot/2024-2025.2.TIN4024.004/TEAM_10/triphammmm/ESP32_TRAFFICLIGHT_ADVANCE/src",
+      "program": "c:/Users/ACER/Downloads/iot/2024-2025.2.TIN4024.004/TEAM_10/triphammmm/ESP32_TRAFFICLIGHT_ADVANCE/src/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
