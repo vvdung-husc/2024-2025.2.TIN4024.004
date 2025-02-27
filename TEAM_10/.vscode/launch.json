@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/ACER/Downloads/iot/2024-2025.2.TIN4024.004/TEAM_10/triphammmm/ESP32_TRAFFICLIGHT_ADVANCE/src",
-      "program": "c:/Users/ACER/Downloads/iot/2024-2025.2.TIN4024.004/TEAM_10/triphammmm/ESP32_TRAFFICLIGHT_ADVANCE/src/build/Debug/outDebug",
+      "cwd": "c:/Users/ACER/Downloads/iot/2024-2025.2.TIN4024.004/TEAM_10/triphammmm/ESP32_Blynk_LED/src",
+      "program": "c:/Users/ACER/Downloads/iot/2024-2025.2.TIN4024.004/TEAM_10/triphammmm/ESP32_Blynk_LED/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
