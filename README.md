@@ -45,6 +45,30 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
+### - [Esp32 | Blynk & Wokwi](https://wokwi.com/projects/423790624312911873)
+
+#### Tham khảo
+
++ [Sử dụng Blynk IOT với ESP32](https://dienthongminhesmart.com/lap-trinh-esp32/blynk-iot-va-esp32/)
++ ***Thư viện sử dụng***
+	> **TM1637** by Avishay - Arduino library for TM1637
+ 
+	> **Blynk** by Volodymyr Shymanskyy
+
++ [Sử dụng Blynk IOT trên ESP32 (nếu không xem được từ youtube)](https://it.iothings.vn/downloads/mp4/Blynk_IOT_ESP32_WEB.mp4)
+
++ [https://it.iothings.vn/downloads/mp4](https://it.iothings.vn/downloads/mp4/)
+
+#### Nên sử dụng AI để tìm hiểu 
+
+
+[https://chatgpt.com/](https://chatgpt.com/)
+
+[https://chat.deepseek.com/](https://chat.deepseek.com/)
+
+[https://grok.com/](https://grok.com/)
+
+---
 
 ### - [Blink an LED on ESP32](https://wokwi.com/projects/305566932847821378)
 
