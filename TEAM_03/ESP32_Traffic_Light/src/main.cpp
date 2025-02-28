@@ -100,6 +100,20 @@ bool IsReady(ulong &ulTimer, uint32_t milisecond)
 // Hàm điều khiển đèn giao thông không chặn
 void NonBlocking_Traffic_Light()
 {
+  // Đọc giá trị cảm biến LDR
+  int ldrValue = analogRead(13);  // Đọc giá trị từ LDR
+  int threshold = 1000;            // Ngưỡng ánh sáng để quyết định ban ngày hay ban đêm
+
+  if (ldrValue < threshold) {  // Nếu ánh sáng yếu (ban đêm)
+    // Ban đêm: chỉ đèn vàng sáng, các đèn còn lại tắt
+    digitalWrite(rLED, LOW);   // Đèn đỏ tắt
+    digitalWrite(gLED, LOW);   // Đèn xanh tắt
+    digitalWrite(yLED, HIGH);  // Đèn vàng sáng
+
+    display.clear();   
+  } 
+
+  // Xử lý các trạng thái đèn giao thông
   switch (currentLED)
   {
   case rLED: // Đèn đỏ
