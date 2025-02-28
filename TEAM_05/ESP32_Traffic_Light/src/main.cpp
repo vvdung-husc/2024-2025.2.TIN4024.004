@@ -68,11 +68,11 @@ void updateDisplay()
     // Chế độ ngày + màn hình bật: hiển thị thời gian còn lại
     display.showNumberDec(timeLeft, true, 2 , 2);
   }
-  else
-  {
-    // Chế độ ngày + màn hình tắt: xóa màn hình
-    display.clear();
-  }
+  // else
+  // {
+  //   // Chế độ ngày + màn hình tắt: xóa màn hình
+  //   display.clear();
+  // }
   digitalWrite(PIN_BLUE_LED, isDisplayOn); // Đèn xanh dương bật khi màn hình hiển thị
 }
 
