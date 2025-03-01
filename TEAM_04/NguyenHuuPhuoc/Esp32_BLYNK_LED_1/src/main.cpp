@@ -1,6 +1,7 @@
+
 #include <Arduino.h>
 #include <TM1637Display.h>
-
+#include <DHT.h>
 /* Fill in information from Blynk Device Info here */
 #define BLYNK_TEMPLATE_ID "TMPL6biizWNEk"
 #define BLYNK_TEMPLATE_NAME "BlynkLeg"
@@ -21,15 +22,22 @@ char pass[] = "";             //Mật khẩu mạng WiFi
 #define btnBLED  23 //Chân kết nối nút bấm
 #define pinBLED  21 //Chân kết nối đèn xxanh
 
+#define DHTPIN 16      // Chân kết nối cảm biến DHT22
+#define DHTTYPE DHT22  // Loại cảm biến
+
 #define CLK 18  //Chân kết nối CLK của TM1637
 #define DIO 19  //Chân kết nối DIO của TM1637
+
+DHT dht(DHTPIN, DHTTYPE);
+
+//Khởi tạo mà hình TM1637
+TM1637Display display(CLK, DIO);
+
 
 //Biến toàn cục
 ulong currentMiliseconds = 0; //Thời gian hiện tại - miliseconds 
 bool blueButtonON = true;     //Trạng thái của nút bấm ON -> đèn Xanh sáng và hiển thị LED TM1637
-
-//Khởi tạo mà hình TM1637
-TM1637Display display(CLK, DIO);
+ulong lastMillis = 0;
 
 bool IsReady(ulong &ulTimer, uint32_t milisecond);
 void updateBlueButton();
@@ -40,9 +48,10 @@ void setup() {
   Serial.begin(115200);
   pinMode(pinBLED, OUTPUT);
   pinMode(btnBLED, INPUT_PULLUP);
-    
-  display.setBrightness(0x0f);
   
+  dht.begin();
+  display.setBrightness(0x0f);
+  display.showNumberDec(0, false);
   // Start the WiFi connection
   Serial.print("Connecting to ");Serial.println(ssid);
   Blynk.begin(BLYNK_AUTH_TOKEN,ssid, pass); //Kết nối đến mạng WiFi
@@ -59,6 +68,26 @@ void setup() {
 
 void loop() {  
   Blynk.run();  //Chạy Blynk để cập nhật trạng thái từ Blynk Cloud
+
+  if (millis() - lastMillis >= 2000) { // Cập nhật mỗi 2 giây
+    lastMillis = millis();
+
+    float temperature = dht.readTemperature(); // Đọc nhiệt độ (°C)
+    float humidity = dht.readHumidity();       // Đọc độ ẩm (%)
+
+    if (isnan(temperature) || isnan(humidity)) {
+      Serial.println("Lỗi đọc cảm biến DHT22!");
+      return;
+    }
+
+    Serial.print("Nhiệt độ: "); Serial.print(temperature); Serial.print("°C, ");
+    Serial.print("Độ ẩm: "); Serial.print(humidity); Serial.println("%");
+
+    display.showNumberDec((int)temperature, false); // Hiển thị nhiệt độ lên TM1637
+
+    Blynk.virtualWrite(V4, temperature); // Gửi nhiệt độ lên Blynk (V2)
+    Blynk.virtualWrite(V5, humidity);    // Gửi độ ẩm lên Blynk (V3)
+  }
 
   currentMiliseconds = millis();
   uptimeBlynk();
