@@ -9,14 +9,24 @@
 #define CLK 18
 #define DIO 5
 
+// Cảm biến ánh sáng (LDR)
+#define LDR_PIN 15
+#define LDR_THRESHOLD 1000  // Ngưỡng để kích hoạt nhấp nháy vàng
+
+// Thời gian đèn
 //1000 ms = 1 seconds
 uint rTIME = 5000;   //5 seconds
 uint yTIME = 3000;
 uint gTIME = 7000;
+uint blinkInterval = 500; // Thời gian nhấp nháy
 
 ulong currentMiliseconds = 0;
 ulong ledTimeStart = 0;
 ulong nextTimeTotal = 0;
+ulong blinkStartTime = 0;
+bool isBlinking = false;
+bool yellowState = false;
+
 int currentLED = rLED;
 uint remainingTime = 0;
 
@@ -25,6 +35,8 @@ TM1637Display display(CLK, DIO);
 bool IsReady(ulong &ulTimer, uint32_t milisecond);
 void NonBlocking_Traffic_Light();
 void NonBlocking_Traffic_Light_TM1637();
+void Check_Light_Sensor();
+void Blink_Yellow_Light();
 
 void setup() {
   // put your setup code here, to run once:
@@ -32,6 +44,7 @@ void setup() {
   pinMode(rLED, OUTPUT);
   pinMode(yLED, OUTPUT);
   pinMode(gLED, OUTPUT);
+  pinMode(LDR_PIN, INPUT);
   
   display.setBrightness(0x0F);
 
@@ -50,9 +63,15 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  currentMiliseconds = millis();
-  NonBlocking_Traffic_Light();
-  NonBlocking_Traffic_Light_TM1637();
+    currentMiliseconds = millis();
+    Check_Light_Sensor();
+    
+    if (isBlinking) {
+        Blink_Yellow_Light();
+    } else {
+        NonBlocking_Traffic_Light();
+        NonBlocking_Traffic_Light_TM1637();
+    }
 }
 
 // put function definitions here:
@@ -99,4 +118,34 @@ void NonBlocking_Traffic_Light(){
 void NonBlocking_Traffic_Light_TM1637(){
   remainingTime = (ledTimeStart + (currentLED == rLED ? rTIME : (currentLED == gLED ? gTIME : yTIME)) - currentMiliseconds) / 1000;
   display.showNumberDec(remainingTime, true);
+}
+void Check_Light_Sensor() {
+  int lightValue = analogRead(LDR_PIN);
+  Serial.print("LDR Value: "); Serial.println(lightValue);
+  
+  if (lightValue < LDR_THRESHOLD) {
+      if (!isBlinking) {
+          isBlinking = true;
+          blinkStartTime = millis();
+          digitalWrite(rLED, LOW);
+          digitalWrite(gLED, LOW);
+          digitalWrite(yLED, LOW);
+          Serial.println("Low light detected - Blinking Yellow Mode");
+      }
+  } else {
+      if (isBlinking) {
+          isBlinking = false;
+          digitalWrite(yLED, LOW);
+          currentLED = rLED;
+          ledTimeStart = millis();
+          Serial.println("Light restored - Returning to normal mode");
+      }
+  }
+}
+
+void Blink_Yellow_Light() {
+  if (IsReady(blinkStartTime, blinkInterval)) {
+      yellowState = !yellowState;
+      digitalWrite(yLED, yellowState);
+  }
 }
