@@ -2,60 +2,91 @@
 #include <TM1637Display.h>
 
 // Định nghĩa chân kết nối
-#define BTN_PIN 23
-#define LED1_PIN 21
-#define LED2_PIN 26
-#define LED3_PIN 27
-#define LED4_PIN 25
+#define LED_RED 27
+#define LED_YELLOW 26
+#define LED_GREEN 25
+#define BUTTON 23
 #define LDR_PIN 13
-#define CLK_PIN 18
-#define DIO_PIN 19
+#define TM1637_CLK 18
+#define TM1637_DIO 19
 
-// Khởi tạo đối tượng màn hình 7 đoạn
-TM1637Display display(CLK_PIN, DIO_PIN);
+// Khai báo màn hình TM1637
+TM1637Display display(TM1637_CLK, TM1637_DIO);
+
+// Trạng thái đèn giao thông
+enum TrafficState { RED, YELLOW, GREEN };
+TrafficState currentState = RED;
+int countdownTime = 10;  // Thời gian đếm ngược
+
+// Biến kiểm tra nút nhấn
+bool buttonPressed = false;
+
+// Đọc giá trị cảm biến ánh sáng
+int readLightLevel() {
+    int ldrValue = analogRead(LDR_PIN);  // Đọc giá trị LDR (0-4095)
+    return map(ldrValue, 0, 4095, 0, 255); // Chuyển đổi về mức độ sáng
+}
+
+// Chuyển trạng thái đèn
+void changeState() {
+    switch (currentState) {
+        case RED:
+            digitalWrite(LED_RED, HIGH);
+            digitalWrite(LED_YELLOW, LOW);
+            digitalWrite(LED_GREEN, LOW);
+            countdownTime = 10;
+            currentState = GREEN;
+            break;
+
+        case GREEN:
+            digitalWrite(LED_RED, LOW);
+            digitalWrite(LED_YELLOW, LOW);
+            digitalWrite(LED_GREEN, HIGH);
+            countdownTime = 10;
+            currentState = YELLOW;
+            break;
+
+        case YELLOW:
+            digitalWrite(LED_RED, LOW);
+            digitalWrite(LED_YELLOW, HIGH);
+            digitalWrite(LED_GREEN, LOW);
+            countdownTime = 3;
+            currentState = RED;
+            break;
+    }
+}
+
+// Kiểm tra nút nhấn
+void IRAM_ATTR handleButtonPress() {
+    buttonPressed = true;
+}
 
 void setup() {
-  // Khởi tạo các chân
-  pinMode(BTN_PIN, INPUT);
-  pinMode(LED1_PIN, OUTPUT);
-  pinMode(LED2_PIN, OUTPUT);
-  pinMode(LED3_PIN, OUTPUT);
-  pinMode(LED4_PIN, OUTPUT);
-  pinMode(LDR_PIN, INPUT);
+    // Cấu hình đầu vào & đầu ra
+    pinMode(LED_RED, OUTPUT);
+    pinMode(LED_YELLOW, OUTPUT);
+    pinMode(LED_GREEN, OUTPUT);
+    pinMode(BUTTON, INPUT_PULLUP);
+    attachInterrupt(BUTTON, handleButtonPress, FALLING); // Ngắt khi nhấn nút
 
-  // Khởi tạo màn hình 7 đoạn
-  display.setBrightness(7); // Độ sáng tối đa
-  display.showNumberDec(0); // Hiển thị số 0 ban đầu
+    // Cấu hình màn hình 7 đoạn
+    display.setBrightness(7);
+    display.showNumberDec(countdownTime);
 }
 
 void loop() {
-  // Đọc trạng thái nút nhấn
-  bool btnState = digitalRead(BTN_PIN);
+    if (buttonPressed) {
+        buttonPressed = false;
+        changeState();
+    }
 
-  // Điều khiển LED1 dựa trên trạng thái nút nhấn
-  digitalWrite(LED1_PIN, btnState);
+    for (int i = countdownTime; i > 0; i--) {
+        display.showNumberDec(i);
+        analogWrite(LED_RED, readLightLevel());  // Điều chỉnh độ sáng đèn đỏ
+        analogWrite(LED_YELLOW, readLightLevel());  // Điều chỉnh độ sáng đèn vàng
+        analogWrite(LED_GREEN, readLightLevel());  // Điều chỉnh độ sáng đèn xanh
+        delay(1000);
+    }
 
-  // Đọc giá trị cảm biến ánh sáng
-  int ldrValue = analogRead(LDR_PIN);
-
-  // Điều khiển LED2, LED3, LED4 dựa trên giá trị cảm biến ánh sáng
-  if (ldrValue < 1000) {
-    digitalWrite(LED2_PIN, HIGH);
-    digitalWrite(LED3_PIN, LOW);
-    digitalWrite(LED4_PIN, LOW);
-  } else if (ldrValue >= 1000 && ldrValue < 2000) {
-    digitalWrite(LED2_PIN, LOW);
-    digitalWrite(LED3_PIN, HIGH);
-    digitalWrite(LED4_PIN, LOW);
-  } else {
-    digitalWrite(LED2_PIN, LOW);
-    digitalWrite(LED3_PIN, LOW);
-    digitalWrite(LED4_PIN, HIGH);
-  }
-
-  // Hiển thị giá trị cảm biến ánh sáng trên màn hình 7 đoạn
-  display.showNumberDec(ldrValue);
-
-  // Đợi một chút trước khi lặp lại
-  delay(100);
+    changeState();
 }
