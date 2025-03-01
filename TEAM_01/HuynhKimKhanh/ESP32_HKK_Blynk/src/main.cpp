@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
+#include <DHT.h>
 
 /* Fill in information from Blynk Device Info here */
 #define BLYNK_TEMPLATE_ID "TMPL6wK1s0zJe"
@@ -22,6 +23,11 @@ char pass[] = "";             //Mật khẩu mạng WiFi
 #define CLK 18  //Chân kết nối CLK của TM1637
 #define DIO 19  //Chân kết nối DIO của TM1637
 
+// Cảm biến DHT22
+#define DHTPIN 16      
+#define DHTTYPE DHT22   
+DHT dht(DHTPIN, DHTTYPE);
+
 //Biến toàn cục
 ulong currentMiliseconds = 0; //Thời gian hiện tại - miliseconds 
 bool blueButtonON = true;     //Trạng thái của nút bấm ON -> đèn Xanh sáng và hiển thị LED TM1637
@@ -32,6 +38,7 @@ TM1637Display display(CLK, DIO);
 bool IsReady(ulong &ulTimer, uint32_t milisecond);
 void updateBlueButton();
 void uptimeBlynk();
+void updateDHT();
 
 void setup() {
   // put your setup code here, to run once:
@@ -51,6 +58,8 @@ void setup() {
   
   digitalWrite(pinBLED, blueButtonON? HIGH : LOW);  
   Blynk.virtualWrite(V1, blueButtonON); //Đồng bộ trạng thái trạng thái của đèn với Blynk
+
+  dht.begin();  // Khởi động cảm biến DHT22
   
   Serial.println("== START ==>");
 }
@@ -61,6 +70,7 @@ void loop() {
   currentMiliseconds = millis();
   uptimeBlynk();
   updateBlueButton();
+  updateDHT();  // Cập nhật nhiệt độ, độ ẩm
 }
 
 // put function definitions here:
@@ -102,6 +112,29 @@ void uptimeBlynk(){
   if (blueButtonON){
     display.showNumberDec(value);
   }
+}
+
+void updateDHT() {
+  static ulong lastTime = 0;
+  if (!IsReady(lastTime, 2000)) return;  // Cập nhật mỗi 2 giây
+
+  float temperature = dht.readTemperature(); // Đọc nhiệt độ (°C)
+  float humidity = dht.readHumidity();      // Đọc độ ẩm (%)
+
+  if (isnan(temperature) || isnan(humidity)) {
+    Serial.println("Lỗi đọc DHT22!");
+    return;
+  }
+
+  Serial.print("Nhiệt độ: "); Serial.print(temperature); Serial.print("°C ");
+  Serial.print("Độ ẩm: "); Serial.print(humidity); Serial.println("%");
+
+  Blynk.virtualWrite(V2, temperature);  // Gửi nhiệt độ lên Blynk (V2)
+  Blynk.virtualWrite(V3, humidity);     // Gửi độ ẩm lên Blynk (V3)
+
+  /*if (blueButtonON) {
+    display.showNumberDec((int)temperature); // Hiển thị nhiệt độ trên TM1637
+  }*/
 }
 
 //được gọi mỗi khi có dữ liệu mới được gửi từ ứng dụng Blynk đến thiết bị.
