@@ -1,4 +1,5 @@
 
+
 # 2024-2025.2.TIN4024.004
 
 ## Phát triển ứng dụng IoT
@@ -44,6 +45,12 @@
 
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
+---
+### - [Blynk | Traffic & DHT Sensor](https://wokwi.com/projects/424198235739151361)
++ ***Thư viện sử dụng***
+	> **# DHT sensor library** by Avishay - Arduino library for DHT11, DHT22, etc Temp & Humidity Sensors
+	
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/traffic_blynk_1.png)
 ---
 ### - [Esp32 | Blynk & Wokwi](https://wokwi.com/projects/423790624312911873)
 
