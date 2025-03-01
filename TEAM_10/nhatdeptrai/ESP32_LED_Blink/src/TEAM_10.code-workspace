@@ -26,6 +26,10 @@
     {
       "name": "ESP32_Blynk_LED_and_DHT_Sensor",
       "path": "../../ESP32_Blynk_LED_and_DHT_Sensor"
+    },
+    {
+      "name": "ESP32_BTN10",
+      "path": "../../ESP32_BTN10"
     }
   ],
   "settings": {}
