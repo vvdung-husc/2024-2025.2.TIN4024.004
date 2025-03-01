@@ -14,6 +14,18 @@
     {
       "name": "ESP32_TRAFFIC_LIGHT_ADVANCES",
       "path": "../../ESP32_TRAFFIC_LIGHT_ADVANCES"
+    },
+    {
+      "name": "ESP32_TRAFFIC_LIGHT_GROUP",
+      "path": "../../ESP32_TRAFFIC_LIGHT_GROUP"
+    },
+    {
+      "name": "ESP32_Blynk_LED",
+      "path": "../../ESP32_Blynk_LED"
+    },
+    {
+      "name": "ESP32_Blynk_LED_and_DHT_Sensor",
+      "path": "../../ESP32_Blynk_LED_and_DHT_Sensor"
     }
   ],
   "settings": {}
