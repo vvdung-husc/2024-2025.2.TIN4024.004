@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"name": "ntvtthang",
+		"path": "../../../../TEAM_10/ntvtthang"
+	},
+	{
+		"name": "ESP32_TRAFFIC_LIGHT_ADVANCES",
+		"path": "."
+	}
+],
+  "settings": {}
+}
