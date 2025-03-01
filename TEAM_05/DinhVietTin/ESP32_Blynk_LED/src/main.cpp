@@ -3,8 +3,8 @@
 
 /* Fill in information from Blynk Device Info here */
 #define BLYNK_TEMPLATE_ID "TMPL64YL8fJrk"
-#define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "pKW8s0I4DQE2lozLZ7VNSkVjXF3fku2R"
+#define BLYNK_TEMPLATE_NAME "ESP32 LED TM1637"
+#define BLYNK_AUTH_TOKEN "S9-UuqRP6ItPoUGPZYbtSWknol03FF-0"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>
