@@ -38,6 +38,7 @@ void uptimeBlynk();
 void readDHT22();
 
 void setup() {
+  Serial.begin(115200);
   pinMode(pinBLED, OUTPUT);
   pinMode(btnBLED, INPUT_PULLUP);
   
@@ -45,7 +46,11 @@ void setup() {
   dht.begin();
   
   // Start the WiFi connection
+  Serial.println("Connecting to WiFi...");
   Blynk.begin(BLYNK_AUTH_TOKEN,ssid, pass); //Kết nối đến mạng WiFi
+
+  Serial.println("WiFi connected.");
+  Serial.println("System started.");
 
   digitalWrite(pinBLED, blueButtonON? HIGH : LOW);  
   Blynk.virtualWrite(V1, blueButtonON); //Đồng bộ trạng thái trạng thái của đèn với Blynk
@@ -78,11 +83,13 @@ void updateBlueButton(){
   if (v == LOW) return;
 
   if (!blueButtonON){
+    Serial.println("Blue Light ON");
     digitalWrite(pinBLED, HIGH);
     blueButtonON = true;
     Blynk.virtualWrite(V1, blueButtonON);//Gửi giá trị lên chân ảo V1 trên ứng dụng Blynk.
   }
   else {
+    Serial.println("Blue Light OFF");
     digitalWrite(pinBLED, LOW);    
     blueButtonON = false;
     Blynk.virtualWrite(V1, blueButtonON);//Gửi giá trị lên chân ảo V1 trên ứng dụng Blynk.
@@ -120,9 +127,11 @@ BLYNK_WRITE(V1) { //virtual_pin định nghĩa trong ứng dụng Blynk
   // Xử lý dữ liệu nhận được từ ứng dụng Blynk
   blueButtonON = param.asInt();  // Lấy giá trị từ ứng dụng Blynk
   if (blueButtonON){
+    Serial.println("Blynk -> Blue Light ON");
     digitalWrite(pinBLED, HIGH);
   }
   else {
+    Serial.println("Blynk -> Blue Light OFF");
     digitalWrite(pinBLED, LOW);   
     display.clear(); 
   }
