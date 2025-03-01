@@ -74,7 +74,12 @@ void updateBlueButton() {
   blueButtonON = !blueButtonON;
   digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
   Blynk.virtualWrite(V1, blueButtonON);
-  if (!blueButtonON) display.clear();
+  if (blueButtonON) {
+    Serial.println("Blynk -> Blue Light ON");
+  } else {
+    Serial.println("Blynk -> Blue Light OFF");
+    display.clear();
+  }
 }
 
 void uptimeBlynk() {
@@ -94,8 +99,6 @@ void readTemperatureHumidity() {
   if (!isnan(temperature) && !isnan(humidity)) {
     Blynk.virtualWrite(V2, temperature);
     Blynk.virtualWrite(V3, humidity);
-    Serial.print("Temperature: "); Serial.print(temperature);
-    Serial.print(" C, Humidity: "); Serial.print(humidity); Serial.println(" %");
 
     if (temperature > 50) {
       digitalWrite(pinBLED, LOW);
@@ -104,13 +107,16 @@ void readTemperatureHumidity() {
       display.clear();
       Serial.println("Temperature too high, turning off light");
     }
-  } else {
-    Serial.println("Failed to read from DHT sensor");
   }
 }
 
 BLYNK_WRITE(V1) {
   blueButtonON = param.asInt();
   digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
-  if (!blueButtonON) display.clear();
+  if (blueButtonON) {
+    Serial.println("Blynk -> Blue Light ON");
+  } else {
+    Serial.println("Blynk -> Blue Light OFF");
+    display.clear();
+  }
 }
