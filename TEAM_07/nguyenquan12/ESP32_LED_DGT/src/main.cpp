@@ -11,9 +11,9 @@
 #define DIO 2  // Chân Data của TM1637
 
 // Thời gian đèn (ms)
-uint rTIME = 5000;   // 5 giây
-uint yTIME = 3000;   // 3 giây
-uint gTIME = 7000;   // 7 giây
+uint rTIME = 1000;   // 5 giây
+uint yTIME = 1000;   // 3 giây
+uint gTIME = 1000;   // 7 giây
 
 // Biến thời gian
 ulong currentMiliseconds = 0;
