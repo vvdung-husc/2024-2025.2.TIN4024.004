@@ -100,72 +100,89 @@ bool IsReady(ulong &ulTimer, uint32_t milisecond)
 // Hàm điều khiển đèn giao thông không chặn
 void NonBlocking_Traffic_Light()
 {
-  switch (currentLED)
+  // Đọc giá trị cảm biến LDR
+  int ldrValue = analogRead(13); // Đọc giá trị từ LDR
+  int threshold = 1000;          // Ngưỡng ánh sáng để quyết định ban ngày hay ban đêm
+
+  if (ldrValue < threshold)
+  { // Nếu ánh sáng yếu (ban đêm)
+    // Ban đêm: chỉ đèn vàng sáng, các đèn còn lại tắt
+    digitalWrite(rLED, LOW);  // Đèn đỏ tắt
+    digitalWrite(gLED, LOW);  // Đèn xanh tắt
+    digitalWrite(yLED, HIGH); // Đèn vàng sáng
+
+    display.clear();
+  }
+  else
   {
-  case rLED: // Đèn đỏ
-    if (IsReady(ledTimeStart, rTIME))
-    { // Kiểm tra thời gian đèn đỏ
-      digitalWrite(rLED, LOW);
-      digitalWrite(gLED, HIGH);
-      currentLED = gLED;
-      countdownTime = gTIME / 1000; // Cập nhật thời gian đếm ngược cho đèn xanh
+    // Xử lý các trạng thái đèn giao thông
+    switch (currentLED)
+    {
+    case rLED: // Đèn đỏ
+      if (IsReady(ledTimeStart, rTIME))
+      { // Kiểm tra thời gian đèn đỏ
+        digitalWrite(rLED, LOW);
+        digitalWrite(gLED, HIGH);
+        currentLED = gLED;
+        countdownTime = gTIME / 1000; // Cập nhật thời gian đếm ngược cho đèn xanh
 
-      // Hiển thị thời gian nếu LED1 bật
-      if (led1State)
-      {
-        char buf[3];
-        sprintf(buf, "%02d", countdownTime);                  // Đảm bảo luôn có 2 chữ số
-        display.showNumberDecEx(atoi(buf), 0x00, true, 2, 2); // Hiển thị trên màn hình TM1637
+        // Hiển thị thời gian nếu LED1 bật
+        if (led1State)
+        {
+          char buf[3];
+          sprintf(buf, "%02d", countdownTime);                  // Đảm bảo luôn có 2 chữ số
+          display.showNumberDecEx(atoi(buf), 0x00, true, 2, 2); // Hiển thị trên màn hình TM1637
+        }
+        Serial.print("2. GREEN  => YELLOW ");
+        Serial.print(gTIME / 1000);
+        Serial.println(" (s)");
       }
-      Serial.print("2. GREEN  => YELLOW ");
-      Serial.print(gTIME / 1000);
-      Serial.println(" (s)");
-    }
-    break;
+      break;
 
-  case gLED: // Đèn xanh
-    if (IsReady(ledTimeStart, gTIME))
-    { // Kiểm tra thời gian đèn xanh
-      digitalWrite(gLED, LOW);
-      digitalWrite(yLED, HIGH);
-      currentLED = yLED;
-      countdownTime = yTIME / 1000; // Cập nhật thời gian đếm ngược cho đèn vàng
+    case gLED: // Đèn xanh
+      if (IsReady(ledTimeStart, gTIME))
+      { // Kiểm tra thời gian đèn xanh
+        digitalWrite(gLED, LOW);
+        digitalWrite(yLED, HIGH);
+        currentLED = yLED;
+        countdownTime = yTIME / 1000; // Cập nhật thời gian đếm ngược cho đèn vàng
 
-      // Hiển thị thời gian nếu LED1 bật
-      if (led1State)
-      {
-        char buf[3];
-        sprintf(buf, "%02d", countdownTime);                  // Đảm bảo luôn có 2 chữ số
-        display.showNumberDecEx(atoi(buf), 0x00, true, 2, 2); // Hiển thị trên màn hình TM1637
+        // Hiển thị thời gian nếu LED1 bật
+        if (led1State)
+        {
+          char buf[3];
+          sprintf(buf, "%02d", countdownTime);                  // Đảm bảo luôn có 2 chữ số
+          display.showNumberDecEx(atoi(buf), 0x00, true, 2, 2); // Hiển thị trên màn hình TM1637
+        }
+
+        Serial.print("3. YELLOW => RED    ");
+        Serial.print(yTIME / 1000);
+        Serial.println(" (s)");
       }
+      break;
 
-      Serial.print("3. YELLOW => RED    ");
-      Serial.print(yTIME / 1000);
-      Serial.println(" (s)");
-    }
-    break;
+    case yLED: // Đèn vàng
+      if (IsReady(ledTimeStart, yTIME))
+      { // Kiểm tra thời gian đèn vàng
+        digitalWrite(yLED, LOW);
+        digitalWrite(rLED, HIGH);
+        currentLED = rLED;
+        countdownTime = rTIME / 1000; // Cập nhật thời gian đếm ngược cho đèn đỏ
 
-  case yLED: // Đèn vàng
-    if (IsReady(ledTimeStart, yTIME))
-    { // Kiểm tra thời gian đèn vàng
-      digitalWrite(yLED, LOW);
-      digitalWrite(rLED, HIGH);
-      currentLED = rLED;
-      countdownTime = rTIME / 1000; // Cập nhật thời gian đếm ngược cho đèn đỏ
+        // Hiển thị thời gian nếu LED1 bật
+        if (led1State)
+        {
+          char buf[3];
+          sprintf(buf, "%02d", countdownTime);                  // Đảm bảo luôn có 2 chữ số
+          display.showNumberDecEx(atoi(buf), 0x00, true, 2, 2); // Hiển thị trên màn hình TM1637
+        }
 
-      // Hiển thị thời gian nếu LED1 bật
-      if (led1State)
-      {
-        char buf[3];
-        sprintf(buf, "%02d", countdownTime);                  // Đảm bảo luôn có 2 chữ số
-        display.showNumberDecEx(atoi(buf), 0x00, true, 2, 2); // Hiển thị trên màn hình TM1637
+        Serial.print("1. RED    => GREEN  ");
+        Serial.print(rTIME / 1000);
+        Serial.println(" (s)");
       }
-
-      Serial.print("1. RED    => GREEN  ");
-      Serial.print(rTIME / 1000);
-      Serial.println(" (s)");
+      break;
     }
-    break;
   }
 }
 
