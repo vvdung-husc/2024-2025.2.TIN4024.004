@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "author": "Hồ Phước Thái",
+    "editor": "wokwi",
+    "parts": [
+      {
+        "type": "board-esp32-devkit-c-v4",
+        "id": "esp",
+        "top": 28.8,
+        "left": -43.16,
+        "attrs": { "builder": "esp-idf" }
+      },
+      {
+        "type": "wokwi-led",
+        "id": "led1",
+        "top": -3.6,
+        "left": 243.8,
+        "attrs": { "color": "green" }
+      },
+      { "type": "wokwi-led", "id": "led2", "top": -3.6, "left": 128.6, "attrs": { "color": "red" } },
+      {
+        "type": "wokwi-led",
+        "id": "led3",
+        "top": -3.6,
+        "left": 186.2,
+        "attrs": { "color": "yellow" }
+      },
+      {
+        "type": "wokwi-resistor",
+        "id": "r1",
+        "top": 138.35,
+        "left": 144,
+        "attrs": { "value": "1000" }
+      },
+      {
+        "type": "wokwi-resistor",
+        "id": "r2",
+        "top": 99.95,
+        "left": 134.4,
+        "attrs": { "value": "220" }
+      },
+      {
+        "type": "wokwi-tm1637-7segment",
+        "id": "sevseg1",
+        "top": -86.44,
+        "left": 112.63,
+        "attrs": { "color": "red" }
+      }
+    ],
+    "connections": [
+      [ "esp:TX", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX", "$serialMonitor:TX", "", [] ],
+      [ "led2:C", "esp:GND.2", "black", [ "v19.2", "h-86" ] ],
+      [ "led3:C", "esp:GND.2", "black", [ "v19.2", "h-143.6" ] ],
+      [ "led1:C", "esp:GND.2", "black", [ "v19.2", "h-201.2" ] ],
+      [ "led2:A", "esp:23", "red", [ "v28.8", "h-96" ] ],
+      [ "esp:21", "r2:1", "orange", [ "h76.8" ] ],
+      [ "r2:2", "led3:A", "orange", [ "v-67.2", "h18" ] ],
+      [ "led1:A", "r1:2", "green", [ "v105.6", "h-67.2" ] ],
+      [ "r1:1", "esp:5", "green", [ "v0", "h-86.4" ] ],
+      [ "sevseg1:GND", "esp:GND.2", "black", [ "h28.8", "v86.4" ] ],
+      [ "sevseg1:VCC", "esp:5V", "red", [ "h48", "v297.6" ] ],
+      [ "sevseg1:DIO", "esp:2", "green", [ "h67.2", "v230.4" ] ],
+      [ "sevseg1:CLK", "esp:4", "green", [ "h86.4", "v230.4" ] ]
+    ],
+    "dependencies": {}
+  }
