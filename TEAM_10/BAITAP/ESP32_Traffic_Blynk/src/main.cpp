@@ -4,14 +4,18 @@
 /* Fill in information from Blynk Device Info here */
 #define BLYNK_TEMPLATE_ID "TMPL6lYwGWEqx"
 #define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "GHwY9Ws1btOsgiJyMzkzmCs2p2-jFjC4H"
+#define BLYNK_AUTH_TOKEN "HwY9Ws1btOsgiJyMzkzmCs2p2-jFjC4H"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 
-char ssid[] = "Wokwi-GUEST";  
-char pass[] = "";             
+// Wokwi sử dụng mạng WiFi "Wokwi-GUEST" không cần mật khẩu cho việc chạy mô phỏng
+char ssid[] = "Wokwi-GUEST";  //Tên mạng WiFi
+char pass[] = "";             //Mật khẩu mạng WiFi
+
+// char ssid[] = "CNTT-MMT";  //Tên mạng WiFi
+// char pass[] = "13572468";             //Mật khẩu mạng WiFi             
 
 #define btnBLED  23 
 #define pinBLED  21 
