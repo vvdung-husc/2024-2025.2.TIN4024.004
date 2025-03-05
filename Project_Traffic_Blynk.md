@@ -43,11 +43,13 @@
 		
 	[Tham khảo - https://docs.wokwi.com/parts/wokwi-led](https://docs.wokwi.com/parts/wokwi-led)
 		
+		
 	2\.  **Resistor - Điện trở**
 	
 	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/Resistor.png)
 	
 	[Tham khảo - https://docs.wokwi.com/parts/wokwi-resistor](https://docs.wokwi.com/parts/wokwi-resistor)
+
 
 	3\.  **PushButton - Nút nhấn**
 
@@ -56,6 +58,7 @@
 	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/PushButton.png)
 	
 	[Tham khảo - https://docs.wokwi.com/parts/wokwi-pushbutton](https://docs.wokwi.com/parts/wokwi-pushbutton)
+	
 	
 	4\.  **TM1637 - Bảng hiển thị đèn LED**
 
@@ -85,6 +88,7 @@
 
 	[Tham khảo - https://docs.wokwi.com/parts/wokwi-photoresistor-sensor](https://docs.wokwi.com/parts/wokwi-photoresistor-sensor)
 
+	
 	6\.  **DHT- Cảm biến nhiệt độ và độ ẩm**
 		
 	> Dùng để đọc nhiệt độ và độ ẩm hiện tại.
@@ -92,15 +96,14 @@
   	***Thư viện sử dụng***
 	> **DHT sensor library** by Adafruit
 
-		![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/DHT.png)
+	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/DHT.png)
 
 
 	[Tham khảo - https://docs.wokwi.com/parts/wokwi-dht22](https://docs.wokwi.com/parts/wokwi-dht22)
 
-
+	
 	7\.  **ESP32 Board - NodeMCU-32s**
-
-	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/esp32_board.png)
+				![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/esp32_board.png)
 
 
 	>### Sơ đồ chân - board-esp32-devkit-c-v4
