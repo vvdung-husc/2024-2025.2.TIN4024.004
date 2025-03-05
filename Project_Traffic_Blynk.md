@@ -103,8 +103,8 @@
 
 	
 	7\.  **ESP32 Board - NodeMCU-32s**
-				![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/esp32_board.png)
 
+	![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/esp32_board.png)
 
 	>### Sơ đồ chân - board-esp32-devkit-c-v4
 	
