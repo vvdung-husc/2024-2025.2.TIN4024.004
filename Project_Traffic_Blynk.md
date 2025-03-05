@@ -8,7 +8,7 @@
 	
 		> Sau thời gian này các commit thay đổi nội dung của dự án sẽ không được tính.
 ---
-![][ESP32_Traffic_Blynk.png (1695×763)](https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.004/refs/heads/main/_Documents/ESP32_Traffic_Blynk.png)
+![](https://raw.githubusercontent.com/vvdung-husc/2024-2025.2.TIN4024.004/refs/heads/main/_Documents/ESP32_Traffic_Blynk.png)
 
 
 ---
