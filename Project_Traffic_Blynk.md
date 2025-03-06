@@ -1,6 +1,6 @@
 
   
-# [Project - Traffic - Blynk](https://wokwi.com/projects/424566065569042433)
+# [Project - Traffic - Blynk (***Wokwi diagram.json***)](https://wokwi.com/projects/424566065569042433)
 - ## Yêu cầu thực hiện theo nhóm (2 đến 5 thành viên mỗi nhóm)
 	- Tạo dự án có tên **ESP32_Traffic_Blynk** tại thư mục của nhóm mình
 	
