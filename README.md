@@ -66,7 +66,7 @@
 ## => Hãy lập trình trong ESP32 sử dụng API HTTP GET để lấy được IPv4, Latitude, Longitude và đưa ra Link Google Maps (Hiển thị tại Terminal)
 
 ## => Đăng ký tài khoản https://openweathermap.org/, sử dụng API http://ip4.iothings.vn?geo=1 và API https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key} để thực hiện trên Blynk như hình sau
-> Sử lý chuỗi và JSON trả về từ API
+> Xử lý chuỗi và JSON trả về từ API
 
 ![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/ESP32_API.png)
 
