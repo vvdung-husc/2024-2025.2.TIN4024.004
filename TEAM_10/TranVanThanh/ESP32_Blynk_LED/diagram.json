@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "author": "Võ Việt Dũng",
+  "author": "Trần Văn Thanh",
   "editor": "wokwi",
   "parts": [
     { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": -9.6, "left": -225.56, "attrs": {} },
@@ -24,8 +24,7 @@
       "top": 25.2,
       "left": -101.8,
       "attrs": { "color": "blue", "flip": "1" }
-    },
-    { "type": "wokwi-dht22", "id": "dht1", "top": 67.5, "left": 61.8, "attrs": {} }
+    }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
@@ -37,10 +36,7 @@
     [ "sevseg1:VCC", "esp:5V", "red", [ "h9.6", "v259.2", "h0", "v9.6", "h-230.4" ] ],
     [ "sevseg1:GND", "esp:GND.3", "black", [ "h0", "v124.8" ] ],
     [ "led1:C", "esp:GND.3", "black", [ "v9.6", "h0.4" ] ],
-    [ "led1:A", "esp:21", "blue", [ "v0" ] ],
-    [ "dht1:SDA", "esp:16", "green", [ "v48", "h-172.7", "v-105.6" ] ],
-    [ "dht1:VCC", "esp:3V3", "red", [ "v38.4", "h-307.2", "v-201.6" ] ],
-    [ "dht1:GND", "esp:GND.3", "black", [ "v57.6", "h-201.6", "v-163.2" ] ]
+    [ "led1:A", "esp:21", "blue", [ "v0" ] ]
   ],
   "dependencies": {}
 }
