@@ -1,6 +1,22 @@
-#define BLYNK_TEMPLATE_ID "TMPL6GJTI7LIN"
-#define BLYNK_TEMPLATE_NAME "NKN"
-#define BLYNK_AUTH_TOKEN "KZ1xq6-gQmQwZj-DllHQpLWY8oDNATIt"
+#define BLYNK_TEMPLATE_ID "TMPL6GQi1vjUe"
+#define BLYNK_TEMPLATE_NAME "Blynk"
+#define BLYNK_AUTH_TOKEN "Z1VDXHZKVy_ZPzRKmgmRLoRfATLm0oNj"
+/*Ngô Kim Nguyên*/
+// #define BLYNK_TEMPLATE_ID "TMPL6GJTI7LIN"
+// #define BLYNK_TEMPLATE_NAME "NKN"
+// #define BLYNK_AUTH_TOKEN "KZ1xq6-gQmQwZj-DllHQpLWY8oDNATIt"
+/*Phương Phi*/
+// #define BLYNK_TEMPLATE_ID "TMPL6U-bgV0v4"
+// #define BLYNK_TEMPLATE_NAME "PP"
+// #define BLYNK_AUTH_TOKEN "XW-o3nfdrKUhSdxUDbpj38lycdu9GTXr"
+/*Lê Ngọc Linh*/
+// #define BLYNK_TEMPLATE_ID "TMPL6sjJY1Hxb"
+// #define BLYNK_TEMPLATE_NAME "ESP32LeNgocLinhBlynk"
+// #define BLYNK_AUTH_TOKEN "H2MGVAcH6BOIsrBSJ_9EHN0OOz1xyPlm"
+/*Huỳnh Kim Khánh*/
+// #define BLYNK_TEMPLATE_ID "TMPL6wK1s0zJe"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "GxETXuOb4EBTEjvDM5u6nmKnN0VzSi_4"
 
 #include <Arduino.h>
 #include <TM1637Display.h>
@@ -146,12 +162,17 @@ void NonBlocking_Traffic_Light(){
 }
 
 void NonBlocking_Traffic_Light_TM1637(){
-  remainingTime = (ledTimeStart + (currentLED == rLED ? rTIME : (currentLED == gLED ? gTIME : yTIME)) - currentMiliseconds) / 1000;
-  display.showNumberDec(remainingTime, true);
+  if (!isBlinking) {  // Nếu không trong chế độ nhấp nháy đèn vàng
+    remainingTime = (ledTimeStart + 
+                    (currentLED == rLED ? rTIME : 
+                     (currentLED == gLED ? gTIME : yTIME))
+                    - currentMiliseconds) / 1000;
+
+    display.showNumberDec(remainingTime, true);
+  }
 }
 void Check_Light_Sensor() {
   int lightValue = analogRead(LDR_PIN);
-  Serial.print("LDR Value: "); Serial.println(lightValue);
 
   Blynk.virtualWrite(V4, lightValue);
   
@@ -162,6 +183,7 @@ void Check_Light_Sensor() {
           digitalWrite(rLED, LOW);
           digitalWrite(gLED, LOW);
           digitalWrite(yLED, LOW);
+          display.clear(); // Xoá số hiển thị trên TM1637 khi vào chế độ nhấp nháy
           Serial.println("Low light detected - Blinking Yellow Mode");
       }
   } else {
@@ -170,6 +192,8 @@ void Check_Light_Sensor() {
           digitalWrite(yLED, LOW);
           currentLED = rLED;
           ledTimeStart = millis();
+          remainingTime = rTIME / 1000; // Cập nhật thời gian đèn đỏ
+          display.showNumberDec(remainingTime); // Hiển thị lại số giây đèn giao thông
           Serial.println("Light restored - Returning to normal mode");
       }
   }
@@ -177,9 +201,10 @@ void Check_Light_Sensor() {
 
 void Blink_Yellow_Light() {
   if (IsReady(blinkStartTime, blinkInterval)) {
-      yellowState = !yellowState;
-      digitalWrite(yLED, yellowState);
+    yellowState = !yellowState;
+    digitalWrite(yLED, yellowState);
   }
+  display.clear();
 }
 
 void updateBlueButton() {
@@ -210,9 +235,9 @@ void uptimeBlynk() {
   if (!IsReady(lastTime, 1000)) return;
   ulong value = lastTime / 1000;
   Blynk.virtualWrite(V0, value);
-  if (blueButtonON) {
+  if (!isBlinking && currentLED == 0) { 
     display.showNumberDec(value);
-  }
+  } 
 }
 
 void updateDHT() {
@@ -226,9 +251,6 @@ void updateDHT() {
     Serial.println("⚠️ Failed to read from DHT sensor! Retrying...");
     return;
   }
-
-  Serial.print("🌡️ Temperature: "); Serial.print(temperature); Serial.print("°C");
-  Serial.print(" | 💧 Humidity: "); Serial.print(humidity); Serial.println("%");
 
   // Gửi dữ liệu lên Blynk
   Blynk.virtualWrite(V2, temperature);
