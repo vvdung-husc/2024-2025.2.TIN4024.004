@@ -3,9 +3,9 @@
 #include <TM1637Display.h>
 #include <DHT.h>
 /* Fill in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL6biizWNEk"
-#define BLYNK_TEMPLATE_NAME "BlynkLeg"
-#define BLYNK_AUTH_TOKEN "Gw4Zrw_pl2b8R872kXlfgx3KFxm8w7SE"
+#define BLYNK_TEMPLATE_ID "TMPL6Z64wYt7o"
+#define BLYNK_TEMPLATE_NAME "BinkLed"
+#define BLYNK_AUTH_TOKEN "JyNJ1eIYR7qjthWwnR_m8KABDoT8LeZt"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>
@@ -85,8 +85,8 @@ void loop() {
 
     display.showNumberDec((int)temperature, false); // Hiển thị nhiệt độ lên TM1637
 
-    Blynk.virtualWrite(V4, temperature); // Gửi nhiệt độ lên Blynk (V2)
-    Blynk.virtualWrite(V5, humidity);    // Gửi độ ẩm lên Blynk (V3)
+    Blynk.virtualWrite(V2, temperature); // Gửi nhiệt độ lên Blynk (V2)
+    Blynk.virtualWrite(V3, humidity);    // Gửi độ ẩm lên Blynk (V3)
   }
 
   currentMiliseconds = millis();
