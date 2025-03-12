@@ -95,10 +95,10 @@
     [ "r2:2", "esp:26", "gold", [ "h0", "v18" ] ],
     [ "ldr1:VCC", "esp:5V", "red", [ "h9.6", "v48", "h28.8" ] ],
     [ "ldr1:GND", "esp:GND.1", "black", [ "h9.6", "v-29.2" ] ],
-    [ "ldr1:AO", "esp:13", "green", [ "h19.2", "v-39.1" ] ],
     [ "dht1:VCC", "esp:3V3", "red", [ "v19.2", "h-374.4", "v-278.4" ] ],
     [ "dht1:SDA", "esp:16", "green", [ "v67.2", "h-124.7", "v-163.2" ] ],
-    [ "dht1:GND", "esp:GND.3", "black", [ "v38.4", "h-201.6", "v-240" ] ]
+    [ "dht1:GND", "esp:GND.3", "black", [ "v38.4", "h-201.6", "v-240" ] ],
+    [ "ldr1:AO", "esp:32", "green", [ "h19.2", "v-115.9" ] ]
   ],
   "dependencies": {}
 }
