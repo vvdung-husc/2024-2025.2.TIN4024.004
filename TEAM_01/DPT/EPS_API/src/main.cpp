@@ -46,7 +46,7 @@ void setup() {
             Serial.print("Longitude (Kinh_do): "); Serial.println(longitude, 6);
 
             // Tạo link Google Maps
-            Serial.print("\n🔗 Google Maps: ");
+            Serial.print("\n Google Maps: ");
             Serial.print("http://www.google.com/maps/place/16.4591267,107.5901477");
             Serial.print(latitude, 6);
             Serial.print(",");
