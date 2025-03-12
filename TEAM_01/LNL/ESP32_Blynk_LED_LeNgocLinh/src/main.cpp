@@ -1,6 +1,6 @@
-#define BLYNK_TEMPLATE_ID "TMPL6GJTI7LIN"
-#define BLYNK_TEMPLATE_NAME "NKN"
-#define BLYNK_AUTH_TOKEN "KZ1xq6-gQmQwZj-DllHQpLWY8oDNATIt"
+#define BLYNK_TEMPLATE_ID "TMPL6eridL3Tf"
+#define BLYNK_TEMPLATE_NAME "ESP32LeNgocLinhLed"
+#define BLYNK_AUTH_TOKEN "7motmq01z5Z75TH_a-Mqhg4xqtb7YQ0O"
 
 #include <Arduino.h>
 #include <TM1637Display.h>
