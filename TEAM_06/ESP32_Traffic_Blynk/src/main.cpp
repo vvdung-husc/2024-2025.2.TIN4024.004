@@ -1,28 +1,23 @@
 //Trong
-// #define BLYNK_TEMPLATE_ID "TMPL6j37JFNQC"
-// #define BLYNK_TEMPLATE_NAME "ESP32 Blynk LED"
-// #define BLYNK_AUTH_TOKEN "72PWXm4riLyYaEzU-8e5-wh5WJh7OxiE"
-
-//Tue
-#define BLYNK_TEMPLATE_ID "TMPL6W2ZuQ3Vs"
+#define BLYNK_TEMPLATE_ID "TMPL6j37JFNQC"
 #define BLYNK_TEMPLATE_NAME "ESP32 Blynk LED"
-#define BLYNK_AUTH_TOKEN "VlSDmhqoC5PRF5qza-WwZPx4BB7TSbzA"
-
+#define BLYNK_AUTH_TOKEN "72PWXm4riLyYaEzU-8e5-wh5WJh7OxiE"
+//Tue
+// #define BLYNK_TEMPLATE_ID "TMPL6W2ZuQ3Vs"
+// #define BLYNK_TEMPLATE_NAME "ESP32 Blynk LED"
+// #define BLYNK_AUTH_TOKEN "VlSDmhqoC5PRF5qza-WwZPx4BB7TSbzA"
 // //Thanh
 // #define BLYNK_TEMPLATE_ID "TMPL6L7gW1LVm"
 // #define BLYNK_TEMPLATE_NAME "ESP32 BLYNK TRAFFIC AND DHT SENSOR"
 // #define BLYNK_AUTH_TOKEN "bgNpzWSld20tBSqenKBNwmKFkbiq32L
-
 //Viet
 // #define BLYNK_TEMPLATE_ID "TMPL6C4XcVTsM"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "jEExrLPInYHy-eF4NzAiOpG1vWNeEhTC"
-
 // //Hoang
 // #define BLYNK_TEMPLATE_ID "TMPL6L580oKYQ"
 // #define BLYNK_TEMPLATE_NAME "ESP32 Blynk LED"
 // #define BLYNK_AUTH_TOKEN "q_aGCPUEtd2P1-7IKOHlYxOlwldQ6Oq8"
-
 #include <Arduino.h>
 #include <TM1637Display.h>
 #include <WiFi.h>
