@@ -8,14 +8,16 @@
 // #define BLYNK_AUTH_TOKEN "X2za5Tymj_cH63wGgnL_cNIpWFKXqH2d"
 
 //Trần Văn Minh Nhật
+
 // #define BLYNK_TEMPLATE_ID "TMPL6rKfVu6HP"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "NVohCxt35pdmPIROGthShHSki6xWgVdf"
 
 // Nguyễn Trần Viết Thắng
-// #define BLYNK_TEMPLATE_ID "TMPL6lYwGWEqx"
-// #define BLYNK_TEMPLATE_NAME "ESMART"
-// #define BLYNK_AUTH_TOKEN "HwY9Ws1btOsgiJyMzkzmCs2p2-jFjC4H"
+#define BLYNK_TEMPLATE_ID "TMPL6lYwGWEqx"
+#define BLYNK_TEMPLATE_NAME "ESMART"
+#define BLYNK_AUTH_TOKEN "HwY9Ws1btOsgiJyMzkzmCs2p2-jFjC4H"
+
 
 #include <WiFi.h>
 #include <WiFiClient.h>
