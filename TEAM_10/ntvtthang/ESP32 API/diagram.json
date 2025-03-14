@@ -1,0 +1,33 @@
+{
+  "device": "ESP32",
+  "wifi": {
+    "ssid": "Wokwi-GUEST",
+    "password": ""
+  },
+  "blynk": {
+    "template_id": "TMPL6WQLYM4vE",
+    "template_name": "ESP32 API",
+    "auth_token": "f_anI_owNl3_ctATip2QyQI38resT7a2"
+  },
+  "api": {
+    "ip_location": "http://ip-api.com/json",
+    "weather": "http://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=caf8911642ee01fd32784c242a5fd9e1&units=metric"
+  },
+  "virtual_pins": {
+    "ip": "V1",
+    "latitude": "V2",
+    "longitude": "V3",
+    "temperature": "V4",
+    "map": "V5"
+  },
+  "sensors": {
+    "temperature_humidity": {
+      "type": "DHT22",
+      "pin": 4
+    },
+    "led_status": {
+      "type": "Digital",
+      "pin": 2
+    }
+  }
+}
