@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "author": "Nguyễn Trần Viết Thắng",
+  "author": "Nguyễn Trần Viết Thắng, Trần Văn Minh Nhật, Trần Văn Thanh, Phạm Văn Trí, Đoàn Anh Tú",
   "editor": "wokwi",
   "parts": [
     {
@@ -10,7 +10,7 @@
       "left": -225.56,
       "attrs": {}
     },
-    {
+    { 
       "type": "wokwi-pushbutton",
       "id": "btn1",
       "top": -3.4,
