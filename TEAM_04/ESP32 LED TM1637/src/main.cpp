@@ -9,20 +9,6 @@
 #define BLYNK_TEMPLATE_NAME "NgocBao"
 #define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
 
-// Mai Nhat Quang
-// #define BLYNK_TEMPLATE_ID "TMPL6VsEQu_sB"
-// #define BLYNK_TEMPLATE_NAME "ESP32 LED 1003"
-// #define BLYNK_AUTH_TOKEN "NbHpCXZxDoDldC2_SyJLLwcHmzfqUjHS"
-
-// Duong Van Tuan
-// #define BLYNK_TEMPLATE_ID "TMPL63zZ0QgXn"
-// #define BLYNK_TEMPLATE_NAME "ESP32 LED 1003 TUAN"
-// #define BLYNK_AUTH_TOKEN "Q_OpIgTsyUcRLbvzNx5HL1ik8p7Kpo_K"
-
-//Nguyen Cong Thao
-// #define BLYNK_TEMPLATE_ID "TMPL6fNfXISjI"
-// #define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk Thao"
-// #define BLYNK_AUTH_TOKEN "hTg5kDXGbCrpQt1rwMbMDHQHSHpaapLy"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
