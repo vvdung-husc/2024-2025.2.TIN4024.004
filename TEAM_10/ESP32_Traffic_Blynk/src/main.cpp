@@ -3,9 +3,31 @@
 #include <DHT.h>
 
 // Trần Văn Thanh
-#define BLYNK_TEMPLATE_ID "TMPL6VbNuRWM1"
-#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "X2za5Tymj_cH63wGgnL_cNIpWFKXqH2d"
+// #define BLYNK_TEMPLATE_ID "TMPL6VbNuRWM1"
+// #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
+// #define BLYNK_AUTH_TOKEN "X2za5Tymj_cH63wGgnL_cNIpWFKXqH2d"
+
+//Trần Văn Minh Nhật
+
+// #define BLYNK_TEMPLATE_ID "TMPL6rKfVu6HP"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "NVohCxt35pdmPIROGthShHSki6xWgVdf"
+
+// Nguyễn Trần Viết Thắng
+//#define BLYNK_TEMPLATE_ID "TMPL6lYwGWEqx"
+//#define BLYNK_TEMPLATE_NAME "ESMART"
+//#define BLYNK_AUTH_TOKEN "HwY9Ws1btOsgiJyMzkzmCs2p2-jFjC4H"
+
+//Đoàn Anh Tú
+#define BLYNK_TEMPLATE_ID "TMPL6chk8bhgy"
+#define BLYNK_TEMPLATE_NAME "DoanAnhTu"
+#define BLYNK_AUTH_TOKEN "hMXh6gasWGZm9e26p6zIFIR4KseckmGu"
+
+//Phạm Văn Trí
+#define BLYNK_TEMPLATE_ID "TMPL6mS6n5bhv"
+#define BLYNK_TEMPLATE_NAME "4"
+#define BLYNK_AUTH_TOKEN "z2XNBK32elbzhvNlnPr1XvFu35ez7E-m"
+
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -118,7 +140,7 @@ void loop()
   uptimeBlynk();
   updateBlueButton();
   readDHTSensor();
-  updateLedTime();
+  //updateLedTime();
 
   if (isDark())
     YellowLED_Blink(); // Nếu trời tối => Nhấp nháy đèn vàng
@@ -213,8 +235,9 @@ bool isDark()
     if (!bDark && blueButtonON) // Chỉ cho phép nhấp nháy khi blueButtonON == true
     {
       digitalWrite(currentLED, LOW);
-      Serial.print("DARK  value: ");
+      Serial.print("DARK value: ");
       Serial.println(value);
+      Blynk.virtualWrite(V4, value);
     }
     // bDark = true;
     bDark = blueButtonON; // Chỉ đặt `bDark = true` nếu `blueButtonON` bật
@@ -293,7 +316,7 @@ void uptimeBlynk() {
 
   if (blueButtonON) {  
     runTime++; // Chỉ tăng thời gian khi đèn sáng
-    Blynk.virtualWrite(V4, runTime);  // Gửi lên Blynk V4
+    Blynk.virtualWrite(V0, runTime);  // Gửi lên Blynk V0
   }
 }
 
@@ -317,15 +340,15 @@ void readDHTSensor() {
   Blynk.virtualWrite(V3, humidity);
 }
 
-void updateLedTime() {
-  static ulong lastUpdate = 0;
-  if (!IsReady(lastUpdate, 1000)) return;
+// void updateLedTime() {
+//   static ulong lastUpdate = 0;
+//   if (!IsReady(lastUpdate, 1000)) return;
 
-  if (blueButtonON) {
-    ledOnTime++;
-    Blynk.virtualWrite(V4, ledOnTime);
-  }
-}
+//   if (blueButtonON) {
+//     ledOnTime++;
+//     Blynk.virtualWrite(V4, ledOnTime);
+//   }
+// }
 
 //được gọi mỗi khi có dữ liệu mới được gửi từ ứng dụng Blynk đến thiết bị.
 BLYNK_WRITE(V1) { //virtual_pin định nghĩa trong ứng dụng Blynk

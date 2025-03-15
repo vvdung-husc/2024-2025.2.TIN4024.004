@@ -1,6 +1,14 @@
+// Lê Quang Vũ
 #define BLYNK_TEMPLATE_ID "TMPL6-MCfoVVn"
 #define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
 #define BLYNK_AUTH_TOKEN "cKdXp_mMqaZvmoGmAiMqRoSjqge9ZIDR"
+
+/*
+//Nguyễn Đức Nhuận
+#define BLYNK_TEMPLATE_ID "TMPL6R6i378Rq"
+#define BLYNK_TEMPLATE_NAME "Traffic and DHT BanDemDoiMau"
+#define BLYNK_AUTH_TOKEN "opLgjE7q8mUhNx5cFyasCUQTzuKBM3vW"
+*/
 
 #include <Arduino.h>
 #include <TM1637Display.h>
