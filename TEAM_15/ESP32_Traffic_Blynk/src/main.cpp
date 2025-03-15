@@ -4,14 +4,30 @@
 
 // Blynk Authentication
 // Dương Thị Thu Uyên - 21T1020099
-#define BLYNK_TEMPLATE_ID "TMPL6oG3Nj8wA"
-#define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "HURYMOI5FgZO17csG7YVZ4HtJRk7Zm3z"
+// #define BLYNK_TEMPLATE_ID "TMPL6oG3Nj8wA"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "HURYMOI5FgZO17csG7YVZ4HtJRk7Zm3z"
 
 // Lê Trung Tín - 21T1020086
 // #define BLYNK_TEMPLATE_ID "TMPL68WAJ8Swo"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "csd6WGS69yFRnakxq0Jdmc47F8aV2sEn"
+
+// Hoàng Ngọc Bảo Minh -21T1020140
+// #define BLYNK_TEMPLATE_ID "TMPL6_s4gxZGU"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "aQGBGdJcaKBcCaIffVGqvrBWit6R62aC"
+
+//Nguyễn Anh Trí -21T1020772
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "nQ6gH_tq8WhJwmHHS2laejOVytO_jg_H"
+// #define BLYNK_PRINT Serial
+
+// Trần Quốc Hưng - 21T1020403
+// #define BLYNK_TEMPLATE_ID "TMPL6zx9_fQlK"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "hSeNSB8cA_yCm_WNtTMtKOZj4kUIPd0P"
+
 
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
