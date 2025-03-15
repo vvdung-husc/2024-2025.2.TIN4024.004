@@ -361,15 +361,15 @@ void readDHTSensor()
   Blynk.virtualWrite(V3, humidity);
 }
 
-// void updateLedTime() {
-//   static ulong lastUpdate = 0;
-//   if (!IsReady(lastUpdate, 1000)) return;
+void updateLedTime() {
+  static ulong lastUpdate = 0;
+  if (!IsReady(lastUpdate, 1000)) return;
 
-//   if (blueButtonON) {
-//     ledOnTime++;
-//     Blynk.virtualWrite(V4, ledOnTime);
-//   }
-// }
+  if (blueButtonON) {
+    ledOnTime++;
+    Blynk.virtualWrite(V4, ledOnTime);
+  }
+}
 
 // được gọi mỗi khi có dữ liệu mới được gửi từ ứng dụng Blynk đến thiết bị.
 BLYNK_WRITE(V1)
