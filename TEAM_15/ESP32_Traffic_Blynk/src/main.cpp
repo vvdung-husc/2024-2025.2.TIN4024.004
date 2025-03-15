@@ -4,14 +4,14 @@
 
 // Blynk Authentication
 // Dương Thị Thu Uyên - 21T1020099
-#define BLYNK_TEMPLATE_ID "TMPL6oG3Nj8wA"
-#define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "HURYMOI5FgZO17csG7YVZ4HtJRk7Zm3z"
+// #define BLYNK_TEMPLATE_ID "TMPL6oG3Nj8wA"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "HURYMOI5FgZO17csG7YVZ4HtJRk7Zm3z"
 
 // Lê Trung Tín - 21T1020086
-// #define BLYNK_TEMPLATE_ID "TMPL68WAJ8Swo"
-// #define BLYNK_TEMPLATE_NAME "ESMART"
-// #define BLYNK_AUTH_TOKEN "csd6WGS69yFRnakxq0Jdmc47F8aV2sEn"
+#define BLYNK_TEMPLATE_ID "TMPL68WAJ8Swo"
+#define BLYNK_TEMPLATE_NAME "ESMART"
+#define BLYNK_AUTH_TOKEN "csd6WGS69yFRnakxq0Jdmc47F8aV2sEn"
 
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
