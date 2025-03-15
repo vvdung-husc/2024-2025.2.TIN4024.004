@@ -10,9 +10,9 @@
 // #define BLYNK_TEMPLATE_NAME "PP"
 // #define BLYNK_AUTH_TOKEN "XW-o3nfdrKUhSdxUDbpj38lycdu9GTXr"
 /*Lê Ngọc Linh*/
-// #define BLYNK_TEMPLATE_ID "TMPL6sjJY1Hxb"
-// #define BLYNK_TEMPLATE_NAME "ESP32LeNgocLinhBlynk"
-// #define BLYNK_AUTH_TOKEN "H2MGVAcH6BOIsrBSJ_9EHN0OOz1xyPlm"
+//#define BLYNK_TEMPLATE_ID "TMPL6eridL3Tf"
+//#define BLYNK_TEMPLATE_NAME "ESP32LeNgocLinhLed"
+//#define BLYNK_AUTH_TOKEN "7motmq01z5Z75TH_a-Mqhg4xqtb7YQ0O"
 /*Huỳnh Kim Khánh*/
 // #define BLYNK_TEMPLATE_ID "TMPL6wK1s0zJe"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
