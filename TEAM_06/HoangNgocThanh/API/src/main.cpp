@@ -2,83 +2,77 @@
 #define BLYNK_TEMPLATE_NAME "ESP32 API"
 #define BLYNK_AUTH_TOKEN "k4g8b7h2a_zR-QMMcgbdNShreUQWgb1D"
 
-#include <Arduino.h>
-#include <HTTPClient.h>
 #include <WiFi.h>
-#include <Arduino_JSON.h>
-#include <string.h>
-const char* ssid = "Nha Tao";
-const char* password = "25251325" ;
- 
-String weatherApiKey = "e2029e14dfbb872bf7a67b3b8b03a3c5";
- 
-String city = "Hanoi";
-String countrycode = "";
-String weatherJsonBuffer;
- 
-//http config
-String weatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=Hanoi&amp;amp;appid=e2029e14dfbb872bf7a67b3b8b03a3c5";
- 
-int temp = 30;
-int humi = 80;
- 
-String httpGETRequest(const char* Url);
+#include <HTTPClient.h>
+#include <BlynkSimpleEsp32.h>
+#include <ArduinoJson.h>
+
+// Thông tin WiFi
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
+
+// API lấy dữ liệu thời tiết từ OpenWeatherMap (Hà Nội)
+const char* weatherApiUrl = "http://api.openweathermap.org/data/2.5/weather?q=HaNoi&appid=ffbe7e59eedefe887c11b507112e0c57&units=metric";
+
 void setup() {
-  Serial.begin(9600);
- 
-  //setup wifi
-  WiFi.begin(ssid,password);
-  Serial.println("conecting");
-  while(WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.print("Connected to WiFi network with IP Address: ");
-  Serial.println(WiFi.localIP());
+    Serial.begin(115200);
+    
+    // Kết nối WiFi
+    WiFi.begin(ssid, password);
+    Serial.print("Đang kết nối WiFi...");
+    
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print(".");
+    }
+    Serial.println("\nWiFi đã kết nối!");
+    Serial.print("Địa chỉ IP: ");
+    Serial.println(WiFi.localIP());
 }
- 
+
 void loop() {
-  //read temp to openweather
-  Serial.println(weatherUrl);
-  weatherJsonBuffer = httpGETRequest(weatherUrl.c_str());
-  Serial.println(weatherJsonBuffer);
-  JSONVar weatherJson = JSON.parse(weatherJsonBuffer);
-  if(JSON.typeof_(weatherJson) == "undefined")
-  {
-    Serial.println("Parsing fail");
-    return;
-  }
-  Serial.println();
-  temp = weatherJson["main"]["temp"];
-  temp = temp - 273;
-  Serial.print("Temperature: ");
-  Serial.println(temp);
- 
-  humi = weatherJson["main"]["humidity"];
-  Serial.print("Humidity: ");
-  Serial.println(humi);
-  delay(10000);
-}
- 
-String httpGETRequest(const char* Url)
-{
-  HTTPClient http;
-  http.begin(Url);
-  int responseCode = http.GET();
-  String responseBody = "{}";
-  if(responseCode > 0)
-  {
-    Serial.print("responseCode:");
-    Serial.println(responseCode);
-    responseBody = http.getString();
-  }
-  else
-  {
-    Serial.print("Error Code: ");
-    Serial.println(responseCode);
-  }
-  http.end();
-  return responseBody;
+    if (WiFi.status() == WL_CONNECTED) {
+        HTTPClient http;  // Tạo đối tượng HTTPClient
+        http.begin(weatherApiUrl); // Bắt đầu kết nối API
+        int httpResponseCode = http.GET(); // Gửi yêu cầu GET
+        
+        if (httpResponseCode == 200) {
+            String payload = http.getString(); // Lấy dữ liệu JSON
+            Serial.println("Dữ liệu nhận được từ API:");
+            Serial.println(payload); // In toàn bộ JSON ra terminal
+
+            // Phân tích JSON
+            DynamicJsonDocument doc(1024);
+            DeserializationError error = deserializeJson(doc, payload);
+            
+            if (!error) {
+                float temperature = doc["main"]["temp"]; // Lấy nhiệt độ
+                const char* weather = doc["weather"][0]["description"]; // Mô tả thời tiết
+                float humidity = doc["main"]["humidity"]; // Độ ẩm
+                float windSpeed = doc["wind"]["speed"]; // Tốc độ gió
+                float lon = doc["coord"]["lon"]; // Kinh độ
+                float lat = doc["coord"]["lat"]; // Vĩ độ
+
+                // Hiển thị dữ liệu trên Serial Monitor
+                Serial.println("\n========== DỮ LIỆU THỜI TIẾT ==========");
+                Serial.print("🌡️  Nhiệt độ: "); Serial.print(temperature); Serial.println("°C");
+                Serial.print("🌦️  Mô tả: "); Serial.println(weather);
+                Serial.print("💧  Độ ẩm: "); Serial.print(humidity); Serial.println("%");
+                Serial.print("💨  Tốc độ gió: "); Serial.print(windSpeed); Serial.println(" m/s");
+                Serial.print("📍  Vị trí: "); Serial.print(lat); Serial.print(", "); Serial.println(lon);
+                Serial.println("=======================================\n");
+            } else {
+                Serial.println("❌ Lỗi khi phân tích JSON!");
+            }
+        } else {
+            Serial.print("❌ Lỗi HTTP: ");
+            Serial.println(httpResponseCode);
+        }
+        
+        http.end(); // Đóng kết nối HTTP
+    } else {
+        Serial.println("⚠️  WiFi chưa kết nối!");
+    }
+    
+    delay(60000); // Chờ 60 giây trước khi gửi yêu cầu tiếp theo
 }
