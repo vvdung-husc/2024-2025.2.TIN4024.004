@@ -8,7 +8,6 @@
 // #define BLYNK_AUTH_TOKEN "X2za5Tymj_cH63wGgnL_cNIpWFKXqH2d"
 
 // Trần Văn Minh Nhật
-
 // #define BLYNK_TEMPLATE_ID "TMPL6rKfVu6HP"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "NVohCxt35pdmPIROGthShHSki6xWgVdf"
@@ -18,10 +17,10 @@
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "HwY9Ws1btOsgiJyMzkzmCs2p2-jFjC4H"
 
-// Đoàn Anh Tú
-#define BLYNK_TEMPLATE_ID "TMPL6euNa33e-"
-#define BLYNK_TEMPLATE_NAME "ESP32 KN BLYNK"
-#define BLYNK_AUTH_TOKEN "zRpakYlvMmdUZMDM2hYD1K5pcPhNfVEm"
+//Đoàn Anh Tú
+#define BLYNK_TEMPLATE_ID "TMPL6chk8bhgy"
+#define BLYNK_TEMPLATE_NAME "DoanAnhTu"
+#define BLYNK_AUTH_TOKEN "hMXh6gasWGZm9e26p6zIFIR4KseckmGu"
 
 // Phạm Văn Trí
 // #define BLYNK_TEMPLATE_ID "TMPL6mS6n5bhv"
