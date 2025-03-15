@@ -10,6 +10,12 @@
 #define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
 
 
+// Nguyen Hữu Phước
+#define BLYNK_TEMPLATE_ID "TMPL6Z64wYt7o"
+#define BLYNK_TEMPLATE_NAME "BinkLed"
+#define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXqJyNJ1eIYR7qjthWwnR_m8KABDoT8LeZt"
+
+
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
