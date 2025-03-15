@@ -4,16 +4,21 @@
 #include <dht.h>
 
 // ==== Blynk Credentials ====
-// Nguyen Dinh Ngoc Bao 
-#define BLYNK_TEMPLATE_ID "TMPL6EuZYqC1_"
-#define BLYNK_TEMPLATE_NAME "NgocBao"
-#define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
+// // Nguyen Dinh Ngoc Bao 
+// #define BLYNK_TEMPLATE_ID "TMPL6EuZYqC1_"
+// #define BLYNK_TEMPLATE_NAME "NgocBao"
+// #define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
 
 
-// Nguyen Hữu Phước
-#define BLYNK_TEMPLATE_ID "TMPL6Z64wYt7o"
-#define BLYNK_TEMPLATE_NAME "BinkLed"
-#define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXqJyNJ1eIYR7qjthWwnR_m8KABDoT8LeZt"
+// // Nguyen Hữu Phước
+// #define BLYNK_TEMPLATE_ID "TMPL6Z64wYt7o"
+// #define BLYNK_TEMPLATE_NAME "BinkLed"
+// #define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXqJyNJ1eIYR7qjthWwnR_m8KABDoT8LeZt"
+
+// Phan Bá Dân
+#define BLYNK_TEMPLATE_ID "TMPL6TapkwNtW"
+#define BLYNK_TEMPLATE_NAME "Dan"
+#define BLYNK_AUTH_TOKEN "LIl09Qk1TwLpUlOtN9emDSAUH4tpPXZA"
 
 
 #include <WiFi.h>
