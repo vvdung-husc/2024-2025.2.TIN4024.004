@@ -118,6 +118,7 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:
+  Blynk.run();
   currentMiliseconds = millis();
 
   uptimeBlynk();
