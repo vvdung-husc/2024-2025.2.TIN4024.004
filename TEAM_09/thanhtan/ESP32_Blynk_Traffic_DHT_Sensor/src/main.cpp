@@ -3,9 +3,9 @@
 #include <DHT.h>
 
 /* Fill in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL6yuMGcOgS"
-#define BLYNK_TEMPLATE_NAME "TTanBlynkDHT1"
-#define BLYNK_AUTH_TOKEN "IwX-hOQS9ia7_mlW86K4ITNCy8Yh6rKu"
+#define BLYNK_TEMPLATE_ID "TMPL6BF6al0sy"
+#define BLYNK_TEMPLATE_NAME "ThanhTanSenSor"
+#define BLYNK_AUTH_TOKEN "98zEHy85t20LjDBQrEo-0XAvUv7D2eWu"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
