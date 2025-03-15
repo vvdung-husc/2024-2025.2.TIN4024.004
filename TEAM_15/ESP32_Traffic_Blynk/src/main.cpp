@@ -19,9 +19,15 @@
 // #define BLYNK_AUTH_TOKEN "aQGBGdJcaKBcCaIffVGqvrBWit6R62aC"
 
 //Nguyễn Anh Trí -21T1020772
-#define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "nQ6gH_tq8WhJwmHHS2laejOVytO_jg_H"
-#define BLYNK_PRINT Serial
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "nQ6gH_tq8WhJwmHHS2laejOVytO_jg_H"
+// #define BLYNK_PRINT Serial
+
+// Trần Quốc Hưng - 21T1020403
+// #define BLYNK_TEMPLATE_ID "TMPL6zx9_fQlK"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "hSeNSB8cA_yCm_WNtTMtKOZj4kUIPd0P"
+
 
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
