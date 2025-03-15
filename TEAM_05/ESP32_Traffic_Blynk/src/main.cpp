@@ -3,9 +3,14 @@
 // #define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
 // #define BLYNK_AUTH_TOKEN "h4lqrwEQAXA1nea9m-39iH4VCYMcrpTL"
 
-#define BLYNK_TEMPLATE_ID "TMPL6UW8Iu1qI"
-#define BLYNK_TEMPLATE_NAME "TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "WWBaaJV-sk1PNKjHuuSS-jO7_dpQzqGU"
+// #define BLYNK_TEMPLATE_ID "TMPL6UW8Iu1qI"
+// #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
+// #define BLYNK_AUTH_TOKEN "WWBaaJV-sk1PNKjHuuSS-jO7_dpQzqGU"
+
+//Nguyen Sanh Quoc Hieu
+#define BLYNK_TEMPLATE_ID "TMPL659AhIWU_"
+#define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
+#define BLYNK_AUTH_TOKEN "uvw3rFBkBYkoLfy8EZIHd2L23_2SE_LJ"
 
 #include <Arduino.h>
 #include <TM1637Display.h>
