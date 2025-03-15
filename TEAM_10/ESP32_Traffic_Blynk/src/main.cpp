@@ -1,17 +1,6 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 #include <DHT.h>
-<<<<<<< HEAD
-//Đoàn Anh TÚ
-#define BLYNK_TEMPLATE_ID "TMPL6chk8bhgy"
-#define BLYNK_TEMPLATE_NAME "DoanAnhTu"
-#define BLYNK_AUTH_TOKEN "hMXh6gasWGZm9e26p6zIFIR4KseckmGu"
-/* Fill in information from Blynk Device Info here */
-//#define BLYNK_TEMPLATE_ID "TMPL642vBsvMe"
-//#define BLYNK_TEMPLATE_NAME "ESP32BlynkLEDDHTSensor"
-//#define BLYNK_AUTH_TOKEN "4myPjG-RoHhZeBUb4UcxefLBnXsGKxC1"
-// Phải để trước khai báo sử dụng thư viện Blynk
-=======
 
 // Trần Văn Thanh
 // #define BLYNK_TEMPLATE_ID "TMPL6VbNuRWM1"
@@ -35,11 +24,10 @@
 #define BLYNK_AUTH_TOKEN "hMXh6gasWGZm9e26p6zIFIR4KseckmGu"
 
 //Phạm Văn Trí
-#define BLYNK_TEMPLATE_ID "TMPL6mS6n5bhv"
-#define BLYNK_TEMPLATE_NAME "4"
-#define BLYNK_AUTH_TOKEN "z2XNBK32elbzhvNlnPr1XvFu35ez7E-m"
+//#define BLYNK_TEMPLATE_ID "TMPL6mS6n5bhv"
+//#define BLYNK_TEMPLATE_NAME "4"
+//#define BLYNK_AUTH_TOKEN "z2XNBK32elbzhvNlnPr1XvFu35ez7E-m"
 
->>>>>>> 25c9a51093b86ab4b122644553e0da074647aa03
 
 #include <WiFi.h>
 #include <WiFiClient.h>
