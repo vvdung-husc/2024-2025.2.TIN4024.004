@@ -9,9 +9,14 @@
 // #define BLYNK_AUTH_TOKEN "HURYMOI5FgZO17csG7YVZ4HtJRk7Zm3z"
 
 // Lê Trung Tín - 21T1020086
-#define BLYNK_TEMPLATE_ID "TMPL68WAJ8Swo"
+// #define BLYNK_TEMPLATE_ID "TMPL68WAJ8Swo"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "csd6WGS69yFRnakxq0Jdmc47F8aV2sEn"
+
+// Hoàng Ngọc Bảo Minh -21T1020140
+#define BLYNK_TEMPLATE_ID "TMPL6_s4gxZGU"
 #define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "csd6WGS69yFRnakxq0Jdmc47F8aV2sEn"
+#define BLYNK_AUTH_TOKEN "aQGBGdJcaKBcCaIffVGqvrBWit6R62aC"
 
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
