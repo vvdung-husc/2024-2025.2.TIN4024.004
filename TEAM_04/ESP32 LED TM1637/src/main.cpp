@@ -10,7 +10,7 @@
 // #define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
 
 
-//  Nguyen Hữu Phước
+//  Nguyễn Hữu Phước
 // #define BLYNK_TEMPLATE_ID "TMPL6wK5tPq5C"
 // #define BLYNK_TEMPLATE_NAME "BlynkLed2"
 // #define BLYNK_AUTH_TOKEN "vHlCU2DPjN40Ab-rTnKSRd8B0nVNDG2y"
