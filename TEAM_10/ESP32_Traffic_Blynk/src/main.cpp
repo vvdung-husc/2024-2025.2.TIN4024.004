@@ -134,6 +134,8 @@ void setup()
 
 void loop()
 {
+  Blynk.run();  //Chạy Blynk để cập nhật trạng thái từ Blynk Cloud
+
   // put your main code here, to run repeatedly:
   currentMiliseconds = millis();
 
@@ -358,6 +360,10 @@ BLYNK_WRITE(V1) { //virtual_pin định nghĩa trong ứng dụng Blynk
   if (blueButtonON){
     Serial.println("Blynk -> Blue Light ON");
     digitalWrite(pinBLED, HIGH);
+
+    if (currentLED == rLED) digitalWrite(rLED, HIGH);
+    if (currentLED == yLED) digitalWrite(yLED, HIGH);
+    if (currentLED == gLED) digitalWrite(gLED, HIGH);
   }
   else {
     Serial.println("Blynk -> Blue Light OFF");
