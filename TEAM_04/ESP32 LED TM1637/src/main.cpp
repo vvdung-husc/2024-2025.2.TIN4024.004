@@ -1,17 +1,4 @@
 
-#include <Arduino.h>
-#include <TM1637Display.h>
-#include <DHT.h>
-/* Fill in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL6EuZYqC1_"
-#define BLYNK_TEMPLATE_NAME "NgocBao"
-#define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
-// Phải để trước khai báo sử dụng thư viện Blynk
-
-#include <WiFi.h>
-#include <WiFiClient.h>
-#include <BlynkSimpleEsp32.h>
-
 // Wokwi sử dụng mạng WiFi "Wokwi-GUEST" không cần mật khẩu cho việc chạy mô phỏng
 char ssid[] = "Wokwi-GUEST";  //Tên mạng WiFi
 char pass[] = "";             //Mật khẩu mạng WiFi
