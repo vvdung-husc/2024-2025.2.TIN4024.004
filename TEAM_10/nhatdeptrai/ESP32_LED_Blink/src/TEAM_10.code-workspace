@@ -34,7 +34,6 @@
     {
       "name": "ESP32_BTN10_Traffic_Blynk",
       "path": "../../ESP32_BTN10_Traffic_Blynk"
-    },
-  ],
-  "settings": {}
+    }
+  ]
 }
