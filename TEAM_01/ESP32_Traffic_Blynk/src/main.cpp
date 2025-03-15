@@ -1,152 +1,271 @@
-#include <Arduino.h>
-#include <TM1637Display.h>
-#include <DHT.h>
-
-/* Fill in information from Blynk Device Info here */
 #define BLYNK_TEMPLATE_ID "TMPL6GQi1vjUe"
 #define BLYNK_TEMPLATE_NAME "Blynk"
 #define BLYNK_AUTH_TOKEN "Z1VDXHZKVy_ZPzRKmgmRLoRfATLm0oNj"
-// Phải để trước khai báo sử dụng thư viện Blynk
+/*Ngô Kim Nguyên*/
+// #define BLYNK_TEMPLATE_ID "TMPL6GJTI7LIN"
+// #define BLYNK_TEMPLATE_NAME "NKN"
+// #define BLYNK_AUTH_TOKEN "KZ1xq6-gQmQwZj-DllHQpLWY8oDNATIt"
+/*Phương Phi*/
+// #define BLYNK_TEMPLATE_ID "TMPL6U-bgV0v4"
+// #define BLYNK_TEMPLATE_NAME "PP"
+// #define BLYNK_AUTH_TOKEN "XW-o3nfdrKUhSdxUDbpj38lycdu9GTXr"
+/*Lê Ngọc Linh*/
+//#define BLYNK_TEMPLATE_ID "TMPL6eridL3Tf"
+//#define BLYNK_TEMPLATE_NAME "ESP32LeNgocLinhLed"
+//#define BLYNK_AUTH_TOKEN "7motmq01z5Z75TH_a-Mqhg4xqtb7YQ0O"
+/*Huỳnh Kim Khánh*/
+// #define BLYNK_TEMPLATE_ID "TMPL6wK1s0zJe"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "GxETXuOb4EBTEjvDM5u6nmKnN0VzSi_4"
 
+#include <Arduino.h>
+#include <TM1637Display.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
+#include "DHT.h"
 
-// Wokwi sử dụng mạng WiFi "Wokwi-GUEST" không cần mật khẩu cho việc chạy mô phỏng
-char ssid[] = "Wokwi-GUEST";  //Tên mạng WiFi
-char pass[] = "";             //Mật khẩu mạng WiFi
+//Pin
+#define rLED  27
+#define yLED  26
+#define gLED  25
 
+// Cảm biến ánh sáng (LDR)
+#define LDR_PIN 32
+#define LDR_THRESHOLD 1000  // Ngưỡng để kích hoạt nhấp nháy vàng
 
-#define btnBLED  23 //Chân kết nối nút bấm
-#define pinBLED  21 //Chân kết nối đèn xxanh
+// Thời gian đèn
+//1000 ms = 1 seconds
+uint rTIME = 5000;   //5 seconds
+uint yTIME = 3000;
+uint gTIME = 7000;
+uint blinkInterval = 500; // Thời gian nhấp nháy
 
-#define CLK 18  //Chân kết nối CLK của TM1637
-#define DIO 19  //Chân kết nối DIO của TM1637
+char ssid[] = "Wokwi-GUEST";
+char pass[] = "";
 
-// Cảm biến DHT22
-#define DHTPIN 16      
-#define DHTTYPE DHT22   
+#define btnBLED  23
+#define pinBLED  21
+#define CLK 18
+#define DIO 19
+#define DHTPIN 16
+#define DHTTYPE DHT22
+
+ulong currentMiliseconds = 0;
+ulong ledTimeStart = 0;
+ulong nextTimeTotal = 0;
+ulong blinkStartTime = 0;
+bool isBlinking = false;
+bool yellowState = false;
+bool blueButtonON = true;
+
+int currentLED = rLED;
+uint remainingTime = 0;
+
+TM1637Display display(CLK, DIO);
 DHT dht(DHTPIN, DHTTYPE);
 
-//Biến toàn cục
-ulong currentMiliseconds = 0; //Thời gian hiện tại - miliseconds 
-bool blueButtonON = true;     //Trạng thái của nút bấm ON -> đèn Xanh sáng và hiển thị LED TM1637
-
-//Khởi tạo mà hình TM1637
-TM1637Display display(CLK, DIO);
-
 bool IsReady(ulong &ulTimer, uint32_t milisecond);
+void NonBlocking_Traffic_Light();
+void NonBlocking_Traffic_Light_TM1637();
+void Check_Light_Sensor();
+void Blink_Yellow_Light();
 void updateBlueButton();
 void uptimeBlynk();
 void updateDHT();
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
   pinMode(pinBLED, OUTPUT);
   pinMode(btnBLED, INPUT_PULLUP);
-    
+  pinMode(rLED, OUTPUT);
+  pinMode(yLED, OUTPUT);
+  pinMode(gLED, OUTPUT);
+  pinMode(LDR_PIN, INPUT);
+  
   display.setBrightness(0x0f);
-  
-  // Start the WiFi connection
-  Serial.print("Connecting to ");Serial.println(ssid);
-  Blynk.begin(BLYNK_AUTH_TOKEN,ssid, pass); //Kết nối đến mạng WiFi
+  dht.begin();
 
-  Serial.println();
+  digitalWrite(yLED, LOW);
+  digitalWrite(gLED, LOW);
+  digitalWrite(rLED, HIGH);
+
+  currentLED = rLED;
+  nextTimeTotal += rTIME;
+  remainingTime = rTIME / 1000;
+  
+  Serial.print("Connecting to "); Serial.println(ssid);
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+
   Serial.println("WiFi connected");
-
-  
-  digitalWrite(pinBLED, blueButtonON? HIGH : LOW);  
-  Blynk.virtualWrite(V1, blueButtonON); //Đồng bộ trạng thái trạng thái của đèn với Blynk
-
-  dht.begin();  // Khởi động cảm biến DHT22
+  digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
+  Blynk.virtualWrite(V1, blueButtonON);
   
   Serial.println("== START ==>");
+  Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");
 }
 
 void loop() {  
-  Blynk.run();  //Chạy Blynk để cập nhật trạng thái từ Blynk Cloud
-
+  Blynk.run();
   currentMiliseconds = millis();
+  Check_Light_Sensor();
   uptimeBlynk();
   updateBlueButton();
-  updateDHT();  // Cập nhật nhiệt độ, độ ẩm
+  updateDHT();
+
+  if (isBlinking) {
+    Blink_Yellow_Light();
+  } else {
+    NonBlocking_Traffic_Light();
+    NonBlocking_Traffic_Light_TM1637();
+  }
 }
 
-// put function definitions here:
-bool IsReady(ulong &ulTimer, uint32_t milisecond)
-{
+bool IsReady(ulong &ulTimer, uint32_t milisecond) {
   if (currentMiliseconds - ulTimer < milisecond) return false;
   ulTimer = currentMiliseconds;
   return true;
 }
-void updateBlueButton(){
+
+void NonBlocking_Traffic_Light(){
+  switch (currentLED) {
+    case rLED: // Đèn đỏ: 5 giây
+      if (IsReady(ledTimeStart, rTIME)) {
+        digitalWrite(rLED, LOW);
+        digitalWrite(gLED, HIGH);
+        currentLED = gLED;
+        nextTimeTotal += gTIME;
+        Serial.print("2. GREEN  => YELLOW "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");
+      } 
+      break;
+
+    case gLED: // Đèn xanh: 7 giây
+      if (IsReady(ledTimeStart,gTIME)) {        
+        digitalWrite(gLED, LOW);
+        digitalWrite(yLED, HIGH);
+        currentLED = yLED;
+        nextTimeTotal += yTIME;
+        Serial.print("3. YELLOW => RED    "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");        
+      }
+      break;
+
+    case yLED: // Đèn vàng: 2 giây
+      if (IsReady(ledTimeStart,yTIME)) {        
+        digitalWrite(yLED, LOW);
+        digitalWrite(rLED, HIGH);
+        currentLED = rLED;
+        nextTimeTotal += rTIME;
+        Serial.print("1. RED    => GREEN  "); Serial.print(nextTimeTotal/1000); Serial.println(" (ms)");        
+      }
+      break;
+  }  
+}
+
+void NonBlocking_Traffic_Light_TM1637(){
+  if (!isBlinking) {  // Nếu không trong chế độ nhấp nháy đèn vàng
+    remainingTime = (ledTimeStart + 
+                    (currentLED == rLED ? rTIME : 
+                     (currentLED == gLED ? gTIME : yTIME))
+                    - currentMiliseconds) / 1000;
+
+    display.showNumberDec(remainingTime, true);
+  }
+}
+void Check_Light_Sensor() {
+  int lightValue = analogRead(LDR_PIN);
+
+  Blynk.virtualWrite(V4, lightValue);
+  
+  if (lightValue < LDR_THRESHOLD) {
+      if (!isBlinking) {
+          isBlinking = true;
+          blinkStartTime = millis();
+          digitalWrite(rLED, LOW);
+          digitalWrite(gLED, LOW);
+          digitalWrite(yLED, LOW);
+          display.clear(); // Xoá số hiển thị trên TM1637 khi vào chế độ nhấp nháy
+          Serial.println("Low light detected - Blinking Yellow Mode");
+      }
+  } else {
+      if (isBlinking) {
+          isBlinking = false;
+          digitalWrite(yLED, LOW);
+          currentLED = rLED;
+          ledTimeStart = millis();
+          remainingTime = rTIME / 1000; // Cập nhật thời gian đèn đỏ
+          display.showNumberDec(remainingTime); // Hiển thị lại số giây đèn giao thông
+          Serial.println("Light restored - Returning to normal mode");
+      }
+  }
+}
+
+void Blink_Yellow_Light() {
+  if (IsReady(blinkStartTime, blinkInterval)) {
+    yellowState = !yellowState;
+    digitalWrite(yLED, yellowState);
+  }
+  display.clear();
+}
+
+void updateBlueButton() {
   static ulong lastTime = 0;
   static int lastValue = HIGH;
-  if (!IsReady(lastTime, 50)) return; //Hạn chế bấm nút quá nhanh - 50ms mỗi lần bấm
+  if (!IsReady(lastTime, 50)) return;
   int v = digitalRead(btnBLED);
   if (v == lastValue) return;
   lastValue = v;
   if (v == LOW) return;
 
-  if (!blueButtonON){
+  if (!blueButtonON) {
     Serial.println("Blue Light ON");
     digitalWrite(pinBLED, HIGH);
     blueButtonON = true;
-    Blynk.virtualWrite(V1, blueButtonON);//Gửi giá trị lên chân ảo V1 trên ứng dụng Blynk.
-  }
-  else {
+    Blynk.virtualWrite(V1, blueButtonON);
+  } else {
     Serial.println("Blue Light OFF");
     digitalWrite(pinBLED, LOW);    
     blueButtonON = false;
-    Blynk.virtualWrite(V1, blueButtonON);//Gửi giá trị lên chân ảo V1 trên ứng dụng Blynk.
+    Blynk.virtualWrite(V1, blueButtonON);
     display.clear();
   }    
 }
 
-void uptimeBlynk(){
+void uptimeBlynk() {
   static ulong lastTime = 0;
-  if (!IsReady(lastTime, 1000)) return; //Kiểm tra và cập nhật lastTime sau mỗi 1 giây
+  if (!IsReady(lastTime, 1000)) return;
   ulong value = lastTime / 1000;
-  Blynk.virtualWrite(V0, value);  //Gửi giá trị lên chân ảo V0 trên ứng dụng Blynk.
-  if (blueButtonON){
+  Blynk.virtualWrite(V0, value);
+  if (!isBlinking && currentLED == 0) { 
     display.showNumberDec(value);
-  }
+  } 
 }
 
 void updateDHT() {
   static ulong lastTime = 0;
-  if (!IsReady(lastTime, 2000)) return;  // Cập nhật mỗi 2 giây
-
-  float temperature = dht.readTemperature(); // Đọc nhiệt độ (°C)
-  float humidity = dht.readHumidity();      // Đọc độ ẩm (%)
-
+  if (!IsReady(lastTime, 2000)) return;
+  
+  float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
+  
   if (isnan(temperature) || isnan(humidity)) {
-    Serial.println("Lỗi đọc DHT22!");
+    Serial.println("⚠️ Failed to read from DHT sensor! Retrying...");
     return;
   }
 
-  Serial.print("Nhiệt độ: "); Serial.print(temperature); Serial.print("°C ");
-  Serial.print("Độ ẩm: "); Serial.print(humidity); Serial.println("%");
-
-  Blynk.virtualWrite(V2, temperature);  // Gửi nhiệt độ lên Blynk (V2)
-  Blynk.virtualWrite(V3, humidity);     // Gửi độ ẩm lên Blynk (V3)
-
-  /*if (blueButtonON) {
-    display.showNumberDec((int)temperature); // Hiển thị nhiệt độ trên TM1637
-  }*/
+  // Gửi dữ liệu lên Blynk
+  Blynk.virtualWrite(V2, temperature);
+  Blynk.virtualWrite(V3, humidity);
 }
 
-//được gọi mỗi khi có dữ liệu mới được gửi từ ứng dụng Blynk đến thiết bị.
-BLYNK_WRITE(V1) { //virtual_pin định nghĩa trong ứng dụng Blynk
-  // Xử lý dữ liệu nhận được từ ứng dụng Blynk
-  blueButtonON = param.asInt();  // Lấy giá trị từ ứng dụng Blynk
-  if (blueButtonON){
+
+
+
+BLYNK_WRITE(V1) {
+  blueButtonON = param.asInt();
+  if (blueButtonON) {
     Serial.println("Blynk -> Blue Light ON");
     digitalWrite(pinBLED, HIGH);
-    
-  }
-  else {
+  } else {
     Serial.println("Blynk -> Blue Light OFF");
     digitalWrite(pinBLED, LOW);   
     display.clear(); 
