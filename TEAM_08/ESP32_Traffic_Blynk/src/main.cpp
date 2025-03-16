@@ -1,14 +1,30 @@
-// Lê Quang Vũ
-#define BLYNK_TEMPLATE_ID "TMPL6-MCfoVVn"
-#define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
-#define BLYNK_AUTH_TOKEN "cKdXp_mMqaZvmoGmAiMqRoSjqge9ZIDR"
 
-/*
+//Lê Văn Bùi
+#define BLYNK_TEMPLATE_ID "TMPL6EcyWZBb6"
+#define BLYNK_TEMPLATE_NAME "Bui Le"
+#define BLYNK_AUTH_TOKEN "waDCU5hEJF7fR0uJRETW6RcF-GCudH0s"
+
 //Nguyễn Đức Nhuận
-#define BLYNK_TEMPLATE_ID "TMPL6R6i378Rq"
-#define BLYNK_TEMPLATE_NAME "Traffic and DHT BanDemDoiMau"
-#define BLYNK_AUTH_TOKEN "opLgjE7q8mUhNx5cFyasCUQTzuKBM3vW"
-*/
+// #define BLYNK_TEMPLATE_ID "TMPL6oED--Y9X"
+// #define BLYNK_TEMPLATE_NAME "Traffic and DHT Sensor"
+// #define BLYNK_AUTH_TOKEN "lNo887oBnS04wzH9HurN2dLQ4wgG9jmZ"
+
+
+//Lê Quang Vũ
+// #define BLYNK_TEMPLATE_ID "TMPL6xmLBccWX"
+// #define BLYNK_TEMPLATE_NAME "Traffic and DHT Sensor"
+// #define BLYNK_AUTH_TOKEN "yQUjMfSIMZYTvP6CCa1UZC13oVsshS3r"
+
+//Lê Hữu Đông Quân
+// #define BLYNK_TEMPLATE_ID "TMPL61-yqowgg"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "WXoOHSnkx8oZOHg_910tFxUleUMuhWz1"
+
+//Đặng Ngọc Hoàng
+// #define BLYNK_TEMPLATE_ID "TMPL6pL3Elp5X"
+// #define BLYNK_TEMPLATE_NAME "ESMART"
+// #define BLYNK_AUTH_TOKEN "LbculCQ3x3GFQe0UxCNHFvh2-DiKI_wK"
+
 
 #include <Arduino.h>
 #include <TM1637Display.h>
