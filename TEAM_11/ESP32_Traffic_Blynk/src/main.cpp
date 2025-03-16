@@ -24,8 +24,9 @@
 // #define BLYNK_AUTH_TOKEN "2bb0e49DxxiqaGDvUHELgsDRpMwUC2Jd"
 
 //Truong Cong Tinh
-// #define BLYNK_TEMPLATE_NAME "ESMART"
-// #define BLYNK_AUTH_TOKEN "GIHubX1wJy45GcpcFmTfQ9V4zbTqkn74"
+// #define BLYNK_TEMPLATE_ID "TMPL61wsFkzBC"
+// #define BLYNK_TEMPLATE_NAME "BLYNK"
+// #define BLYNK_AUTH_TOKEN "aCMuqsFuqPlOAqgztADNnwXREmzb8JjV"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
