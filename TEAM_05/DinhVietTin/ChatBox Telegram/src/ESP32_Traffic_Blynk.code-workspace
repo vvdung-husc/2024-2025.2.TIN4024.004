@@ -1,0 +1,12 @@
+{
+  "folders": [
+	{
+		"path": "../../ESP32_Traffic_Blynk"
+	},
+	{
+		"name": "ChatBox Telegram",
+		"path": ".."
+	}
+],
+  "settings": {}
+}
