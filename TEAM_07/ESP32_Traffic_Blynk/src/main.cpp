@@ -22,6 +22,9 @@
 #define BLYNK_AUTH_TOKEN "WDUBaVmcVnEYcgG4ijgys67IltCGmU6x"
 
 // NGUYEN DUC KHANH
+#define BLYNK_TEMPLATE_ID "TMPL69Hubiw5q"
+#define BLYNK_TEMPLATE_NAME "nduckhanh1"
+#define BLYNK_AUTH_TOKEN "S4MKiJT7JdJf6qTBsK75WjLOB4QjDd4f"
 
 // Phải để trước khai báo sử dụng thư viện Blynk
 
