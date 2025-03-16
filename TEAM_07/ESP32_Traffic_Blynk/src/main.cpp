@@ -1,10 +1,25 @@
 #include <Arduino.h>
 #include <TM1637Display.h> // Thư viện điều khiển TM1637
 
-/* Fill in information from Blynk Device Info here */
+//TRAN HOAI DUC
 #define BLYNK_TEMPLATE_ID "TMPL6v_xsCQM5"
 #define BLYNK_TEMPLATE_NAME "ESP3 LED TM1637"
 #define BLYNK_AUTH_TOKEN "Z-8JgCxE9v9KvwKIAB9dUrwQpEOyY2Rr"
+
+//NGUYEN QUANG HUY
+#define BLYNK_TEMPLATE_ID "TMPL6fc0FgBst"
+#define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
+#define BLYNK_AUTH_TOKEN "S_uZAuR4Lh0Yy4rxzZTi2p3QaSZ10jX6"
+
+//HO PHUOC THAI
+// #define BLYNK_TEMPLATE_ID "TMPL65LJA8v6C"
+// #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
+// #define BLYNK_AUTH_TOKEN "4S1HvPEtHMoVDwcMLDlX92kNawqRBed4"
+
+//NGUYEN DINH QUAN
+
+//NGUYEN DUC KHANH
+
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>
@@ -39,6 +54,8 @@ BlynkTimer timer;  // Khởi tạo đối tượng timer
 
 //Pin - Cảm biến quang điện trở
 #define ldrPIN 33
+#define LDR_THRESHOLD 1000  // Ngưỡng ánh sáng để phát hiện trời tối
+bool nightMode = false; // Biến kiểm tra có bật chế độ đèn vàng nhấp nháy không
 
 // Thời gian đèn (ms)
 uint rTIME = 5000;   // 5 giây
@@ -55,6 +72,7 @@ int currentLED = 0; //đèn led hiện tại đang sángsáng
 int tmCounter = rTIME / 1000; // Biến đếm ngược trên bảng
 ulong counterTime = 0; //Thời gian bắt đầu đếm ngược
 bool blueButtonON = true;     //Trạng thái của nút bấm ON -> đèn Xanh sáng và hiển thị LED TM1637
+int ldrThreshold = 1000; // Giá trị mặc định, có thể điều chỉnh từ Blynk
 
 bool IsReady(ulong &ulTimer, uint32_t milisecond);
 void NonBlocking_Traffic_Light();
@@ -81,15 +99,85 @@ void sendSensorData() {
   Blynk.virtualWrite(V2, temperature);  // Gửi nhiệt độ lên Blynk (V2)
   Blynk.virtualWrite(V3, humidity);     // Gửi độ ẩm lên Blynk (V3)
 }
+
+void checkLDR() {
+  static ulong lastCheck = 0;
+  static int lastLDRValue = -1;  // Lưu giá trị cũ của LDR
+
+  if (!IsReady(lastCheck, 2000)) return; // Kiểm tra mỗi 2 giây
+
+  int ldrValue = analogRead(ldrPIN);
+  
+  if (ldrValue != lastLDRValue) { // Chỉ cập nhật khi có thay đổi
+    lastLDRValue = ldrValue;
+    Serial.print("Giá trị LDR: "); Serial.println(ldrValue);
+    Blynk.virtualWrite(V4, ldrThreshold); // Cập nhật ngưỡng lên Blynk
+
+    if (ldrValue < ldrThreshold) { // Nếu trời tối
+      if (!nightMode) {
+        Serial.println("BAN ĐÊM: Đèn vàng nhấp nháy");
+        nightMode = true;
+      }
+    } else { // Nếu trời sáng
+      if (nightMode) {
+        Serial.println("BAN NGÀY: Đèn giao thông bình thường");
+        nightMode = false;
+      }
+    }
+  }
+}
+
+BLYNK_WRITE(V4) {  
+  int newThreshold = param.asInt(); 
+  if (newThreshold != ldrThreshold) { // Tránh cập nhật lặp lại vô hạn
+    ldrThreshold = newThreshold; 
+    Serial.print("Cập nhật ngưỡng LDR từ Blynk: ");
+    Serial.println(ldrThreshold);
+
+    // Kiểm tra ngay lập tức trời sáng hay tối
+    int ldrValue = analogRead(ldrPIN);
+    Serial.print("Giá trị LDR hiện tại: "); Serial.println(ldrValue);
+
+    if (ldrValue < ldrThreshold) { // Trời tối
+      if (!nightMode) {
+        Serial.println("BAN ĐÊM: Đèn vàng nhấp nháy");
+        nightMode = true;
+      }
+    } else { // Trời sáng
+      if (nightMode) {
+        Serial.println("BAN NGÀY: Đèn giao thông bình thường");
+        nightMode = false;
+      }
+    }
+  }
+}
+
+
+
+void blinkYellowLight() {
+  static ulong lastBlink = 0;
+  static bool ledState = false;
+
+  if (IsReady(lastBlink, 500)) { // Nhấp nháy mỗi 500ms
+    ledState = !ledState;
+    digitalWrite(rLED, LOW);
+    digitalWrite(gLED, LOW);
+    digitalWrite(pinBLED, LOW);
+    digitalWrite(yLED, ledState ? HIGH : LOW);
+    display.clear(); // Xóa màn hình TM1637 khi ở chế độ nhấp nháy
+  }
+}
 void setup() {
   Serial.begin(115200);
   pinMode(rLED, OUTPUT);
   pinMode(yLED, OUTPUT);
   pinMode(gLED, OUTPUT);
+  pinMode(pinBLED, OUTPUT); // Thêm khai báo này
 
   digitalWrite(yLED, LOW);
   digitalWrite(gLED, LOW);
   digitalWrite(rLED, HIGH);
+  digitalWrite(pinBLED, LOW); // Đảm bảo đèn tắt ban đầu
   currentLED = rLED;
   display.setBrightness(0x0f);
   dht.begin();
@@ -101,20 +189,39 @@ void setup() {
   Serial.println();
   Serial.println("WiFi connected");
 
-  Serial.println("== START ==>");  
+  Serial.println("== START ==>" );  
   Serial.print("1. RED    => GREEN  "); Serial.print(rTIME / 1000); Serial.println(" (s)");
   digitalWrite(pinBLED, blueButtonON? HIGH : LOW);  
   Blynk.virtualWrite(V1, blueButtonON); //Đồng bộ trạng thái trạng thái của đèn với Blynk
-  
+  // Gửi giá trị ngưỡng LDR lên Blynk sau khi kết nối
+  Blynk.virtualWrite(V4, ldrThreshold);
   // Gửi dữ liệu cảm biến mỗi 2 giây
   timer.setInterval(2000L, sendSensorData);
 }
-
 void loop() {
+  Blynk.run();  
   currentMiliseconds = millis();
-  NonBlocking_Traffic_Light();
-  NonBlocking_Traffic_Light_TM1637();
+  uptimeBlynk();
+  updateBlueButton();
+  
+  checkLDR(); // Kiểm tra cảm biến ánh sáng
+  if (blueButtonON) {
+    digitalWrite(pinBLED, HIGH); // Bật đèn
+  } else {
+    digitalWrite(pinBLED, LOW);  // Tắt đèn
+  }
+
+  if (nightMode) {
+    blinkYellowLight(); // Chạy chế độ đèn vàng nhấp nháy
+  } else {
+    NonBlocking_Traffic_Light(); // Chạy chế độ đèn giao thông bình thường
+    NonBlocking_Traffic_Light_TM1637();
+  }
+
+  timer.run(); 
 }
+
+
 
 // Kiểm tra thời gian không chặn (non-blocking)
 bool IsReady(ulong &ulTimer, uint32_t milisecond) {
@@ -158,22 +265,63 @@ void NonBlocking_Traffic_Light() {
   }  
 }
 
-// Hiển thị thời gian còn lại trên TM1637
+// 🔹 Hàm bật/tắt pinBLED cùng với TM1637
+void updateBlueButton(){
+  static ulong lastTime = 0;
+  static int lastValue = HIGH;
+  if (!IsReady(lastTime, 50)) return;
+  int v = digitalRead(btnBLED);
+  if (v == lastValue) return;
+  lastValue = v;
+  if (v == LOW) return;
+
+  blueButtonON = !blueButtonON; // Đảo trạng thái đèn
+
+  Serial.println(blueButtonON ? "Blue Light ON" : "Blue Light OFF");
+  digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
+  Blynk.virtualWrite(V1, blueButtonON); // Đồng bộ với Blynk
+
+  if (!blueButtonON) display.clear();
+}
+void uptimeBlynk(){
+  static ulong lastTime = 0;
+  if (!IsReady(lastTime, 1000)) return; //Kiểm tra và cập nhật lastTime sau mỗi 1 giây
+  ulong value = lastTime / 1000;
+  Blynk.virtualWrite(V0, value);  //Gửi giá trị lên chân ảo V0 trên ứng dụng Blynk.
+}
+
+//được gọi mỗi khi có dữ liệu mới được gửi từ ứng dụng Blynk đến thiết bị.
+BLYNK_WRITE(V1) { //virtual_pin định nghĩa trong ứng dụng Blynk
+  // Xử lý dữ liệu nhận được từ ứng dụng Blynk
+  blueButtonON = param.asInt();  // Lấy giá trị từ ứng dụng Blynk
+  if (blueButtonON){
+    Serial.println("Blynk -> Blue Light ON");
+    digitalWrite(pinBLED, HIGH);
+    
+  }
+  else {
+    Serial.println("Blynk -> Blue Light OFF");
+    digitalWrite(pinBLED, LOW);   
+    display.clear(); 
+  }
+}
+//Hiển thị thời gian trên TM1637 và đồng bộ với pinBLED
 void NonBlocking_Traffic_Light_TM1637() {
   static ulong lastUpdate = 0;
+  if (!IsReady(lastUpdate, 1000)) return;
 
-  if (millis() - lastUpdate >= 1000) { // Cập nhật mỗi giây
-    lastUpdate = millis();
-    tmCounter--; // Giảm thời gian còn lại
+  tmCounter--;
+  if (tmCounter < 0) { 
+    if (currentLED == rLED) tmCounter = gTIME / 1000;
+    else if (currentLED == gLED) tmCounter = yTIME / 1000;
+    else if (currentLED == yLED) tmCounter = rTIME / 1000;
+  }
 
-    if (tmCounter < 0) { 
-      // Khi hết thời gian, chuyển sang đếm ngược của đèn tiếp theo
-      if (currentLED == rLED) tmCounter = gTIME / 1000;
-      else if (currentLED == gLED) tmCounter = yTIME / 1000;
-      else if (currentLED == yLED) tmCounter = rTIME / 1000;
-    }
-
-    // Hiển thị số giây còn lại
-    display.showNumberDec(tmCounter, true);
+  if (blueButtonON) {
+    display.showNumberDec(tmCounter, false, 2, 2);
+    digitalWrite(pinBLED, HIGH); // Bật đèn khi TM1637 hiển thị
+  } else {
+    display.clear();
+    digitalWrite(pinBLED, LOW);  // Tắt đèn khi TM1637 tắt
   }
 }

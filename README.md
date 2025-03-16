@@ -46,7 +46,24 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
-### - Esp32 | API HTTP GET
+### - [Esp32 |  TELEGRAM BOT (***mã nguồn minh họa***)](https://wokwi.com/projects/425361659331202049)
+
+#### Tham khảo
+
++ [ESP32 Telegram Bot](https://www.iotzone.vn/esp32/cach-dung-esp32-telegram-dieu-khien-den-led-voi-arduino-ide/)
+
+#### Ứng dụng Telegram
+
+>[Telegram Applications](https://telegram.org/apps)
+
+>[Telegram APIs](https://core.telegram.org/api)
+
+## => Yêu cầu thực hiện được đoạn mã nguồn minh họa để hiển thị trong ứng dụng Telegram
+
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/ESP32_Telegram_02.png)
+
+---
+### - [Esp32 | API HTTP GET (***mã nguồn minh họa***)](https://wokwi.com/projects/425209099504209921)
 
 #### Tham khảo
 
@@ -64,6 +81,11 @@
 >Google Maps tại Latitude, Longitude
 
 ## => Hãy lập trình trong ESP32 sử dụng API HTTP GET để lấy được IPv4, Latitude, Longitude và đưa ra Link Google Maps (Hiển thị tại Terminal)
+
+## => Đăng ký tài khoản https://openweathermap.org/, sử dụng API http://ip4.iothings.vn?geo=1 và API https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key} để thực hiện trên Blynk như hình sau
+> Xử lý chuỗi và JSON trả về từ API
+
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/ESP32_API.png)
 
 ---
 ### - [Blynk | Traffic & DHT Sensor](https://wokwi.com/projects/424198235739151361)
