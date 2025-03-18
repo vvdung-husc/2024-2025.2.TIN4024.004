@@ -46,6 +46,16 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
+### - Esp8266 Project
+#### [Download and Install VCP Drivers](https://www.silabs.com/documents/public/software/CP210x_Windows_Drivers.zip)
+#### Tạo dự án - ESP32_Project 
++ Điều khiển đèn nhấp nháy
++ Đo nhiệt độ
++ Hiển thị lên màn hình OLED (SSD1306)
+
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/diagram_two.png)
+
+---
 ### - [Esp32 |  TELEGRAM BOT (***mã nguồn minh họa***)](https://wokwi.com/projects/425361659331202049)
 
 #### Tham khảo
