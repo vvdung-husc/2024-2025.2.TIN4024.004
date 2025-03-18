@@ -1,12 +1,25 @@
 
 #include <Arduino.h>
 #include <TM1637Display.h>
-#include <DHT.h>
-/* Fill in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL6EuZYqC1_"
-#define BLYNK_TEMPLATE_NAME "NgocBao"
-#define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
-// Phải để trước khai báo sử dụng thư viện Blynk
+#include <dht.h>
+
+// ==== Blynk Credentials ====
+//  Nguyen Dinh Ngoc Bao 
+// #define BLYNK_TEMPLATE_ID "TMPL6EuZYqC1_"
+// #define BLYNK_TEMPLATE_NAME "NgocBao"
+// #define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
+
+
+//  Nguyễn Hữu Phước
+// #define BLYNK_TEMPLATE_ID "TMPL6wK5tPq5C"
+// #define BLYNK_TEMPLATE_NAME "BlynkLed2"
+// #define BLYNK_AUTH_TOKEN "vHlCU2DPjN40Ab-rTnKSRd8B0nVNDG2y"
+
+//  Phan Bá Dân
+// #define BLYNK_TEMPLATE_ID "TMPL6TapkwNtW"
+// #define BLYNK_TEMPLATE_NAME "Dan"
+// #define BLYNK_AUTH_TOKEN "LIl09Qk1TwLpUlOtN9emDSAUH4tpPXZA"
+
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -15,23 +28,24 @@
 // Wokwi sử dụng mạng WiFi "Wokwi-GUEST" không cần mật khẩu cho việc chạy mô phỏng
 char ssid[] = "Wokwi-GUEST";  //Tên mạng WiFi
 char pass[] = "";             //Mật khẩu mạng WiFi
+// Pin - Các đèn LEDLED
+#define rLED 27  //Chân kết nối đèn đỏ
+#define yLED 26  //Chân kết nối đèn vàng
+#define gLED 25  //Chân kết nối đèn xanh
 
-// char ssid[] = "CNTT-MMT";  //Tên mạng WiFi
-// char pass[] = "13572468";             //Mật khẩu mạng WiFi
+// Pin - TM1637TM1637
+#define CLK 18  //Chân kết nối CLK của TM1637
+#define DIO 19  //Chân kết nối DIO của TM1637
 
-#define btnBLED  23 
-#define pinBLED  21 
-#define DHTPIN 16      
-#define DHTTYPE DHT22  
-#define CLK 18  
-#define DIO 19  
+#define DHTTYPE DHT22  // DHT 22  (AM2302), AM2321
+#define DHT22_PIN 16  // Chân kết nối cảm biến DHT22
+DHT dht(DHT22_PIN, DHTTYPE); // Khởi tạo đối tượng cảm biến DHT22
 
-#define RED_LED 27
-#define YELLOW_LED 26
-#define GREEN_LED 25
+#define btnBLED  23 //Chân kết nối nút bấm
+#define pinBLED  21 //Chân kết nối đèn xxanh
+
+//Pin - Cảm biến quang điện trở
 #define ldrPIN  32
-
-DHT dht(DHTPIN, DHTTYPE);
 
 //1000 ms = 1 seconds
 uint rTIME = 5000;  //thời gian chờ đèn đỏ    5 giây
@@ -65,9 +79,9 @@ void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  pinMode(RED_LED, OUTPUT);
-  pinMode(YELLOW_LED, OUTPUT);
-  pinMode(GREEN_LED, OUTPUT);
+  pinMode(rLED, OUTPUT);
+  pinMode(yLED, OUTPUT);
+  pinMode(gLED, OUTPUT);
 
   pinMode(ldrPIN, INPUT);
   pinMode(pinBLED, OUTPUT);
@@ -75,12 +89,12 @@ void setup()
   tmCounter = (rTIME / 1000) - 1;
   display.setBrightness(7);
 
-  digitalWrite(YELLOW_LED, LOW);
-  digitalWrite(GREEN_LED, LOW);
-  digitalWrite(RED_LED, HIGH);
+  digitalWrite(yLED, LOW);
+  digitalWrite(gLED, LOW);
+  digitalWrite(rLED, HIGH);
   display.showNumberDec(tmCounter--, true, 2, 2);
 
-  currentLED = RED_LED;
+  currentLED = rLED;
   nextTimeTotal += rTIME;
   Serial.println("== START ==>");
   Serial.print("1. RED    => GREEN  ");
@@ -129,12 +143,12 @@ bool IsReady(ulong &ulTimer, uint32_t milisecond)
 
 void DoamBlynk(){
     float h = dht.readHumidity();
-    Blynk.virtualWrite(V3, h);  
+    Blynk.virtualWrite(V2, h);  
   }
   
 void NhietdoBlynk(){
     float t = dht.readTemperature();
-    Blynk.virtualWrite(V2, t); 
+    Blynk.virtualWrite(V0, t); 
     
   }
 
@@ -191,12 +205,12 @@ void NonBlocking_Traffic_Light_TM1637()
   bool bShowCounter = false;
   switch (currentLED)
   {
-  case RED_LED: // Đèn đỏ: 5 giây
+  case rLED: // Đèn đỏ: 5 giây
     if (IsReady(ledTimeStart, rTIME))
     {
-      digitalWrite(RED_LED, LOW);
-      digitalWrite(GREEN_LED, HIGH);
-      currentLED = GREEN_LED;
+      digitalWrite(rLED, LOW);
+      digitalWrite(gLED, HIGH);
+      currentLED = gLED;
       nextTimeTotal += gTIME;
       tmCounter = (gTIME / 1000) - 1;
       bShowCounter = true;
@@ -206,12 +220,12 @@ void NonBlocking_Traffic_Light_TM1637()
       Serial.println(" (ms)");
     }
     break;
-  case GREEN_LED: // Đèn xanh: 7 giây
+  case gLED: // Đèn xanh: 7 giây
     if (IsReady(ledTimeStart, gTIME))
     {
-      digitalWrite(GREEN_LED, LOW);
-      digitalWrite(YELLOW_LED, HIGH);
-      currentLED = YELLOW_LED;
+      digitalWrite(gLED, LOW);
+      digitalWrite(yLED, HIGH);
+      currentLED = yLED;
       nextTimeTotal += yTIME;
       tmCounter = (yTIME / 1000) - 1;
       bShowCounter = true;
@@ -222,12 +236,12 @@ void NonBlocking_Traffic_Light_TM1637()
     }
     break;
 
-  case YELLOW_LED: // Đèn vàng: 2 giây
+  case yLED: // Đèn vàng: 2 giây
     if (IsReady(ledTimeStart, yTIME))
     {
-      digitalWrite(YELLOW_LED, LOW);
-      digitalWrite(RED_LED, HIGH);
-      currentLED = RED_LED;
+      digitalWrite(yLED, LOW);
+      digitalWrite(rLED, HIGH);
+      currentLED = rLED;
       nextTimeTotal += rTIME;
       tmCounter = (rTIME / 1000) - 1;
       bShowCounter = true;
@@ -242,7 +256,7 @@ void NonBlocking_Traffic_Light_TM1637()
     bShowCounter = IsReady(counterTime, 1000);
   if (bShowCounter)
   {
-    Blynk.virtualWrite(V0, tmCounter);
+    Blynk.virtualWrite(V4, tmCounter);
     display.showNumberDec(tmCounter--, true, 2, 2);
   }
 }
@@ -260,7 +274,7 @@ bool isDark()
     value = analogRead(ldrPIN); // đọc cảm biến theo chế đố tương tựtự
     
     
-    Blynk.virtualWrite(V4, value);
+    Blynk.virtualWrite(V5, value);
 
   if (value == lastValue)
     return bDark; // vẫn bằng giá trị củcủ
@@ -298,14 +312,14 @@ void YellowLED_Blink()
   if (!IsReady(yLedStart, 1000))
     return;
   if (!isON)
-    digitalWrite(YELLOW_LED, HIGH);
+    digitalWrite(yLED, HIGH);
   else
-    digitalWrite(YELLOW_LED, LOW);
+    digitalWrite(yLED, LOW);
   isON = !isON;
 }
 
 //được gọi mỗi khi có dữ liệu mới được gửi từ ứng dụng Blynk đến thiết bị.
-BLYNK_WRITE(V4) { //virtual_pin định nghĩa trong ứng dụng Blynk
+BLYNK_WRITE(V5) { //virtual_pin định nghĩa trong ứng dụng Blynk
     // Xử lý dữ liệu nhận được từ ứng dụng Blynk
     int dark = param.asInt();
     if (dark > 0) // Nếu giá trị từ Blynk hợp lệ
