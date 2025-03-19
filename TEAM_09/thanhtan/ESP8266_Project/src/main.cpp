@@ -54,7 +54,7 @@ void setup() {
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
   oled.drawUTF8(0, 14, "Trường ĐHKH");  
   oled.drawUTF8(0, 28, "Khoa CNTT");
-  oled.drawUTF8(0, 42, "Lê Ngọc Linh");  
+  oled.drawUTF8(0, 42, "IOT Nhóm 9");  
 
   oled.sendBuffer();
 }
@@ -78,10 +78,8 @@ void updateDHT(){
   static ulong lastTimer = 0;  
   if (!IsReady(lastTimer, 2000)) return;
 
-  float h = random(0,101) /10.0;
-  float t =random(-400,801)/10.0;
-  //float h = dht.readHumidity();
-  //float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
+  float h = dht.readHumidity();
+  float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return;

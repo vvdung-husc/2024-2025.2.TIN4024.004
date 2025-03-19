@@ -52,9 +52,9 @@ void setup() {
   oled.clearBuffer();
   
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
-  oled.drawUTF8(0, 14, "Trường ĐHKH");  
-  oled.drawUTF8(0, 28, "Khoa CNTT");
-  oled.drawUTF8(0, 42, "Lê Ngọc Linh");  
+  oled.drawUTF8(0, 14, "Trường ĐHKH Khoa CNTT");  
+  oled.drawUTF8(0, 28, "Lập trình IoT Nhom 4");
+  oled.drawUTF8(0, 42, "Phan Huu Trong Team 06");  
 
   oled.sendBuffer();
 }
@@ -73,52 +73,48 @@ void ThreeLedBlink(){
 
 float fHumidity = 0.0;
 float fTemperature = 0.0;
-
-void updateDHT(){
+void updateDHT() {
   static ulong lastTimer = 0;  
   if (!IsReady(lastTimer, 2000)) return;
 
-  float h = random(0,101) /10.0;
-  float t =random(-400,801)/10.0;
-  //float h = dht.readHumidity();
-  //float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
-  if (isnan(h) || isnan(t)) {
-    Serial.println("Failed to read from DHT sensor!");
-    return;
-  }
-
+  // Tạo số ngẫu nhiên
+  float h = random(-400, 800) + random(0, 100) / 100.0; // Độ ẩm ngẫu nhiên
+  float t = random(-400, 800) + random(0, 100) / 100.0; // Nhiệt độ ngẫu nhiên
+  
   bool bDraw = false;
 
   if (fTemperature != t){
-    bDraw = true;
-    fTemperature = t;
-    Serial.print("Temperature: ");
-    Serial.print(t);
-    Serial.println(" *C");                    
+      bDraw = true;
+      fTemperature = t;
+      Serial.print("Temperature: ");
+      Serial.print(t);
+      Serial.println(" *C");                    
   }
 
   if (fHumidity != h){
-    bDraw = true;
-    fHumidity = h;
-    Serial.print("Humidity: ");
-    Serial.print(h);
-    Serial.print(" %\t");  
-    
+      bDraw = true;
+      fHumidity = h;
+      Serial.print("Humidity: ");
+      Serial.print(h);
+      Serial.print(" %\t");  
   }
+
   if (bDraw){
-    oled.clearBuffer();
-    oled.setFont(u8g2_font_unifont_t_vietnamese2);
+      oled.clearBuffer();
+      oled.setFont(u8g2_font_unifont_t_vietnamese2);
 
-    String s = StringFormat("Nhiet do: %.2f °C", t);
-    oled.drawUTF8(0, 14, s.c_str());  
-    
-    s = StringFormat("Do am: %.2f %%", h);
-    oled.drawUTF8(0, 42, s.c_str());      
+      String s;
+      
+      s = StringFormat("Nhiet do: %.2f °C", t); // Số ngẫu nhiên hiển thị nhiệt độ
+      oled.drawUTF8(0, 14, s.c_str());  
 
-    oled.sendBuffer();
+      s = StringFormat("Do am: %.2f %%", h);  // Số ngẫu nhiên hiển thị độ ẩm
+      oled.drawUTF8(0, 42, s.c_str());      
+
+      oled.sendBuffer();
   } 
-  
 }
+
 
 void DrawCounter(){  
   static uint counter = 0; // Biến đếm
