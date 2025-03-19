@@ -1,8 +1,8 @@
 //Dương Minh Châu
 
-#define BLYNK_TEMPLATE_ID "TMPL6Z-58QazI"
-#define BLYNK_TEMPLATE_NAME "TEAM09MchauDHT"
-#define BLYNK_AUTH_TOKEN "NjlEneVcL4_UMCI3NTD3_Ef1jaFkdedx"
+// #define BLYNK_TEMPLATE_ID "TMPL6Z-58QazI"
+// #define BLYNK_TEMPLATE_NAME "TEAM09MchauDHT"
+// #define BLYNK_AUTH_TOKEN "NjlEneVcL4_UMCI3NTD3_Ef1jaFkdedx"
 
 //Lê Thị Thanh Thùy
 /*
@@ -27,11 +27,11 @@
 */
 
 // Nguyễn Thanh Tân
-/*
+
 #define BLYNK_TEMPLATE_ID "TMPL6dHYIWVQJ"
 #define BLYNK_TEMPLATE_NAME "esp32DHTBlynk"
 #define BLYNK_AUTH_TOKEN " bof89vFLl1qLF2lTyIxm6Rf3HsVwO4Sf"
-*/
+
 
 
 
