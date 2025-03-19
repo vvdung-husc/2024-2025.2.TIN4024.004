@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = ".pio/build/node32s/firmware.bin"
+elf = ".pio/build/node32s/firmware.elf"
