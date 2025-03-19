@@ -53,7 +53,8 @@
 #### Tạo dự án - ESP32_Project 
 + Điều khiển đèn nhấp nháy (GREEN PIN 15, YELLOW PIN 2, RED PIN 5)
 + Đo nhiệt độ	(PIN 16)
-+ Hiển thị lên màn hình OLED (SSD1306) (SDA PIN 13, SCL PIN 12)
++ Hiển thị lên màn hình OLED (SH1106) (SDA PIN 13, SCL PIN 12)
+  > Thư viện hổ trợ U8g2 by oliver
 
 ![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/diagram_two.png)
 
