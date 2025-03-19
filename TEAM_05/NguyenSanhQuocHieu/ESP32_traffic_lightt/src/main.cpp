@@ -1,127 +1,236 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
-#define RED_PIN    5    //đỏ 
-#define GREEN_PIN  16   // xanh
-#define YELLOW_PIN 17   // vàng 
+// Pin - Các đèn LED
+#define rLED 27 // Đèn đỏ
+#define yLED 26 // Đèn vàng
+#define gLED 25 // Đèn xanh
 
-//chân module TM1637
-#define CLK_PIN 15
-#define DIO_PIN 2
+#define BLUE_LED 21
+#define BUTTON_PIN 23
 
-TM1637Display display(CLK_PIN, DIO_PIN);
+// Pin - TM1637
+#define CLK 18 // Clock pin
+#define DIO 19 // Data pin
 
-const unsigned long durations[3] = {
-  4000,  // RED: 4 giây
-  5000,  // GREEN: 5 giây
-  2000   // YELLOW: 2 giây
-};
+// Pin - Cảm biến quang điện trở (LDR)
+#define ldrPIN 13
 
-// Các trạng thái: 0 = RED, 1 = GREEN, 2 = YELLOW
-int state = 0;
+// Thời gian (ms)
+const uint32_t rTIME = 5000;  // Đèn đỏ: 5 giây
+const uint32_t yTIME = 3000;  // Đèn vàng: 3 giây
+const uint32_t gTIME = 10000; // Đèn xanh: 10 giây
 
-// Thời điểm bắt đầu
-unsigned long previousMillis = 0;
+// Biến toàn cục
+unsigned long currentMilliseconds = 0; // Thời gian hiện tại (ms)
+unsigned long ledTimeStart = 0;        // Thời gian bắt đầu trạng thái LED
+unsigned long nextTimeTotal = 0;       // Tổng thời gian để debug
+int currentLED = rLED;                 // LED hiện tại đang sáng
+int tmCounter = rTIME / 1000;          // Giá trị đếm ngược trên TM1637
+unsigned long counterTime = 0;         // Thời gian bắt đầu đếm ngược
 
-//đếm số lần chuyển trạng thái
-int transitionCount = 0;
+const int darkThreshold = 1000; // Ngưỡng ánh sáng: < 1000 là tối
 
-// Tổng thời gian tích lũy của các trạng thái đã hoàn thành (ms)
-unsigned long cumulativeTime = 0;
+TM1637Display display(CLK, DIO); // Đối tượng TM1637Display
 
-// Hàm trả về tên của trạng thái
-String stateName(int s) {
-  switch (s) {
-    case 0: return "RED";
-    case 1: return "GREEN";
-    case 2: return "YELLOW";
-    default: return "";
-  }
-}
+// Hàm nguyên mẫu
+bool isReady(unsigned long &timer, uint32_t milliseconds);
+void nonBlockingTrafficLight();
+bool isDark();
+void yellowLEDBlink();
 
-// Hàm cập nhật trạng thái mới và in thông báo chuyển đổi ngay lập tức
-void setState(int newState, unsigned long lastDuration) {
-  // Cập nhật tổng thời gian (tính cho trạng thái vừa hoàn thành)
-  cumulativeTime += lastDuration;
-  transitionCount++;
-
-  // In thông báo chuyển trạng thái ngay lúc chuyển (không chờ đợi)
-  // In theo định dạng: "<số thứ tự>. <TRẠNG THÁI HIỆN TẠI> ==> <TRẠNG THÁI MỚI> (<tổng thời gian> s)"
-  Serial.print(transitionCount);
-  Serial.print(". ");
-  Serial.print(stateName(state));
-  Serial.print(" ==> ");
-  Serial.print(stateName(newState));
-  Serial.print(" (");
-  Serial.print(cumulativeTime / 1000);
-  Serial.println(" s)");
-
-  // Cập nhật trạng thái và thời điểm bắt đầu của trạng thái mới
-  state = newState;
-  previousMillis = millis();
-
-  // Cập nhật LED theo trạng thái mới
-  switch (state) {
-    case 0: // RED
-      digitalWrite(RED_PIN, HIGH);
-      digitalWrite(GREEN_PIN, LOW);
-      digitalWrite(YELLOW_PIN, LOW);
-      break;
-    case 1: // GREEN
-      digitalWrite(RED_PIN, LOW);
-      digitalWrite(GREEN_PIN, HIGH);
-      digitalWrite(YELLOW_PIN, LOW);
-      break;
-    case 2: // YELLOW
-      digitalWrite(RED_PIN, LOW);
-      digitalWrite(GREEN_PIN, LOW);
-      digitalWrite(YELLOW_PIN, HIGH);
-      break;
-  }
-}
-
-void setup() {
+void setup()
+{
   Serial.begin(115200);
-  
-  // Cấu hình chân LED là OUTPUT
-  pinMode(RED_PIN, OUTPUT);
-  pinMode(GREEN_PIN, OUTPUT);
-  pinMode(YELLOW_PIN, OUTPUT);
-  
-  // Khởi tạo ban đầu: bật đèn RED, tắt các đèn khác
-  digitalWrite(RED_PIN, HIGH);
-  digitalWrite(GREEN_PIN, LOW);
-  digitalWrite(YELLOW_PIN, LOW);
-  
-  // Khởi tạo module 7-segment
-  display.setBrightness(0x0f);
-  display.showNumberDec(0, true);
-  
-  previousMillis = millis();
-  
-  Serial.println("Traffic light simulation started.");
-  // In thông báo ban đầu (trạng thái đầu tiên)
-  Serial.print("0. NONE ==> ");
-  Serial.print(stateName(state));
-  Serial.print(" (0 s)");
-  Serial.println();
+
+  // Cấu hình các chân LED
+  pinMode(rLED, OUTPUT);
+  pinMode(yLED, OUTPUT);
+  pinMode(gLED, OUTPUT);
+
+  // Cấu hình chân LDR
+  pinMode(ldrPIN, INPUT);
+
+  // Khai báo chân nút nhấn là INPUT_PULLUP(thêm)
+  pinMode(BLUE_LED, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  // Khởi tạo TM1637
+  display.setBrightness(7); // Độ sáng tối đa (0-7)
+  tmCounter = (rTIME / 1000) - 1;
+
+  // Trạng thái ban đầu: Đèn đỏ sáng
+  digitalWrite(rLED, HIGH);
+  digitalWrite(yLED, LOW);
+  digitalWrite(gLED, LOW);
+  digitalWrite(BLUE_LED, LOW);
+  display.showNumberDec(tmCounter, true, 2, 2); // Hiển thị số đếm ngược
+
+  ledTimeStart = millis();
+  nextTimeTotal = rTIME;
+  Serial.println("== START ==>");
+  Serial.print("1. RED    => GREEN  ");
+  Serial.print(nextTimeTotal / 1000);
+  Serial.println(" (s)");
 }
 
-void loop() {
-  unsigned long currentMillis = millis();
-  unsigned long interval = durations[state]; // Thời gian của trạng thái hiện tại
-
-  // Tính thời gian đã trôi qua kể từ khi trạng thái hiện tại bắt đầu
-  unsigned long elapsed = currentMillis - previousMillis;
-  
-  //hiển thị số giây còn lại của trạng thái hiện tại
-  int remainingSec = (interval - elapsed + 999) / 1000;
-  if (remainingSec < 0) remainingSec = 0;
-  display.showNumberDec(remainingSec, true);
-  
-  // Nếu thời gian hiện tại của trạng thái đã hết
-  if (elapsed >= interval) {
-    int nextState = (state + 1) % 3;
-    setState(nextState, interval);
+void loop()
+{
+  currentMilliseconds = millis();
+  if (isDark())
+  {
+    yellowLEDBlink(); // Nếu trời tối, nhấp nháy đèn vàng
   }
+  else
+  {
+    nonBlockingTrafficLight(); // Chạy đèn giao thông bình thường
+  }
+
+  // Đọc trạng thái nút nhấn (LOW khi nhấn do dùng INPUT_PULLUP)
+  if (digitalRead(BUTTON_PIN) == LOW)
+  {
+    // Tắt các đèn LED khác
+    digitalWrite(rLED, LOW);
+    digitalWrite(yLED, LOW);
+    digitalWrite(gLED, LOW);
+    // Bật đèn xanh da trời
+    digitalWrite(BLUE_LED, HIGH);
+  }
+  else
+  {
+    // Tắt đèn xanh da trời khi nút không được nhấn
+    digitalWrite(BLUE_LED, LOW);
+  }
+}
+
+bool isReady(unsigned long &timer, uint32_t milliseconds)
+{
+  if (currentMilliseconds - timer < milliseconds)
+  {
+    return false;
+  }
+  timer = currentMilliseconds;
+  return true;
+}
+
+void nonBlockingTrafficLight()
+{
+  bool updateCounter = false;
+
+  switch (currentLED)
+  {
+  case rLED: // Đèn đỏ
+    if (isReady(ledTimeStart, rTIME))
+    {
+      digitalWrite(rLED, LOW);
+      digitalWrite(gLED, HIGH);
+      currentLED = gLED;
+      nextTimeTotal += gTIME;
+      tmCounter = (gTIME / 1000) - 1;
+      updateCounter = true;
+      counterTime = currentMilliseconds;
+      Serial.print("2. GREEN  => YELLOW ");
+      Serial.print(nextTimeTotal / 1000);
+      Serial.println(" (s)");
+    }
+    break;
+
+  case gLED: // Đèn xanh
+    if (isReady(ledTimeStart, gTIME))
+    {
+      digitalWrite(gLED, LOW);
+      digitalWrite(yLED, HIGH);
+      currentLED = yLED;
+      nextTimeTotal += yTIME;
+      tmCounter = (yTIME / 1000) - 1;
+      updateCounter = true;
+      counterTime = currentMilliseconds;
+      Serial.print("3. YELLOW => RED    ");
+      Serial.print(nextTimeTotal / 1000);
+      Serial.println(" (s)");
+    }
+    break;
+
+  case yLED: // Đèn vàng
+    if (isReady(ledTimeStart, yTIME))
+    {
+      digitalWrite(yLED, LOW);
+      digitalWrite(rLED, HIGH);
+      currentLED = rLED;
+      nextTimeTotal += rTIME;
+      tmCounter = (rTIME / 1000) - 1;
+      updateCounter = true;
+      counterTime = currentMilliseconds;
+      Serial.print("1. RED    => GREEN  ");
+      Serial.print(nextTimeTotal / 1000);
+      Serial.println(" (s)");
+    }
+    break;
+  }
+
+  // Cập nhật đồng hồ đếm ngược mỗi giây
+  if (!updateCounter)
+  {
+    updateCounter = isReady(counterTime, 1000);
+  }
+  if (updateCounter && tmCounter >= 0)
+  {
+    display.showNumberDec(tmCounter--, true, 2, 2);
+  }
+}
+
+bool isDark()
+{
+  static unsigned long darkTimeStart = 0;
+  static uint16_t lastValue = 0;
+  static bool darkState = false;
+
+  if (!isReady(darkTimeStart, 50))
+  { // Đọc cảm biến mỗi 50ms
+    return darkState;
+  }
+
+  uint16_t value = analogRead(ldrPIN);
+  if (value == lastValue)
+  {
+    return darkState;
+  }
+
+  if (value < darkThreshold)
+  {
+    if (!darkState)
+    {
+      digitalWrite(currentLED, LOW); // Tắt đèn hiện tại
+      Serial.print("DARK  value: ");
+      Serial.println(value);
+    }
+    darkState = true;
+  }
+  else
+  {
+    if (darkState)
+    {
+      digitalWrite(yLED, LOW); // Tắt đèn vàng nếu đang nhấp nháy
+      Serial.print("LIGHT value: ");
+      Serial.println(value);
+    }
+    darkState = false;
+  }
+
+  lastValue = value;
+  return darkState;
+}
+
+void yellowLEDBlink()
+{
+  static unsigned long yLedStart = 0;
+  static bool isON = false;
+
+  if (!isReady(yLedStart, 1000))
+  { // Nhấp nháy mỗi 1 giây
+    return;
+  }
+
+  isON = !isON;
+  digitalWrite(yLED, isON ? HIGH : LOW);
 }

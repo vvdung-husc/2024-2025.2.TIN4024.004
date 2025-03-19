@@ -3,9 +3,15 @@
 #include <DHT.h>
 
 /* Fill in information from Blynk Device Info here */
+<<<<<<< HEAD:TEAM_10/BAITAP/ESP32_Traffic_Blynk/src/main.cpp
+#define BLYNK_TEMPLATE_ID "TMPL6mS6n5bhv"
+#define BLYNK_TEMPLATE_NAME "4"
+#define BLYNK_AUTH_TOKEN "z2XNBK32elbzhvNlnPr1XvFu35ez7E-m"
+=======
 #define BLYNK_TEMPLATE_ID "TMPL6sjJY1Hxb"
 #define BLYNK_TEMPLATE_NAME "ESP32LeNgocLinhBlynk"
 #define BLYNK_AUTH_TOKEN "H2MGVAcH6BOIsrBSJ_9EHN0OOz1xyPlm"
+>>>>>>> 25c9a51093b86ab4b122644553e0da074647aa03:TEAM_01/LNL/ESP32_Blink2_LeNgocLinh/src/main.cpp
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>

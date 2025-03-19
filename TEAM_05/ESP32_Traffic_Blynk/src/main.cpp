@@ -2,7 +2,8 @@
 // #define BLYNK_TEMPLATE_ID "TMPL6Apebb-Pq"
 // #define BLYNK_TEMPLATE_NAME "ESP32 Traffic Blynk"
 // #define BLYNK_AUTH_TOKEN "h4lqrwEQAXA1nea9m-39iH4VCYMcrpTL"
-
+//----------------------------------------------------------------
+//Hồ Đăng Tiến Đạt
 #define BLYNK_TEMPLATE_ID "TMPL6UW8Iu1qI"
 #define BLYNK_TEMPLATE_NAME "TrafficBlynk"
 #define BLYNK_AUTH_TOKEN "WWBaaJV-sk1PNKjHuuSS-jO7_dpQzqGU"
@@ -82,8 +83,6 @@ void setup()
 
   digitalWrite(PIN_BLUE_LED, blueButtonON ? HIGH : LOW);
   Blynk.virtualWrite(V1, blueButtonON);
-  // Khởi tạo giá trị ban đầu cho ngưỡng sáng/tối trên Blynk
-  Blynk.virtualWrite(V4, darkThreshold);
   Serial.println("== START ==");
 }
 
@@ -127,10 +126,6 @@ void updateBlueButton()
   Serial.println(blueButtonON ? "Blue Light ON" : "Blue Light OFF");
   digitalWrite(PIN_BLUE_LED, blueButtonON ? HIGH : LOW);
   Blynk.virtualWrite(V1, blueButtonON);
-  if (!blueButtonON)
-  {
-    display.clear();
-  }
 }
 
 // Cập nhật số giây chạy lên Blynk
@@ -165,25 +160,15 @@ BLYNK_WRITE(V1)
   blueButtonON = param.asInt();
   Serial.println(blueButtonON ? "Blynk -> Blue Light ON" : "Blynk -> Blue Light OFF");
   digitalWrite(PIN_BLUE_LED, blueButtonON ? HIGH : LOW);
-  if (!blueButtonON)
-  {
-    display.clear();
-  }
-  else
-  {
-    updateDisplay();
-  }
 }
 
-// Nhận giá trị ngưỡng ánh sáng từ Blynk (V4)
 BLYNK_WRITE(V4)
 {
   darkThreshold = param.asFloat();
   Serial.print("Cập nhật ngưỡng trời tối từ Blynk: ");
   Serial.println(darkThreshold);
-  // Đồng bộ lại giá trị lên Blynk để xác nhận
   Blynk.virtualWrite(V4, darkThreshold);
-  checkLight(); // Kiểm tra ngay sau khi cập nhật ngưỡng
+  checkLight();
 }
 
 // Điều khiển đèn giao thông
@@ -195,6 +180,7 @@ void controlLights()
 
   if (isNightMode)
   {
+    // Ban đêm: chỉ bật đèn vàng nhấp nháy
     digitalWrite(PIN_GREEN_LED, LOW);
     digitalWrite(PIN_YELLOW_LED, HIGH);
     digitalWrite(PIN_RED_LED, LOW);
@@ -202,9 +188,10 @@ void controlLights()
   }
   else
   {
-    digitalWrite(PIN_YELLOW_LED, LOW);
+    digitalWrite(PIN_YELLOW_LED, LOW); // Đảm bảo tắt đèn vàng khi vào chế độ ngày
   }
 
+  // Ban ngày: chạy hệ thống đèn giao thông bình thường
   timeLeft--;
   if (timeLeft <= 0)
   {
@@ -237,23 +224,19 @@ void updateDisplay()
   if (!IsReady(lastUpdate, 500))
     return;
 
-  if (!blueButtonON)
-  {
-    display.clear();
-    return;
-  }
-
   if (isNightMode)
   {
+    // Ban đêm: hiển thị số 0 và dấu ":" nhấp nháy
     display.showNumberDecEx(0, 0b01000000, true, 2, 2);
   }
   else
   {
+    // Ban ngày: hiển thị thời gian đếm ngược
     display.showNumberDec(timeLeft % 100, true, 2, 2);
   }
 }
 
-// Kiểm tra ánh sáng và đồng bộ với Blynk
+// Kiểm tra ánh sáng và chuyển chế độ ngày/đêm
 void checkLight()
 {
   static ulong lastCheck = 0;
@@ -264,9 +247,6 @@ void checkLight()
   bool wasNightMode = isNightMode;
   isNightMode = (lightValue < darkThreshold);
 
-  // Gửi giá trị cảm biến ánh sáng lên Blynk (V8)
-  Blynk.virtualWrite(V8, lightValue);
-
   if (wasNightMode != isNightMode)
   {
     Serial.print("Chuyển chế độ: ");
@@ -275,4 +255,7 @@ void checkLight()
     controlLights();
     updateDisplay();
   }
+
+  // Gửi giá trị ánh sáng lên Blynk
+  Blynk.virtualWrite(V8, lightValue);
 }
