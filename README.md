@@ -46,9 +46,9 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
-### [Esp8266 Project (***mã nguồn minh họa***)](https://wokwi.com/projects/425833805481407489)
+### [- Esp8266 Project (***mã nguồn minh họa***)](https://wokwi.com/projects/425833805481407489)
 
-#### [Download and Install VCP Drivers](https://www.silabs.com/documents/public/software/CP210x_Windows_Drivers.zip)
+#### [Tải và cài đặt trình điều khiển (CP210x Windows Drivers)](https://www.silabs.com/documents/public/software/CP210x_Windows_Drivers.zip)
 
 #### Tạo dự án - ESP32_Project 
 + Điều khiển đèn nhấp nháy (GREEN PIN 15, YELLOW PIN 2, RED PIN 5)
