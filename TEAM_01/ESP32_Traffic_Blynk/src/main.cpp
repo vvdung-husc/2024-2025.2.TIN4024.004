@@ -6,9 +6,9 @@
 // #define BLYNK_TEMPLATE_NAME "NKN"
 // #define BLYNK_AUTH_TOKEN "KZ1xq6-gQmQwZj-DllHQpLWY8oDNATIt"
 /*Phương Phi*/
-// #define BLYNK_TEMPLATE_ID "TMPL6U-bgV0v4"
-// #define BLYNK_TEMPLATE_NAME "PP"
-// #define BLYNK_AUTH_TOKEN "XW-o3nfdrKUhSdxUDbpj38lycdu9GTXr"
+// #define BLYNK_TEMPLATE_ID "TMPL68L52g8de"
+// #define BLYNK_TEMPLATE_NAME "PPBlynkTraffic"
+// #define BLYNK_AUTH_TOKEN "GDW3Zzh4LRxFR4DGFvvLfiRwPe2R1zNC"
 /*Lê Ngọc Linh*/
 //#define BLYNK_TEMPLATE_ID "TMPL6eridL3Tf"
 //#define BLYNK_TEMPLATE_NAME "ESP32LeNgocLinhLed"

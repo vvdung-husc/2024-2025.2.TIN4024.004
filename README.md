@@ -46,6 +46,23 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
+### [- Esp8266 Project (***mã nguồn minh họa***)](https://wokwi.com/projects/425833805481407489)
+>Vào TEAM_00/vvdung để lấy file utils.h và utils.cpp
+
+#### [Tải và cài đặt trình điều khiển (CP210x Windows Drivers)](https://www.silabs.com/documents/public/software/CP210x_Windows_Drivers.zip)
+
+#### Tạo dự án - ESP32_Project 
++ Điều khiển đèn nhấp nháy (GREEN PIN 15, YELLOW PIN 2, RED PIN 5)
++ Đo nhiệt độ	(PIN 16)
++ Hiển thị lên màn hình OLED (SH1106) (SDA PIN 13, SCL PIN 12)
+  > Thư viện hổ trợ U8g2 by oliver
+
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/diagram_two.png)
+
+#### NodeMCU v2 và v3
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/NodeMCU-V2-vs-V3.jpg)
+
+---
 ### - [Esp32 |  TELEGRAM BOT (***mã nguồn minh họa***)](https://wokwi.com/projects/425361659331202049)
 
 #### Tham khảo

@@ -1,120 +1,120 @@
-#include <Arduino.h>
-#include <HTTPClient.h>
 #include <WiFi.h>
-#include <Arduino_JSON.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
 #include <BlynkSimpleEsp32.h>
 
+// Thông tin kết nối Blynk
+#define BLYNK_TEMPLATE_ID "TMPL6P6WadasK"
+#define BLYNK_DEVICE_NAME "ESP32GetAPI"
+#define BLYNK_AUTH_TOKEN "Zg0YdGHsi7w4znd1eseZNbLdySTaaKrb"
+
+// Thông tin WiFi
 const char *ssid = "VNPTHUE";
-const char *password = "033607427";
-const char *blynkAuth = "YOUR_BLYNK_AUTH_TOKEN"; // Thay YOUR_BLYNK_AUTH_TOKEN bằng mã thật của bạn
+const char *password = "0336074217";
+char auth[] = BLYNK_AUTH_TOKEN;
 
-String locationUrl = "http://ip4.iothings.vn?geo=1";
-String weatherApiKey = "YOUR_OPENWEATHERMAP_API_KEY";
+// Hàm lấy vị trí hiện tại từ API ip4.iothings.vn
+void getLocation()
+{
+  HTTPClient http;
+  http.begin("http://ip4.iothings.vn?geo=1");
 
-String httpGETRequest(const char *Url);
+  int httpCode = http.GET();
+  if (httpCode > 0)
+  {
+    String payload = http.getString();
+    Serial.println("Received payload: " + payload);
 
+    DynamicJsonDocument doc(1024);
+    deserializeJson(doc, payload);
+
+    String ipv4 = doc["ip"].as<String>(); // Lấy địa chỉ IP
+    float latitude = doc["lat"];          // Lấy vĩ độ
+    float longitude = doc["lon"];         // Lấy kinh độ
+
+    Serial.println("IPv4: " + ipv4);
+    Serial.println("Latitude: " + String(latitude));
+    Serial.println("Longitude: " + String(longitude));
+
+    String googleMapsLink = "https://www.google.com/maps?q=" + String(latitude) + "," + String(longitude);
+    Serial.println("Google Maps: " + googleMapsLink);
+
+    // Gửi dữ liệu vị trí lên Blynk
+    Blynk.virtualWrite(V0, ipv4);
+    Blynk.virtualWrite(V1, latitude);
+    Blynk.virtualWrite(V2, longitude);
+    Blynk.virtualWrite(V3, googleMapsLink);
+
+    // Gọi hàm lấy thông tin thời tiết dựa trên vị trí
+    getWeather(latitude, longitude);
+  }
+  else
+  {
+    Serial.println("Error getting location"); // Báo lỗi nếu không lấy được vị trí
+  }
+
+  http.end();
+}
+
+// Hàm lấy thông tin thời tiết từ OpenWeatherMap API dựa vào vĩ độ và kinh độ
+void getWeather(float lat, float lon)
+{
+  HTTPClient http;
+  String apiKey = "d97bf5a08376db3e053403c07878b03d"; // API key OpenWeatherMap
+  String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + String(lat) + "&lon=" + String(lon) + "&appid=" + apiKey;
+
+  http.begin(url);
+
+  int httpCode = http.GET();
+  if (httpCode > 0)
+  {
+    String payload = http.getString();
+    Serial.println("Weather Data: " + payload);
+
+    DynamicJsonDocument doc(2048);
+    deserializeJson(doc, payload);
+
+    float temp = doc["main"]["temp"].as<float>() - 273.15;          // Chuyển đổi nhiệt độ từ Kelvin sang độ C
+    String weather = doc["weather"][0]["description"].as<String>(); // Mô tả thời tiết
+
+    Serial.println("Temperature: " + String(temp) + "°C");
+    Serial.println("Weather: " + weather);
+
+    // Gửi dữ liệu thời tiết lên Blynk
+    Blynk.virtualWrite(V4, temp);
+    Blynk.virtualWrite(V5, weather);
+  }
+  else
+  {
+    Serial.println("Error getting weather data"); // Báo lỗi nếu không lấy được thông tin thời tiết
+  }
+
+  http.end();
+}
+
+// Hàm setup() chạy một lần khi ESP32 khởi động
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200); // Khởi tạo Serial để debug
 
   // Kết nối WiFi
   WiFi.begin(ssid, password);
-  Serial.println("Connecting to WiFi...");
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("\nConnected!");
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
+  Serial.println("\nWiFi connected");
 
-  // Kết nối Blynk
-  Blynk.begin(blynkAuth, ssid, password);
+  // Gọi hàm lấy thông tin vị trí khi thiết bị khởi động
+  getLocation();
+
+  // Kết nối với Blynk
+  Blynk.begin(auth, ssid, password);
 }
 
+// Hàm loop() chạy liên tục sau khi setup() kết thúc
 void loop()
 {
-  Blynk.run(); // Duy trì kết nối Blynk
-
-  Serial.println("Fetching location data...");
-  String locationJsonBuffer = httpGETRequest(locationUrl.c_str());
-  Serial.println(locationJsonBuffer);
-
-  JSONVar locationJson = JSON.parse(locationJsonBuffer);
-  if (JSON.typeof_(locationJson) == "undefined")
-  {
-    Serial.println("Parsing failed");
-    return;
-  }
-
-  String ip = locationJson["ip"];
-  float latitude = atof(locationJson["lat"]);
-  float longitude = atof(locationJson["lon"]);
-
-  Serial.println();
-  Serial.print("IPv4: ");
-  Serial.println(ip);
-  Serial.print("Latitude: ");
-  Serial.println(latitude);
-  Serial.print("Longitude: ");
-  Serial.println(longitude);
-
-  String googleMapsLink = "https://www.google.com/maps/search/?api=1&query=" + String(latitude) + "," + String(longitude);
-  Serial.print("Google Maps Link: ");
-  Serial.println(googleMapsLink);
-
-  // Fetch weather data
-  String weatherUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + String(latitude) + "&lon=" + String(longitude) + "&appid=" + weatherApiKey;
-  Serial.println("Fetching weather data...");
-  String weatherJsonBuffer = httpGETRequest(weatherUrl.c_str());
-  Serial.println(weatherJsonBuffer);
-
-  JSONVar weatherJson = JSON.parse(weatherJsonBuffer);
-  if (JSON.typeof_(weatherJson) == "undefined")
-  {
-    Serial.println("Parsing weather data failed");
-    return;
-  }
-
-  float temperature = (double)weatherJson["main"]["temp"] - 273.15;
-  float humidity = (double)weatherJson["main"]["humidity"];
-
-  Serial.print("Temperature: ");
-  Serial.print(temperature);
-  Serial.println("°C");
-  Serial.print("Humidity: ");
-  Serial.print(humidity);
-  Serial.println("%");
-
-  // Gửi dữ liệu lên Blynk
-  Blynk.virtualWrite(V1, ip);
-  Blynk.virtualWrite(V2, latitude);
-  Blynk.virtualWrite(V3, longitude);
-  Blynk.virtualWrite(V4, temperature);
-  Blynk.virtualWrite(V5, humidity);
-  Blynk.virtualWrite(V6, googleMapsLink);
-
-  delay(10000);
-}
-
-String httpGETRequest(const char *Url)
-{
-  HTTPClient http;
-  http.begin(Url);
-  int responseCode = http.GET();
-  String responseBody = "{}";
-  if (responseCode > 0)
-  {
-    Serial.print("Response Code: ");
-    Serial.println(responseCode);
-    responseBody = http.getString();
-  }
-  else
-  {
-    Serial.print("Error Code: ");
-    Serial.println(responseCode);
-  }
-  http.end();
-  return responseBody;
+  Blynk.run(); // Chạy Blynk để cập nhật dữ liệu từ server
 }
