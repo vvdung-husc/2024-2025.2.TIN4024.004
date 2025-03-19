@@ -25,11 +25,11 @@
 */
 
 // Nguyễn Thanh Tân
-/*
+
 #define BLYNK_TEMPLATE_ID "TMPL6dHYIWVQJ"
 #define BLYNK_TEMPLATE_NAME "esp32DHTBlynk"
 #define BLYNK_AUTH_TOKEN " bof89vFLl1qLF2lTyIxm6Rf3HsVwO4Sf"
-*/
+
 
 #include <Arduino.h>
 #include <TM1637Display.h>
