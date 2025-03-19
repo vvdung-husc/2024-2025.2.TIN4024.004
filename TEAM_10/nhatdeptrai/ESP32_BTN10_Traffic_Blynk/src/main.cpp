@@ -117,6 +117,7 @@ void setup()
 
 void loop()
 {
+  Blynk.run();
   // put your main code here, to run repeatedly:
   currentMiliseconds = millis();
 
