@@ -4,10 +4,21 @@
 #include <dht.h>
 
 // ==== Blynk Credentials ====
-// Nguyen Dinh Ngoc Bao 
-#define BLYNK_TEMPLATE_ID "TMPL6EuZYqC1_"
-#define BLYNK_TEMPLATE_NAME "NgocBao"
-#define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
+//  Nguyen Dinh Ngoc Bao 
+// #define BLYNK_TEMPLATE_ID "TMPL6EuZYqC1_"
+// #define BLYNK_TEMPLATE_NAME "NgocBao"
+// #define BLYNK_AUTH_TOKEN "4hpN9hiXTN_J1IfoyjPPmEBmMzpdWVXq"
+
+
+//  Nguyễn Hữu Phước
+// #define BLYNK_TEMPLATE_ID "TMPL6wK5tPq5C"
+// #define BLYNK_TEMPLATE_NAME "BlynkLed2"
+// #define BLYNK_AUTH_TOKEN "vHlCU2DPjN40Ab-rTnKSRd8B0nVNDG2y"
+
+//  Phan Bá Dân
+// #define BLYNK_TEMPLATE_ID "TMPL6TapkwNtW"
+// #define BLYNK_TEMPLATE_NAME "Dan"
+// #define BLYNK_AUTH_TOKEN "LIl09Qk1TwLpUlOtN9emDSAUH4tpPXZA"
 
 
 #include <WiFi.h>
