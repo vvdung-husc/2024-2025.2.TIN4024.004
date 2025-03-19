@@ -1,10 +1,9 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <secrets.h>
 
 #define PIR_PIN 32
-#define BOT_TOKEN "8000441778:AAGKod43rac888SZ01Q-i4DVzHi3oseHuFc" // Thay bằng token bot của bạn
-#define CHAT_ID "-4764061918"                                      // Thay bằng ID nhóm hoặc user của bạn
 
 bool motionDetected = false;
 
