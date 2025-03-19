@@ -46,6 +46,39 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
+### [- Esp8266 Project (***mã nguồn minh họa***)](https://wokwi.com/projects/425833805481407489)
+
+#### [Tải và cài đặt trình điều khiển (CP210x Windows Drivers)](https://www.silabs.com/documents/public/software/CP210x_Windows_Drivers.zip)
+
+#### Tạo dự án - ESP32_Project 
++ Điều khiển đèn nhấp nháy (GREEN PIN 15, YELLOW PIN 2, RED PIN 5)
++ Đo nhiệt độ	(PIN 16)
++ Hiển thị lên màn hình OLED (SH1106) (SDA PIN 13, SCL PIN 12)
+  > Thư viện hổ trợ U8g2 by oliver
+
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/diagram_two.png)
+
+#### NodeMCU v2 và v3
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/NodeMCU-V2-vs-V3.jpg)
+
+---
+### - [Esp32 |  TELEGRAM BOT (***mã nguồn minh họa***)](https://wokwi.com/projects/425361659331202049)
+
+#### Tham khảo
+
++ [ESP32 Telegram Bot](https://www.iotzone.vn/esp32/cach-dung-esp32-telegram-dieu-khien-den-led-voi-arduino-ide/)
+
+#### Ứng dụng Telegram
+
+>[Telegram Applications](https://telegram.org/apps)
+
+>[Telegram APIs](https://core.telegram.org/api)
+
+## => Yêu cầu thực hiện được đoạn mã nguồn minh họa để hiển thị trong ứng dụng Telegram
+
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/ESP32_Telegram_02.png)
+
+---
 ### - [Esp32 | API HTTP GET (***mã nguồn minh họa***)](https://wokwi.com/projects/425209099504209921)
 
 #### Tham khảo
