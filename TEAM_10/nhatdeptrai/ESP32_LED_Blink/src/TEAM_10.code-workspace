@@ -34,6 +34,10 @@
     {
       "name": "ESP32_BTN10_Traffic_Blynk",
       "path": "../../ESP32_BTN10_Traffic_Blynk"
+    },
+    {
+      "name": "ESP8386_Project",
+      "path": "../../ESP8386_Project"
     }
   ]
 }
