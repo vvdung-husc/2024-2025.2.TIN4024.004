@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "author": "Uri Shaked",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 9.6, "left": 62.44, "attrs": {} },
+      {
+        "type": "wokwi-pir-motion-sensor",
+        "id": "pir1",
+        "top": -101.6,
+        "left": -112.98,
+        "attrs": {}
+      }
+    ],
+    "connections": [
+      [ "esp:TX", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX", "$serialMonitor:TX", "", [] ],
+      [ "pir1:VCC", "esp:3V3", "red", [ "v0" ] ],
+      [ "pir1:OUT", "esp:32", "green", [ "v0" ] ],
+      [ "pir1:GND", "esp:GND.1", "black", [ "v0" ] ]
+    ],
+    "dependencies": {},
+    "net": { "ssid": "Wokwi-GUEST" }  
+  }

@@ -46,7 +46,21 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
+### - Esp8266 Project | Blynk
+>Vào TEAM_00/vvdung để lấy file utils.h và utils.cpp
+
+### Một số yêu cầu
+- Sinh số ngẫu nhiên cho nhiệt độ (từ -40.0 đến 80.0), độ ẩm (từ 0.0% đến 100.0%)
+- Hiển thị thông tin nhiệt độ và độ ẩm trên bảng OLED
+- Hiển thị 3 đèn LED theo cơ chế đèn giao thông
+- Thiết kế trên Blynk (Mobile) gồm các thông tin
+	>+ Thời gian hoạt động
+	>+ Nhiệt độ, độ ẩm
+	>+ Một Switch để chuyển sang chế độ đèn vàng nhấp nháy  
+
+---
 ### [- Esp8266 Project (***mã nguồn minh họa***)](https://wokwi.com/projects/425833805481407489)
+>Vào TEAM_00/vvdung để lấy file utils.h và utils.cpp
 
 #### [Tải và cài đặt trình điều khiển (CP210x Windows Drivers)](https://www.silabs.com/documents/public/software/CP210x_Windows_Drivers.zip)
 
