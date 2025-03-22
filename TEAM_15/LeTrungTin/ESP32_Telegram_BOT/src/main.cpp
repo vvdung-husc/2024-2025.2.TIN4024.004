@@ -17,10 +17,10 @@ const char *ssid = "Wokwi-GUEST";
 const char *password = "";
 
 // Initialize Telegram BOT
-#define BOTtoken "8020155703:AAFB_8dn-tD-J6CL5J-nBdOQ3oAp0QHgLW0" // your Bot Token (Get from Botfather)
+#define BOTtoken "7561677210:AAGDH8LUy_jeWKUKypWgbadWVVn3N6FoCuI" // your Bot Token (Get from Botfather)
 
 // Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
-#define GROUP_ID "-4739995053" // thường là một số âm
+#define GROUP_ID "-4758459171" // thường là một số âm
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
