@@ -2,8 +2,9 @@
 #include <TM1637Display.h>
 
 /* Fill in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "GIHubX1wJy45GcpcFmTfQ9V4zbTqkn74"
+#define BLYNK_TEMPLATE_ID "TMPL61wsFkzBC"
+#define BLYNK_TEMPLATE_NAME "BLYNK"
+#define BLYNK_AUTH_TOKEN "aCMuqsFuqPlOAqgztADNnwXREmzb8JjV"
 // Phải để trước khai báo sử dụng thư viện Blynk
 
 #include <WiFi.h>

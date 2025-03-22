@@ -11,9 +11,14 @@
 // #define BLYNK_AUTH_TOKEN "XwEj-agTxow3GygBNpAMBmbuA7kayHhR"
 
 // Nguyễn Phước Bảo Quân
-#define BLYNK_TEMPLATE_ID "TMPL6CMhAGeLj"
-#define BLYNK_TEMPLATE_NAME "ESP32blynk"
-#define BLYNK_AUTH_TOKEN "UgqMF8tLKdZBD7saxYM00G9zt8UTmzdI"
+// #define BLYNK_TEMPLATE_ID "TMPL6CMhAGeLj"
+// #define BLYNK_TEMPLATE_NAME "ESP32blynk"
+// #define BLYNK_AUTH_TOKEN "UgqMF8tLKdZBD7saxYM00G9zt8UTmzdI"
+
+//Nguyễn Hồng Tín
+#define BLYNK_TEMPLATE_ID "TMPL6dRygjOpX"
+#define BLYNK_TEMPLATE_NAME "ESP32TIN"
+#define BLYNK_AUTH_TOKEN "OjayvGjtgFOAg38L_D9kKHVaTBRmhFwG"
 
 #include <Arduino.h>
 #include <TM1637Display.h>
