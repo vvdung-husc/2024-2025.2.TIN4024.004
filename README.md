@@ -46,6 +46,36 @@
 #### [Lập trình ESP32 GPIO Digital Input và Digital Output](https://khuenguyencreator.com/lap-trinh-esp32-gpio-digital-input-va-digital-output/)
 
 ---
+### - Esp8266 Project | Blynk
+>Vào TEAM_00/vvdung để lấy file utils.h và utils.cpp
+
+### Một số yêu cầu
+- Sinh số ngẫu nhiên cho nhiệt độ (từ -40.0 đến 80.0), độ ẩm (từ 0.0% đến 100.0%)
+- Hiển thị thông tin nhiệt độ và độ ẩm trên bảng OLED
+- Hiển thị 3 đèn LED theo cơ chế đèn giao thông
+- Thiết kế trên Blynk (Mobile) gồm các thông tin
+	>+ Thời gian hoạt động
+	>+ Nhiệt độ, độ ẩm
+	>+ Một Switch để chuyển sang chế độ đèn vàng nhấp nháy  
+
+---
+### [- Esp8266 Project (***mã nguồn minh họa***)](https://wokwi.com/projects/425833805481407489)
+>Vào TEAM_00/vvdung để lấy file utils.h và utils.cpp
+
+#### [Tải và cài đặt trình điều khiển (CP210x Windows Drivers)](https://www.silabs.com/documents/public/software/CP210x_Windows_Drivers.zip)
+
+#### Tạo dự án - ESP32_Project 
++ Điều khiển đèn nhấp nháy (GREEN PIN 15, YELLOW PIN 2, RED PIN 5)
++ Đo nhiệt độ	(PIN 16)
++ Hiển thị lên màn hình OLED (SH1106) (SDA PIN 13, SCL PIN 12)
+  > Thư viện hổ trợ U8g2 by oliver
+
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/diagram_two.png)
+
+#### NodeMCU v2 và v3
+![](https://raw.githubusercontent.com/vvdung/storage/refs/heads/main/IOT/NodeMCU-V2-vs-V3.jpg)
+
+---
 ### - [Esp32 |  TELEGRAM BOT (***mã nguồn minh họa***)](https://wokwi.com/projects/425361659331202049)
 
 #### Tham khảo
