@@ -53,9 +53,9 @@ void setup()
   oled.clearBuffer();
 
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
-  oled.drawUTF8(0, 14, "I ");
-  oled.drawUTF8(0, 28, "Love");
-  oled.drawUTF8(0, 42, "U <3");
+  oled.drawUTF8(0, 14, "Trường ABC");
+  oled.drawUTF8(0, 28, "KhoaDFG");
+  oled.drawUTF8(0, 42, "Lập trình IoT");
 
   oled.sendBuffer();
 }

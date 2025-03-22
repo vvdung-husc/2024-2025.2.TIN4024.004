@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "../include/untils.h"
+#include "utils.h"
 
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
@@ -52,9 +52,9 @@ void setup() {
   oled.clearBuffer();
   
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
-  oled.drawUTF8(0, 14, "Trường ĐHKH");  
-  oled.drawUTF8(0, 28, "Khoa CNTT");
-  oled.drawUTF8(0, 42, "Lập trình IoT");  
+  oled.drawUTF8(0, 14, "Trường buoi`");  
+  oled.drawUTF8(0, 28, "Khoa buoi`");
+  oled.drawUTF8(0, 42, "Nhom dau cac");  
 
   oled.sendBuffer();
 }
