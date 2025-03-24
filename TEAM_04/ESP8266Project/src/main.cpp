@@ -6,6 +6,11 @@
  #define BLYNK_TEMPLATE_NAME "ESP8266Project"
  #define BLYNK_AUTH_TOKEN "EqapOpB088ZJ2obRlqC0FFqewej-al3E"
 
+//Nguyễn Hữu Phước
+#define BLYNK_TEMPLATE_ID "TMPL6SgBJeLiw"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
+#define BLYNK_AUTH_TOKEN "4XAvaz1jYQUtEY4FCXNTpjJ0fnIBUXcz"
+ 
  #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp8266.h>
