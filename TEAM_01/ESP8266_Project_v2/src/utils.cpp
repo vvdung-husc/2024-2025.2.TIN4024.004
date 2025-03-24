@@ -1,6 +1,7 @@
 
 
  #include "utils.h"
+  #include <stdarg.h> // Cần để sử dụng `va_list`
  
  bool IsReady(unsigned long &ulTimer, uint32_t millisecond) {
      if (millis() - ulTimer < millisecond) return false;
