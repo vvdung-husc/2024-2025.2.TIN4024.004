@@ -34,6 +34,18 @@
     {
       "name": "ESP32_BTN10_Traffic_Blynk",
       "path": "../../ESP32_BTN10_Traffic_Blynk"
+    },
+    {
+      "name": "ESP8386_Project",
+      "path": "../../ESP8386_Project"
+    },
+    {
+      "name": "ESP8266_Project_Sensor",
+      "path": "../../ESP8266_Project_Sensor"
+    },
+    {
+      "name": "ESP32 Api",
+      "path": "../../ESP32 Api"
     }
   ]
 }
