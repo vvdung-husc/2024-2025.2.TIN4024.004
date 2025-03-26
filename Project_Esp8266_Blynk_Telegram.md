@@ -1,5 +1,5 @@
 
-# Dự án - Đèn giao thông
+# Dự án - ESP8266, Blynk, Telegram bot
 - ## Yêu cầu thực hiện theo nhóm (2 đến 5 thành viên mỗi nhóm)
 	- Tạo dự án có tên **ESP8266_Blynk_Telegram** tại thư mục của nhóm mình
 	
