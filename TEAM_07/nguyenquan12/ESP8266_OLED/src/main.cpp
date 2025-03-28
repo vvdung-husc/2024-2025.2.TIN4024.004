@@ -53,7 +53,7 @@ void setup()
   oled.clearBuffer();
 
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
-  oled.drawUTF8(0, 14, "Đức 6 trai ");
+  oled.drawUTF8(0, 14, "Quân đẹp trai ");
   oled.drawUTF8(0, 28, "Khoa CNTT");
   oled.drawUTF8(0, 42, "Lập trình IoT");
 
