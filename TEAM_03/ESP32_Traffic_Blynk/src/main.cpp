@@ -4,14 +4,14 @@
 
 // ==== Blynk Credentials ====
 // Mai Van Nghia
-#define BLYNK_TEMPLATE_ID "TMPL6SLIe5Lkl"
-#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "Vhux4WLbXWw5lgLTYV04eFHYuBaov5pr"
+// #define BLYNK_TEMPLATE_ID "TMPL6SLIe5Lkl"
+// #define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
+// #define BLYNK_AUTH_TOKEN "Vhux4WLbXWw5lgLTYV04eFHYuBaov5pr"
 
 // Mai Nhat Quang
-// #define BLYNK_TEMPLATE_ID "TMPL6VsEQu_sB"
-// #define BLYNK_TEMPLATE_NAME "ESP32 LED 1003"
-// #define BLYNK_AUTH_TOKEN "NbHpCXZxDoDldC2_SyJLLwcHmzfqUjHS"
+#define BLYNK_TEMPLATE_ID "TMPL6VsEQu_sB"
+#define BLYNK_TEMPLATE_NAME "ESP32 LED 1003"
+#define BLYNK_AUTH_TOKEN "NbHpCXZxDoDldC2_SyJLLwcHmzfqUjHS"
 
 // Duong Van Tuan
 // #define BLYNK_TEMPLATE_ID "TMPL63zZ0QgXn"

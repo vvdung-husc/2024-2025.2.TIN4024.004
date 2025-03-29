@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "author": "Nguyễn Trần Viết Thắng, Trần Văn Minh Nhật, Trần Văn Thanh, Phạm Văn Trí, Đoàn Anh Tú",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": -9.6,
+      "left": -225.56,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": 50,
+      "left": -350,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-tm1637-7segment",
+      "id": "sevseg1",
+      "top": -105.64,
+      "left": -175.37,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-relay",
+      "id": "relay1",
+      "top": -20,
+      "left": -100,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-fan",
+      "id": "fan1",
+      "top": 50,
+      "left": -100,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []],
+
+    ["esp:19", "sevseg1:DIO", "green", ["h144", "v-9.6"]],
+    ["sevseg1:CLK", "esp:18", "green", ["h28.8", "v172.8"]],
+    [
+      "sevseg1:VCC",
+      "esp:5V",
+      "red",
+      ["h9.6", "v259.2", "h0", "v9.6", "h-230.4"]
+    ],
+    ["sevseg1:GND", "esp:GND.3", "black", ["h0", "v124.8"]],
+
+    ["dht1:VCC", "esp:3V3", "red", ["h10"]],
+    ["dht1:GND", "esp:GND.1", "black", ["h10"]],
+    ["dht1:DATA", "esp:4", "yellow", ["h10"]],
+
+    ["relay1:VCC", "esp:5V", "red", ["h10"]],
+    ["relay1:GND", "esp:GND.1", "black", ["h10"]],
+    ["relay1:IN", "esp:26", "blue", ["h10"]],
+
+    ["fan1:VCC", "relay1:NO", "red", ["h10"]],
+    ["fan1:GND", "esp:GND.1", "black", ["h10"]]
+  ],
+  "dependencies": {}
+}
