@@ -18,7 +18,7 @@
 #include <BlynkSimpleEsp8266.h>
 
 char ssid[] = "CNTT-MMT";  //Tên mạng WiFi
-char pass[] = "13572468";             //Mật khẩu mạng WiFi
+char pass[] = "13572468";  //Mật khẩu mạng WiFi
 
 #define gPIN 15        // Đèn xanh
 #define yPIN 2         // Đèn vàng
