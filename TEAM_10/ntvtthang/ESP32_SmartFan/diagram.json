@@ -6,41 +6,43 @@
     {
       "type": "board-esp32-devkit-c-v4",
       "id": "esp",
-      "top": -37.58,
-      "left": -96.37,
+      "top": 0,
+      "left": 0,
       "attrs": {}
     },
     {
       "type": "wokwi-dht22",
-      "id": "dht1",
-      "top": -32.2,
-      "left": 40.16,
+      "id": "dht",
+      "top": 100,
+      "left": 100,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay",
+      "top": 200,
+      "left": 0,
       "attrs": {}
     },
     {
       "type": "wokwi-led",
-      "id": "led1",
-      "top": -10,
-      "left": 100,
+      "id": "fan",
+      "top": 300,
+      "left": 50,
       "attrs": { "color": "blue" }
-    },
-    {
-      "type": "wokwi-resistor",
-      "id": "r1",
-      "top": -10,
-      "left": 60,
-      "attrs": { "value": "220" }
     }
   ],
   "connections": [
     ["esp:TX", "$serialMonitor:RX", "", []],
     ["esp:RX", "$serialMonitor:TX", "", []],
-    ["dht1:VCC", "esp:3V3", "red", ["v109.3", "h-170.36", "v-200.78"]],
-    ["dht1:SDA", "esp:15", "green", ["v0"]],
-    ["dht1:GND", "esp:GND.1", "black", ["v99.7", "h-189.56", "v-66.38"]],
-    ["led1:A", "r1:1", "blue", ["h0"]],
-    ["r1:2", "esp:5", "blue", ["h0"]],
-    ["led1:C", "esp:GND.1", "black", ["h0"]]
+    ["esp:GND", "dht:GND", "black", []],
+    ["esp:3V3", "dht:VCC", "red", []],
+    ["esp:4", "dht:SDA", "green", []],
+    ["esp:GND", "relay:GND", "black", []],
+    ["esp:5V", "relay:VCC", "red", []],
+    ["esp:5", "relay:IN", "green", []],
+    ["relay:NO", "fan:A", "blue", []],
+    ["fan:C", "esp:GND", "black", []]
   ],
   "dependencies": {}
 }

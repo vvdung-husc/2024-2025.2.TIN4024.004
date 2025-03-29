@@ -4,6 +4,7 @@
 #include <U8g2lib.h>
 #include <UniversalTelegramBot.h>
 
+//Nguyễn Trần Viết Thắng
 #define BLYNK_TEMPLATE_ID "TMPL61bYE-l65"
 #define BLYNK_TEMPLATE_NAME "ESP8266BlynkTele"
 #define BLYNK_AUTH_TOKEN "5KUjzDBJEUFuI-cDkeTE-A3ziMAvZMQE"
@@ -26,6 +27,7 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 bool blinkMode = false;  // Controlled by V1 switch
 bool trafficEnabled = true;
 
+//Nguyễn Trần Viết Thắng
 const char* botToken = "7958454010:AAGYkVfTHc-FgAg-YqOMgIo5CR-DRgvMB-I";
 const char* chatID = "-4717614518";
 
@@ -44,16 +46,24 @@ void setup() {
   pinMode(yPIN, OUTPUT);
   pinMode(rPIN, OUTPUT);
 
+  // Khởi tạo OLED
   Wire.begin(OLED_SDA, OLED_SCL);
   oled.begin();
-  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+
+  // Start the WiFi connection
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass); // Kết nối đến mạng WiFi
+  Serial.println();
+  Serial.println("WiFi connected");
+
   client.setInsecure();
 
   oled.clearBuffer();
   oled.setFont(u8g2_font_unifont_t_vietnamese1);
   oled.drawUTF8(0, 14, "Trường ĐHKH");
   oled.drawUTF8(0, 28, "Khoa CNTT");
-  oled.drawUTF8(0, 42, "Lập trình IoT-NHOM09");
+  oled.drawUTF8(0, 42, "Lập trình IoT-NHOM10");
   oled.sendBuffer();
 }
 
