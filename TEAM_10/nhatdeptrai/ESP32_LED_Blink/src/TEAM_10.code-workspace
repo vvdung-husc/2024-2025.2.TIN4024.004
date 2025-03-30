@@ -50,6 +50,10 @@
     {
       "name": "ESP32 Telegram Bot",
       "path": "../../ESP32 Telegram Bot"
+    },
+    {
+      "name": "ESP8266_Project_Blynk",
+      "path": "../../ESP8266_Project_Blynk"
     }
   ]
 }
