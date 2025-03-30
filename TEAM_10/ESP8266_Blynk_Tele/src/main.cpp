@@ -11,6 +11,11 @@
 #define BLYNK_TEMPLATE_NAME "ESP8266BlynkTele"
 #define BLYNK_AUTH_TOKEN "5KUjzDBJEUFuI-cDkeTE-A3ziMAvZMQE"
 
+//TRần Văn Minh Nhật
+#define BLYNK_TEMPLATE_ID "TMPL6rKfVu6HP"
+#define BLYNK_TEMPLATE_NAME "ESMART"
+#define BLYNK_AUTH_TOKEN "NVohCxt35pdmPIROGthShHSki6xWgVdf"
+
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <BlynkSimpleEsp8266.h>

@@ -16,7 +16,7 @@
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp8266.h>
 
-char ssid[] = "CNTT-MTT";
+char ssid[] = "ANH KAFE";
 char pass[] = "13572468";
 
 // Định nghĩa chân GPIO
