@@ -13,10 +13,11 @@
 #define BLYNK_AUTH_TOKEN "ZJX_hztr1EMBQuavBSDaPxjqVjkgjTw6"
 
 #include <ESP8266WiFi.h>
+#include <WiFiClient.h>
 #include <BlynkSimpleEsp8266.h>
 
-char ssid[] = "Wokwi-GUEST";
-char pass[] = "";
+char ssid[] = "CNTT-MTT";
+char pass[] = "13572468";
 
 // Định nghĩa chân GPIO
 #define btnBLED D3  
@@ -31,19 +32,15 @@ char pass[] = "";
 #define ldrPIN A0  
 
 // Thời gian LED
-uint rTIME = 5000;
-uint yTIME = 3000;
-uint gTIME = 10000;
+const uint rTIME = 5000;
+const uint yTIME = 3000;
+const uint gTIME = 10000;
 
-ulong currentMiliseconds = 0;
+ulong currentMillis = 0;
 ulong ledTimeStart = 0;
-ulong nextTimeTotal = 0;
-int currentLED = 0;
+int currentLED = rLED;
 int tmCounter = rTIME / 1000;
-ulong counterTime = 0;
-
 bool blueButtonON = true;
-ulong ledOnTime = 0;
 int darkThreshold = 1000;
 
 TM1637Display display(CLK, DIO);
@@ -52,7 +49,6 @@ DHT dht(DHTPIN, DHTTYPE);
 void updateBlueButton();
 void uptimeBlynk();
 void readDHTSensor();
-void updateLedTime();
 void NonBlocking_Traffic_Light_TM1637();
 bool isDark();
 void YellowLED_Blink();
@@ -63,8 +59,12 @@ void setup()
   
   pinMode(pinBLED, OUTPUT);
   pinMode(btnBLED, INPUT_PULLUP);
+  pinMode(rLED, OUTPUT);
+  pinMode(yLED, OUTPUT);
+  pinMode(gLED, OUTPUT);
+  pinMode(ldrPIN, INPUT);
 
-  display.setBrightness(0x0f);
+  display.setBrightness(7);
   dht.begin(); // Khởi động cảm biến DHT22
 
   Serial.print("Connecting to ");
@@ -75,27 +75,16 @@ void setup()
   digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
   Blynk.virtualWrite(V1, blueButtonON);
 
-  pinMode(rLED, OUTPUT);
-  pinMode(yLED, OUTPUT);
-  pinMode(gLED, OUTPUT);
-  pinMode(ldrPIN, INPUT);
-
-  tmCounter = (rTIME / 1000) - 1;
-  display.setBrightness(7);
-
   digitalWrite(yLED, LOW);
   digitalWrite(gLED, LOW);
   digitalWrite(rLED, HIGH);
   display.showNumberDec(tmCounter--, true, 2, 2);
-
-  currentLED = rLED;
-  nextTimeTotal += rTIME;
 }
 
 void loop()
 {
   Blynk.run();
-  currentMiliseconds = millis();
+  currentMillis = millis();
 
   uptimeBlynk();
   updateBlueButton();
@@ -111,52 +100,22 @@ void NonBlocking_Traffic_Light_TM1637()
 {
   if (!blueButtonON) return;
 
-  bool bShowCounter = false;
-  switch (currentLED)
+  if (IsReady(ledTimeStart, (currentLED == rLED ? rTIME : (currentLED == gLED ? gTIME : yTIME))))
   {
-  case rLED:
-    if (IsReady(ledTimeStart, rTIME))
-    {
-      digitalWrite(rLED, LOW);
-      digitalWrite(gLED, HIGH);
+    digitalWrite(currentLED, LOW);
+    if (currentLED == rLED)
       currentLED = gLED;
-      nextTimeTotal += gTIME;
-      tmCounter = (gTIME / 1000) - 1;
-      bShowCounter = true;
-      counterTime = currentMiliseconds;
-    }
-    break;
-  case gLED:
-    if (IsReady(ledTimeStart, gTIME))
-    {
-      digitalWrite(gLED, LOW);
-      digitalWrite(yLED, HIGH);
+    else if (currentLED == gLED)
       currentLED = yLED;
-      nextTimeTotal += yTIME;
-      tmCounter = (yTIME / 1000) - 1;
-      bShowCounter = true;
-      counterTime = currentMiliseconds;
-    }
-    break;
-  case yLED:
-    if (IsReady(ledTimeStart, yTIME))
-    {
-      digitalWrite(yLED, LOW);
-      digitalWrite(rLED, HIGH);
+    else
       currentLED = rLED;
-      nextTimeTotal += rTIME;
-      tmCounter = (rTIME / 1000) - 1;
-      bShowCounter = true;
-      counterTime = currentMiliseconds;
-    }
-    break;
+    
+    digitalWrite(currentLED, HIGH);
+    tmCounter = (currentLED == rLED ? rTIME : (currentLED == gLED ? gTIME : yTIME)) / 1000 - 1;
   }
-  if (!bShowCounter)
-    bShowCounter = IsReady(counterTime, 1000);
-  if (bShowCounter)
-  {
+  
+  if (IsReady(ledTimeStart, 1000))
     display.showNumberDec(tmCounter--, true, 2, 2);
-  }
 }
 
 bool isDark()
@@ -165,29 +124,21 @@ bool isDark()
   static uint16_t lastValue = 0;
   static bool bDark = false;
 
-  if (!IsReady(darkTimeStart, 50))
-    return bDark;
+  if (!IsReady(darkTimeStart, 50)) return bDark;
+
   uint16_t value = analogRead(ldrPIN);
-  if (value == lastValue)
-    return bDark;
+  if (value == lastValue) return bDark;
 
   if (value < darkThreshold)
   {
-    if (!bDark && blueButtonON)
-    {
-      digitalWrite(currentLED, LOW);
-    }
+    if (!bDark && blueButtonON) digitalWrite(currentLED, LOW);
     bDark = blueButtonON;
   }
   else
   {
-    if (bDark)
-    {
-      digitalWrite(yLED, LOW);
-    }
+    if (bDark) digitalWrite(yLED, LOW);
     bDark = false;
   }
-
   lastValue = value;
   return bDark;
 }
@@ -199,8 +150,7 @@ void YellowLED_Blink()
   static ulong yLedStart = 0;
   static bool isON = false;
 
-  if (!IsReady(yLedStart, 1000))
-    return;
+  if (!IsReady(yLedStart, 1000)) return;
   digitalWrite(yLED, isON ? LOW : HIGH);
   isON = !isON;
 }
@@ -210,25 +160,18 @@ void updateBlueButton()
   static ulong lastTime = 0;
   static int lastValue = HIGH;
 
-  if (!IsReady(lastTime, 50))
-    return;
+  if (!IsReady(lastTime, 50)) return;
 
   int v = digitalRead(btnBLED);
-  if (v == lastValue)
-    return;
+  if (v == lastValue) return;
   lastValue = v;
-  if (v == LOW)
-    return;
+  if (v == LOW) return;
 
   blueButtonON = !blueButtonON;
 
-  if (blueButtonON)
+  digitalWrite(pinBLED, blueButtonON ? HIGH : LOW);
+  if (!blueButtonON)
   {
-    digitalWrite(pinBLED, HIGH);
-  }
-  else
-  {
-    digitalWrite(pinBLED, LOW);
     digitalWrite(rLED, LOW);
     digitalWrite(yLED, LOW);
     digitalWrite(gLED, LOW);
@@ -242,8 +185,7 @@ void uptimeBlynk()
   static ulong lastTime = 0;
   static ulong runTime = 0;
 
-  if (!IsReady(lastTime, 1000))
-    return;
+  if (!IsReady(lastTime, 1000)) return;
 
   if (blueButtonON)
   {
