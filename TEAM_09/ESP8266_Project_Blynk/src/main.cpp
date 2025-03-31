@@ -1,8 +1,13 @@
 
 //Dương Minh Châu
-#define BLYNK_TEMPLATE_ID "TMPL6hmVQCYR3"
+/*#define BLYNK_TEMPLATE_ID "TMPL6hmVQCYR3"
 #define BLYNK_TEMPLATE_NAME "ESP8266ProjectBlynk"
-#define BLYNK_AUTH_TOKEN "VP6VUd4sZiyd1Yc8YDSxQmHvAtKJSIoi"
+#define BLYNK_AUTH_TOKEN "VP6VUd4sZiyd1Yc8YDSxQmHvAtKJSIoi"*/
+
+//Lê Thị Thanh Thùy
+#define BLYNK_TEMPLATE_ID "TMPL6gne5UxNx"
+#define BLYNK_TEMPLATE_NAME "TEAM09ThanhThuy"
+#define BLYNK_AUTH_TOKEN "eSb_f-T6IFL35tmV3I7rlZVdVG7xhjwy"
 
 
 #include <Arduino.h>
@@ -19,8 +24,8 @@
 
 #include <BlynkSimpleEsp8266.h>
 
-char ssid[] = "Kenhoang";  //Tên mạng WiFi
-char pass[] = "Minhchau0221";             //Mật khẩu mạng WiFi
+char ssid[] = "VAN KHAI";  //Tên mạng WiFi
+char pass[] = "0965876277";             //Mật khẩu mạng WiFi
 
 #define gPIN 15        // Đèn xanh
 #define yPIN 2         // Đèn vàng
