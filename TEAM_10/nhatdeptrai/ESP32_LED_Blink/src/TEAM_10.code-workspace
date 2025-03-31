@@ -54,6 +54,10 @@
     {
       "name": "ESP8266_Project_Blynk",
       "path": "../../ESP8266_Project_Blynk"
+    },
+    {
+      "name": "ESP32_SmartDevice",
+      "path": "../../ESP32_SmartDevice"
     }
   ]
 }
