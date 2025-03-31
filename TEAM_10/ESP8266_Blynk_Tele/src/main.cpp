@@ -11,11 +11,6 @@
 #define BLYNK_TEMPLATE_NAME "ESP8266BlynkTele"
 #define BLYNK_AUTH_TOKEN "5KUjzDBJEUFuI-cDkeTE-A3ziMAvZMQE"
 
-//TRần Văn Minh Nhật
-#define BLYNK_TEMPLATE_ID "TMPL6rKfVu6HP"
-#define BLYNK_TEMPLATE_NAME "ESMART"
-#define BLYNK_AUTH_TOKEN "NVohCxt35pdmPIROGthShHSki6xWgVdf"
-
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <BlynkSimpleEsp8266.h>
@@ -42,6 +37,10 @@ DHT dht(dhtPIN, dhtTYPE);
 //Nguyễn Trần Viết Thắng
 const char* botToken = "7958454010:AAGYkVfTHc-FgAg-YqOMgIo5CR-DRgvMB-I";
 const char* chatID = "-4717614518";
+
+//Trần Văn Minh Nhật
+#define BOTtoken "7467700827:AAG5Jr3HcVMIdNTKWF4_DBsQXK0BnncU0dM"  // your Bot Token (Get from Botfather)
+#define GROUP_ID "-4725634280" //thường là một số âm
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(botToken, client);
