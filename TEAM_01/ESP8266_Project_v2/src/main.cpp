@@ -216,6 +216,12 @@ void handleNewMessages(int numNewMessages) {
   
         Serial.println(sent ? "✅ Đã gửi trạng thái bot!" : "❌ Lỗi gửi tin nhắn /status!");
     }
+    //Gửi cảnh báo đến Telegram mỗi 5 phút một lần nếu gặp trường hợp nhiệt độ hoặc độ ẩm
+    //có thể gây nguy hại cho sức khỏe.
+    
+    //Điều khiển đèn giao thông bằng cách gửi tin nhắn từ Telegram để tắt toàn bộ đèn
+    //khi gửi /traffic_off và hoạt động trở lại khi gửi /traffic_on
+    
     //Xử lý lệnh /shutdown
     if (text == "/shutdown" || text.startsWith("/shutdown@")) {
         Serial.println("🚨 Nhận lệnh /shutdown -> Ngừng xử lý lệnh...");
