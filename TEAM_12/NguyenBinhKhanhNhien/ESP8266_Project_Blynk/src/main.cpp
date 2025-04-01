@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <utils.h>  // Chỉ khai báo, không định nghĩa lại IsReady()
+#include <utils.h> // Chỉ khai báo, không định nghĩa lại IsReady()
 
 #include <Adafruit_Sensor.h>
 #include <TM1637Display.h>
@@ -7,10 +7,9 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 
-// Trần Văn Thanh
-#define BLYNK_TEMPLATE_ID "TMPL6VbNuRWM1"
-#define BLYNK_TEMPLATE_NAME "ESP32TrafficBlynk"
-#define BLYNK_AUTH_TOKEN "X2za5Tymj_cH63wGgnL_cNIpWFKXqH2d"
+#define BLYNK_TEMPLATE_ID "TMPL6lLot3qOq"
+#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
+#define BLYNK_AUTH_TOKEN "sYdiO-niNGY7iLzBRvKr-RvcHDW-8lt9"
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -20,8 +19,8 @@ char ssid[] = "CNTT-MTT";
 char pass[] = "13572468";
 
 // Định nghĩa chân GPIO
-#define btnBLED D3  
-#define pinBLED D4  
+#define btnBLED D3
+#define pinBLED D4
 #define rLED D5
 #define yLED D6
 #define gLED D7
@@ -29,7 +28,7 @@ char pass[] = "13572468";
 #define DIO D2
 #define DHTPIN D0
 #define DHTTYPE DHT22
-#define ldrPIN A0  
+#define ldrPIN A0
 
 // Thời gian LED
 const uint rTIME = 5000;
@@ -56,7 +55,7 @@ void YellowLED_Blink();
 void setup()
 {
   Serial.begin(115200);
-  
+
   pinMode(pinBLED, OUTPUT);
   pinMode(btnBLED, INPUT_PULLUP);
   pinMode(rLED, OUTPUT);
@@ -96,9 +95,41 @@ void loop()
     NonBlocking_Traffic_Light_TM1637();
 }
 
+// HÀM ĐỌC CẢM BIẾN DHT22 - ĐÃ ĐƯỢC THÊM VÀO
+void readDHTSensor()
+{
+  static ulong lastReadTime = 0;
+
+  // Đọc cảm biến mỗi 2 giây (tránh delay)
+  if (!IsReady(lastReadTime, 2000))
+    return;
+
+  float humidity = dht.readHumidity();       // Đọc độ ẩm (%)
+  float temperature = dht.readTemperature(); // Đọc nhiệt độ (°C)
+
+  // Kiểm tra lỗi đọc cảm biến
+  if (isnan(humidity) || isnan(temperature))
+  {
+    Serial.println("Lỗi đọc DHT22!");
+    return;
+  }
+
+  // In giá trị ra Serial Monitor (debug)
+  Serial.print("Nhiệt độ: ");
+  Serial.print(temperature);
+  Serial.print("°C | Độ ẩm: ");
+  Serial.print(humidity);
+  Serial.println("%");
+
+  // Gửi dữ liệu lên Blynk (Virtual Pin V2, V3)
+  Blynk.virtualWrite(V2, temperature);
+  Blynk.virtualWrite(V3, humidity);
+}
+
 void NonBlocking_Traffic_Light_TM1637()
 {
-  if (!blueButtonON) return;
+  if (!blueButtonON)
+    return;
 
   if (IsReady(ledTimeStart, (currentLED == rLED ? rTIME : (currentLED == gLED ? gTIME : yTIME))))
   {
@@ -109,11 +140,11 @@ void NonBlocking_Traffic_Light_TM1637()
       currentLED = yLED;
     else
       currentLED = rLED;
-    
+
     digitalWrite(currentLED, HIGH);
     tmCounter = (currentLED == rLED ? rTIME : (currentLED == gLED ? gTIME : yTIME)) / 1000 - 1;
   }
-  
+
   if (IsReady(ledTimeStart, 1000))
     display.showNumberDec(tmCounter--, true, 2, 2);
 }
@@ -124,19 +155,23 @@ bool isDark()
   static uint16_t lastValue = 0;
   static bool bDark = false;
 
-  if (!IsReady(darkTimeStart, 50)) return bDark;
+  if (!IsReady(darkTimeStart, 50))
+    return bDark;
 
   uint16_t value = analogRead(ldrPIN);
-  if (value == lastValue) return bDark;
+  if (value == lastValue)
+    return bDark;
 
   if (value < darkThreshold)
   {
-    if (!bDark && blueButtonON) digitalWrite(currentLED, LOW);
+    if (!bDark && blueButtonON)
+      digitalWrite(currentLED, LOW);
     bDark = blueButtonON;
   }
   else
   {
-    if (bDark) digitalWrite(yLED, LOW);
+    if (bDark)
+      digitalWrite(yLED, LOW);
     bDark = false;
   }
   lastValue = value;
@@ -145,12 +180,14 @@ bool isDark()
 
 void YellowLED_Blink()
 {
-  if (!blueButtonON) return;
+  if (!blueButtonON)
+    return;
 
   static ulong yLedStart = 0;
   static bool isON = false;
 
-  if (!IsReady(yLedStart, 1000)) return;
+  if (!IsReady(yLedStart, 1000))
+    return;
   digitalWrite(yLED, isON ? LOW : HIGH);
   isON = !isON;
 }
@@ -160,12 +197,15 @@ void updateBlueButton()
   static ulong lastTime = 0;
   static int lastValue = HIGH;
 
-  if (!IsReady(lastTime, 50)) return;
+  if (!IsReady(lastTime, 50))
+    return;
 
   int v = digitalRead(btnBLED);
-  if (v == lastValue) return;
+  if (v == lastValue)
+    return;
   lastValue = v;
-  if (v == LOW) return;
+  if (v == LOW)
+    return;
 
   blueButtonON = !blueButtonON;
 
@@ -185,7 +225,8 @@ void uptimeBlynk()
   static ulong lastTime = 0;
   static ulong runTime = 0;
 
-  if (!IsReady(lastTime, 1000)) return;
+  if (!IsReady(lastTime, 1000))
+    return;
 
   if (blueButtonON)
   {
