@@ -48,8 +48,8 @@ const char *botToken = "7958454010:AAGYkVfTHc-FgAg-YqOMgIo5CR-DRgvMB-I";
 const char *chatID = "-4717614518";
 
 // Trần Văn Minh Nhật
-#define BOTtoken "7467700827:AAG5Jr3HcVMIdNTKWF4_DBsQXK0BnncU0dM" // your Bot Token (Get from Botfather)
-#define GROUP_ID "-4725634280"
+const char *botToken = "7467700827:AAG5Jr3HcVMIdNTKWF4_DBsQXK0BnncU0dM";
+const char *chatID = "-4725634280";
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(botToken, client);
