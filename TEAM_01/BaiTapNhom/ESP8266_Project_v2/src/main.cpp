@@ -1,7 +1,10 @@
 #define BLYNK_TEMPLATE_ID "TMPL6edj9LqxJ"
 #define BLYNK_TEMPLATE_NAME "TeamProject02"
 #define BLYNK_AUTH_TOKEN "w1ceRxYKYOJ6IVG_54mUkTdrNtkVONOR"
-
+//NKN
+//HKK
+//PP
+//LNL
 
 #include <Arduino.h>
 #include "utils.h"
