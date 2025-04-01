@@ -20,8 +20,8 @@
 
 #include <BlynkSimpleEsp8266.h>
 
-char ssid[] = "Family Ri gold_5G";  //Tên mạng WiFi
-char pass[] = "centurygold12345";  //Mật khẩu mạng WiFi
+char ssid[] = "CNTT-MMT";  //Tên mạng WiFi
+char pass[] = "13572468";  //Mật khẩu mạng WiFi
 
 // 🔗 Token của Telegram Bot (lấy từ BotFather)
 #define BOTtoken "7511280600:AAGH0_yT3YVbBhdzsufSaLprwsPPoCQvmUs"
@@ -42,23 +42,6 @@ char pass[] = "centurygold12345";  //Mật khẩu mạng WiFi
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
 
-// 📝 Định dạng chuỗi theo C-Style
-String StringFormat(const char* fmt, ...) {
-  va_list vaArgs;
-  va_start(vaArgs, fmt);
-  va_list vaArgsCopy;
-  va_copy(vaArgsCopy, vaArgs);
-  const int iLen = vsnprintf(NULL, 0, fmt, vaArgsCopy);
-  va_end(vaArgsCopy);
-  int iSize = iLen + 1;
-  char* buff = (char*)malloc(iSize);
-  vsnprintf(buff, iSize, fmt, vaArgs);
-  va_end(vaArgs);
-  String s = buff;
-  free(buff);
-  return String(s);
-}
-
 // Khởi tạo OLED SH1106
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
@@ -71,6 +54,10 @@ float humidity = 0.0;
 
 bool botActive = true;
 bool motionDetected = false;
+
+unsigned long lastAlertTime = 0;  // Lưu thời gian gửi cảnh báo
+unsigned long alertInterval = 300000;  // 5 phút = 300000 ms (5 * 60 * 1000)
+
 
 // Hàm tạo số ngẫu nhiên trong khoảng min-max
 float randomFloat(float minVal, float maxVal) {
@@ -151,6 +138,50 @@ void checkSwitch() {
 
     lastSwitchState = currentSwitchState;
 }
+
+void checkHealthAlerts() {
+  unsigned long currentMillis = millis();
+  
+  if (currentMillis - lastAlertTime >= alertInterval) {
+      lastAlertTime = currentMillis;
+
+      // Kiểm tra ngưỡng nhiệt độ
+      String tempAlert = "";
+      if (temperature < 10.0) {
+          tempAlert = "🔥 Nguy cơ hạ thân nhiệt, tê cóng, giảm miễn dịch.";
+      } else if (temperature >= 10.0 && temperature <= 15.0) {
+          tempAlert = "🔥 Cảm giác lạnh, tăng nguy cơ mắc bệnh đường hô hấp.";
+      } else if (temperature > 35.0) {
+          tempAlert = "🔥 Nguy cơ sốc nhiệt, chuột rút, say nắng.";
+      } else if (temperature > 40.0) {
+          tempAlert = "🔥 Cực kỳ nguy hiểm, có thể gây suy nội tạng, đột quỵ nhiệt.";
+      }
+
+      // Kiểm tra ngưỡng độ ẩm
+      String humAlert = "";
+      if (humidity < 30.0) {
+          humAlert = "💦 Da khô, kích ứng mắt, tăng nguy cơ mắc bệnh về hô hấp (viêm họng, khô mũi).";
+      } else if (humidity > 70.0) {
+          humAlert = "💦 Tăng nguy cơ nấm mốc, vi khuẩn phát triển, gây bệnh về đường hô hấp.";
+      } else if (humidity > 80.0) {
+          humAlert = "💦 Cảm giác oi bức, khó thở, cơ thể khó thoát mồ hôi, tăng nguy cơ sốc nhiệt.";
+      }
+
+      // Nếu có cảnh báo, gửi tin nhắn Telegram
+      if (tempAlert != "" || humAlert != "") {
+          String message = "🚨 Cảnh báo sức khỏe:\n";
+          if (tempAlert != "") {
+              message += "🔥 Nhiệt độ: " + String(temperature) + " °C - " + tempAlert + "\n";
+          }
+          if (humAlert != "") {
+              message += "💦 Độ ẩm: " + String(humidity) + " % - " + humAlert + "\n";
+          }
+          bot.sendMessage(GROUP_ID, message, "Markdown");
+          Serial.println("✅ Đã gửi cảnh báo đến Telegram!");
+      }
+  }
+}
+
 
 // Xử lý tin nhắn từ Telegram
 void handleNewMessages(int numNewMessages) {
@@ -290,6 +321,7 @@ void loop() {
     updateTrafficLight();
     updateDHT();
     updateOLED();
+    checkHealthAlerts();  // Kiểm tra và gửi cảnh báo sức khỏe
     static uint count_ = 0;
 
   if (motionDetected) {
