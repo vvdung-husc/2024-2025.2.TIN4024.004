@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "author": "Nguyễn Trần Viết Thắng",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht",
+      "top": 100,
+      "left": 100,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay",
+      "top": 200,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "fan",
+      "top": 300,
+      "left": 50,
+      "attrs": { "color": "blue" }
+    }
+  ],
+  "connections": [
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []],
+    ["esp:GND", "dht:GND", "black", []],
+    ["esp:3V3", "dht:VCC", "red", []],
+    ["esp:4", "dht:SDA", "green", []],
+    ["esp:GND", "relay:GND", "black", []],
+    ["esp:5V", "relay:VCC", "red", []],
+    ["esp:5", "relay:IN", "green", []],
+    ["relay:NO", "fan:A", "blue", []],
+    ["fan:C", "esp:GND", "black", []]
+  ],
+  "dependencies": {}
+}
