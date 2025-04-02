@@ -51,6 +51,10 @@ const char *chatID = "-4717614518";
 const char *botToken = "7467700827:AAG5Jr3HcVMIdNTKWF4_DBsQXK0BnncU0dM";
 const char *chatID = "-4725634280";
 
+// Trần Văn Thanh
+const char *botToken = "7728068416:AAHePsQskzj7w4OKOUb_hBZQJz5P_w3DX1g";
+const char *chatID = "-4725634280";
+
 WiFiClientSecure client;
 UniversalTelegramBot bot(botToken, client);
 
