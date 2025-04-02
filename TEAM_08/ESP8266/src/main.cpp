@@ -1,7 +1,21 @@
 // ======= BLYNK IOT =======
+/* Le Quang Vu */
 #define BLYNK_TEMPLATE_ID "TMPL6dJK4ixVG"
 #define BLYNK_TEMPLATE_NAME "ESP8266 Project"
 #define BLYNK_AUTH_TOKEN "uYjkAWgSNUR1idW_e9I5aL7vmndYmonD"
+
+
+/* Nguyen  Duc Nhuan 
+#define BLYNK_TEMPLATE_ID "TMPL6fwjhHJe3"
+#define BLYNK_TEMPLATE_NAME "ESP8266Nhuan"
+#define BLYNK_AUTH_TOKEN "Tg4h_AKlRE_Pqw0znNiDUROtJ25p0r0z"
+*/
+
+/* Lê Văn Bùi
+#define BLYNK_TEMPLATE_ID "TMPL6PnTyjtcJ"
+#define BLYNK_TEMPLATE_NAME "New Template"
+#define BLYNK_AUTH_TOKEN "2rojMKKtn5U2w7IXUhiFLICHfyLDjMtj"
+*/
 
 #include <BlynkSimpleEsp8266.h>
 #include <ESP8266WiFi.h>

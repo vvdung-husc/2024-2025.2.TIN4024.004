@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../DinhVietTin"
+		},
+		{
+			"name": "ESP8266_Blynk_Telegram",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
