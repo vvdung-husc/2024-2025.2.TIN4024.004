@@ -6,12 +6,12 @@
 #include <UniversalTelegramBot.h>
 
 // Thông tin Blynk
-//Nguyễn Trần Viết Thắng
+// Nguyễn Trần Viết Thắng
 #define BLYNK_TEMPLATE_ID "TMPL61bYE-l65"
 #define BLYNK_TEMPLATE_NAME "ESP8266BlynkTele"
 #define BLYNK_AUTH_TOKEN "5KUjzDBJEUFuI-cDkeTE-A3ziMAvZMQE"
 
-//TRần Văn Minh Nhật
+// Trần Văn Minh Nhật
 #define BLYNK_TEMPLATE_ID "TMPL6rKfVu6HP"
 #define BLYNK_TEMPLATE_NAME "ESMART"
 #define BLYNK_AUTH_TOKEN "NVohCxt35pdmPIROGthShHSki6xWgVdf"
@@ -26,13 +26,13 @@
 #include <BlynkSimpleEsp8266.h>
 
 // Wokwi sử dụng mạng WiFi "Wokwi-GUEST" không cần mật khẩu cho việc chạy mô phỏng
-char ssid[] = "Wokwi-GUEST"; // Tên mạng WiFi
-char pass[] = "";            // Mật khẩu mạng WiFi
+char ssid[] = "ANH KAFE"; // Tên mạng WiFi
+char pass[] = "13572468"; // Mật khẩu mạng WiFi
 
 // Cấu hình phần cứng
-#define gPIN 15  // LED xanh
-#define yPIN 2   // LED vàng
-#define rPIN 5   // LED đỏ
+#define gPIN 15 // LED xanh
+#define yPIN 2  // LED vàng
+#define rPIN 5  // LED đỏ
 #define dhtPIN 16
 #define dhtTYPE DHT11
 #define OLED_SDA 13
@@ -42,11 +42,18 @@ char pass[] = "";            // Mật khẩu mạng WiFi
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
 DHT dht(dhtPIN, dhtTYPE);
 
-
 // Thông tin Telegram
-//Nguyễn Trần Viết Thắng
-const char* botToken = "7958454010:AAGYkVfTHc-FgAg-YqOMgIo5CR-DRgvMB-I";
-const char* chatID = "-4717614518";
+// Nguyễn Trần Viết Thắng
+const char *botToken = "7958454010:AAGYkVfTHc-FgAg-YqOMgIo5CR-DRgvMB-I";
+const char *chatID = "-4717614518";
+
+// Trần Văn Minh Nhật
+const char *botToken = "7467700827:AAG5Jr3HcVMIdNTKWF4_DBsQXK0BnncU0dM";
+const char *chatID = "-4725634280";
+
+// Trần Văn Thanh
+const char *botToken = "7728068416:AAHePsQskzj7w4OKOUb_hBZQJz5P_w3DX1g";
+const char *chatID = "-4725634280";
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(botToken, client);
@@ -71,7 +78,8 @@ void setup()
 
   // Kiểm tra kết nối WiFi
   Serial.print("Đang kết nối WiFi...");
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED)
+  {
     Serial.print(".");
     delay(500);
   }
@@ -92,12 +100,14 @@ void setup()
 void updateDHT()
 {
   static ulong lastTimer = 0;
-  if (!IsReady(lastTimer, 10000)) return;
+  if (!IsReady(lastTimer, 10000))
+    return;
 
   float h = dht.readHumidity();
   float t = dht.readTemperature();
 
-  if (isnan(h) || isnan(t)) {
+  if (isnan(h) || isnan(t))
+  {
     Serial.println("⚠️ Không thể đọc cảm biến DHT!");
     return;
   }
@@ -106,7 +116,8 @@ void updateDHT()
   Blynk.virtualWrite(V2, h);
 
   static ulong lastTimeTele = 0;
-  if (!IsReady(lastTimeTele, 300000)) return;
+  if (!IsReady(lastTimeTele, 300000))
+    return;
 
   bot.sendMessage(chatID, StringFormat("🌡 Nhiệt độ: %.2f°C", t));
   bot.sendMessage(chatID, StringFormat("💧 Độ ẩm: %.2f%%", h));
@@ -115,15 +126,16 @@ void updateDHT()
 void checkTelegramMessages()
 {
   int messageCount = bot.getUpdates(bot.last_message_received + 1);
-  if (messageCount == 0) return;
-  
+  if (messageCount == 0)
+    return;
+
   while (messageCount)
   {
     for (int i = 0; i < messageCount; i++)
     {
       String text = bot.messages[i].text;
       Serial.println("📩 Tin nhắn từ Telegram: " + text);
-      
+
       if (text == "/traffic_off")
       {
         digitalWrite(gPIN, LOW);
