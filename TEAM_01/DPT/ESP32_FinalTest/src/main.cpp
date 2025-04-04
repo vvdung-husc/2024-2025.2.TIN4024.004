@@ -33,13 +33,12 @@ bool manualFanState = false; // Trạng thái quạt trong chế độ thủ cô
 
 void setup() {
   Serial.begin(115200);
-  pinMode(BUTTONPIN, INPUT);
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);  // Kết nối Blynk
   dht.begin();
 
   pinMode(RELAYPIN, OUTPUT);
   pinMode(LEDPIN, OUTPUT);
-  pinMode(BUTTONPIN, INPUT_PULLUP); // Sử dụng điện trở nội
+  pinMode(BUTTONPIN, INPUT); // Sử dụng điện trở nội
 
   digitalWrite(RELAYPIN, HIGH); // Tắt quạt ban đầu
   digitalWrite(LEDPIN, LOW);    // LED tắt ban đầu
@@ -83,20 +82,14 @@ void sendTemperature() {
     return;
   }
 
-  bool isFanOn;
-
-  if (isManualMode) {
-    isFanOn = manualFanState; // Nếu đang ở chế độ thủ công, giữ nguyên trạng thái quạt
-  } else {
-    isFanOn = (t > thresholdTemperature); // Chế độ tự động theo nhiệt độ
-  }
+  bool isFanOn = isManualMode ? manualFanState : (t > thresholdTemperature);
 
   digitalWrite(RELAYPIN, isFanOn ? HIGH : LOW);
   digitalWrite(LEDPIN, isFanOn ? HIGH : LOW);
 
   // 🔥 Thông báo trạng thái quạt
   Serial.print(isFanOn ? "🔥 Quạt đang bật." : "❄️ Quạt đang tắt.");
-  Serial.println(isManualMode ? " (Chế độ thủ công)" : " (Chế độ tự động)");
+  Serial.println(isManualMode ? " (Thủ công)" : " (Tự động)");
 
   Serial.print("🌡 Nhiệt độ: ");
   Serial.print(t);
@@ -107,23 +100,24 @@ void sendTemperature() {
   Blynk.virtualWrite(V1, isFanOn);  // Gửi trạng thái quạt lên V1
 }
 
+
 // 🔹 Kiểm tra nút nhấn để chuyển chế độ
 void checkButton() {
   static bool lastButtonState = HIGH;
   bool buttonState = digitalRead(BUTTONPIN);
 
-  if (buttonState == LOW && lastButtonState == HIGH) { // Nhấn nút
+  if (buttonState == LOW && lastButtonState == HIGH) { // Khi nhấn nút
     delay(50); // Chống rung nút nhấn
     if (digitalRead(BUTTONPIN) == LOW) { 
-      isManualMode = !isManualMode; // Chuyển chế độ
-      if (isManualMode) {
-        manualFanState = !manualFanState; // Nếu chuyển sang thủ công, đảo trạng thái quạt
-      }
-      Serial.println(isManualMode ? "🔄 Chuyển sang chế độ thủ công" : "🔄 Chuyển sang chế độ tự động");
+      isManualMode = !isManualMode; // Đảo chế độ
+      manualFanState = isManualMode ? !manualFanState : false; // Bật quạt nếu vào chế độ thủ công
+      Serial.println(isManualMode ? "🔄 Chế độ THỦ CÔNG" : "🔄 Chế độ TỰ ĐỘNG");
+      Blynk.virtualWrite(V2, isManualMode); // Gửi trạng thái lên Blynk
     }
   }
   lastButtonState = buttonState;
 }
+
 
 void loop() {
   Blynk.run();         // Chạy Blynk

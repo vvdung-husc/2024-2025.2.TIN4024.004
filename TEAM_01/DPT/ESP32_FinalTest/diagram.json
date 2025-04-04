@@ -24,7 +24,6 @@
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
-    [ "btn1:1.l", "esp:GND.2", "black", [ "h-48" ] ],
     [ "btn1:2.l", "esp:23", "blue", [ "h0" ] ],
     [ "led1:C", "esp:GND.3", "black", [ "v9.6", "h0.4" ] ],
     [ "led1:A", "esp:21", "blue", [ "v0" ] ],
@@ -33,7 +32,8 @@
     [ "dht1:SDA", "esp:16", "green", [ "v19.2", "h-86.3", "v-76.8" ] ],
     [ "relay1:VCC", "esp:3V3", "red", [ "h0" ] ],
     [ "relay1:GND", "esp:GND.3", "black", [ "h-48", "v124.4" ] ],
-    [ "relay1:IN", "esp:22", "green", [ "h-38.4", "v76.6" ] ]
+    [ "relay1:IN", "esp:22", "green", [ "h-38.4", "v76.6" ] ],
+    [ "btn1:1.l", "esp:GND.2", "black", [ "h0" ] ]
   ],
   "dependencies": {}
 }
