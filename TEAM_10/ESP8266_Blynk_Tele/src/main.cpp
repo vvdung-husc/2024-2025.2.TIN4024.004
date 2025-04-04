@@ -26,8 +26,8 @@
 #include <BlynkSimpleEsp8266.h>
 
 // Wokwi sử dụng mạng WiFi "Wokwi-GUEST" không cần mật khẩu cho việc chạy mô phỏng
-char ssid[] = "Wokwi-GUEST"; // Tên mạng WiFi
-char pass[] = "";            // Mật khẩu mạng WiFi
+char ssid[] = "ANH KAFE"; // Tên mạng WiFi
+char pass[] = "13572468"; // Mật khẩu mạng WiFi
 
 // Cấu hình phần cứng
 #define gPIN 15 // LED xanh
@@ -49,6 +49,10 @@ const char *chatID = "-4717614518";
 
 // Trần Văn Minh Nhật
 const char *botToken = "7467700827:AAG5Jr3HcVMIdNTKWF4_DBsQXK0BnncU0dM";
+const char *chatID = "-4725634280";
+
+// Trần Văn Thanh
+const char *botToken = "7728068416:AAHePsQskzj7w4OKOUb_hBZQJz5P_w3DX1g";
 const char *chatID = "-4725634280";
 
 WiFiClientSecure client;
