@@ -225,7 +225,8 @@ void loop() {
     // Hiển thị trạng thái lên Serial
     displayStatusToSerial(temp); // Hiển thị trạng thái hệ thống trên Serial
   }
-
+  
+  // Blynk
   if (currentMillis - lastBlynkSend >= intervalBlynk) {
     lastBlynkSend = currentMillis;
     sendSensorDataToBlynk();
