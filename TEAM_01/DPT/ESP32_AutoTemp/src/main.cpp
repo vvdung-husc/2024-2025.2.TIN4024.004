@@ -179,20 +179,30 @@ void displayStatusToSerial(float temp) {
   Serial.println(relayTemp_State ? "ON" : "OFF"); // Hiển thị ON/OFF
   Serial.println("=========================="); // In dòng ngăn cách
 }
-
+// Hàm gửi dữ liệu lên Blynk
 void sendSensorDataToBlynk() {
   float temp = dht.readTemperature();
   Blynk.virtualWrite(V0, temp); // V0 là widget nhiệt độ trên app
+  Blynk.virtualWrite(V1, Mode_State ? 1 : 0); // Cập nhật chế độ
+  Blynk.virtualWrite(V2, relayTemp_State ? 1 : 0); // Cập nhật trạng thái relay
 }
-BLYNK_WRITE(V2)  // V1 là widget nút bật/tắt relay
-{
-  if (!Mode_State) { // Chỉ cho phép điều khiển khi đang ở HAND
-    int value = param.asInt();
-    relayTemp_State = value;
+// Điều khiển chuyển đổi chế độ (AUTO/HAND) từ app Blynk
+BLYNK_WRITE(V1) {
+  int mode = param.asInt(); // Lấy giá trị từ app (0 hoặc 1)
+  Mode_State = (mode == 1); // Nếu 1 thì AUTO, 0 là HAND
+  digitalWrite(LED, Mode_State ? HIGH : LOW); // Cập nhật LED báo hiệu
+}
+
+// Điều khiển bật/tắt relay nhiệt độ từ app Blynk (chỉ hoạt động khi HAND)
+BLYNK_WRITE(V2) {
+  if (!Mode_State) { // Chỉ cho phép khi ở chế độ HAND
+    int value = param.asInt(); // Lấy trạng thái nút từ app
+    relayTemp_State = (value == 1);
     digitalWrite(relay_temp, relayTemp_State ? HIGH : LOW);
   }
 }
-
+unsigned long lastBlynkSend = 0;
+const long intervalBlynk = 1000;
 
 // Vòng lặp chính
 void loop() {
@@ -214,5 +224,10 @@ void loop() {
 
     // Hiển thị trạng thái lên Serial
     displayStatusToSerial(temp); // Hiển thị trạng thái hệ thống trên Serial
+  }
+
+  if (currentMillis - lastBlynkSend >= intervalBlynk) {
+    lastBlynkSend = currentMillis;
+    sendSensorDataToBlynk();
   }
 }
