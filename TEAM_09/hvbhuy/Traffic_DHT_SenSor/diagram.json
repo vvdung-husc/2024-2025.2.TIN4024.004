@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "author": "Huy Hoàng Võ Bá",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 19.2, "left": -129.56, "attrs": {} },
+      { "type": "wokwi-dht22", "id": "dht1", "top": 125.1, "left": 244.2, "attrs": {} },
+      {
+        "type": "wokwi-led",
+        "id": "led1",
+        "top": 63.6,
+        "left": 4.2,
+        "attrs": { "color": "limegreen", "flip": "1" }
+      },
+      {
+        "type": "wokwi-pushbutton",
+        "id": "btn1",
+        "top": 25.4,
+        "left": 38.4,
+        "attrs": { "color": "blue", "xray": "1" }
+      },
+      {
+        "type": "wokwi-tm1637-7segment",
+        "id": "sevseg1",
+        "top": -96.04,
+        "left": 7.03,
+        "attrs": { "color": "red" }
+      }
+    ],
+    "connections": [
+      [ "esp:TX", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX", "$serialMonitor:TX", "", [] ],
+      [ "esp:GND.2", "btn1:1.l", "black", [ "v0" ] ],
+      [ "esp:23", "btn1:2.l", "green", [ "h0" ] ],
+      [ "led1:A", "esp:GND.3", "green", [ "v0" ] ],
+      [ "esp:5", "led1:C", "green", [ "h0" ] ],
+      [ "esp:GND.3", "sevseg1:GND", "black", [ "h220.8", "v-144" ] ],
+      [ "esp:5V", "sevseg1:VCC", "red", [ "v19.2", "h326.55", "v-288" ] ],
+      [ "esp:18", "sevseg1:DIO", "green", [ "h240", "v-182.4" ] ],
+      [ "esp:17", "sevseg1:CLK", "green", [ "h249.6", "v-211.2" ] ],
+      [ "esp:3V3", "dht1:VCC", "red", [ "h-19.05", "v230.4", "h403.2" ] ],
+      [ "esp:16", "dht1:SDA", "green", [ "h28.8", "v105.6", "h268.7" ] ],
+      [ "esp:GND.3", "dht1:GND", "black", [ "h19.2", "v201.6", "h297.6" ] ]
+    ],
+    "dependencies": {}
+  }

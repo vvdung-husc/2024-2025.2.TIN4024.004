@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/ACER/Downloads/iot/2024-2025.2.TIN4024.004/TEAM_00/vvdung/ESP32_DHT/src",
-      "program": "c:/Users/ACER/Downloads/iot/2024-2025.2.TIN4024.004/TEAM_00/vvdung/ESP32_DHT/src/build/Debug/outDebug",
+      "cwd": "d:/IoT/2024-2025.2.TIN4024.004/TEAM_07/nguyenquan12/ESP32_Blynk_Traffic_DHT_Sensor/src",
+      "program": "d:/IoT/2024-2025.2.TIN4024.004/TEAM_07/nguyenquan12/ESP32_Blynk_Traffic_DHT_Sensor/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

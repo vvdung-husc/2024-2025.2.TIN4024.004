@@ -35,6 +35,29 @@
       "name": "ESP32_BTN10_Traffic_Blynk",
       "path": "../../ESP32_BTN10_Traffic_Blynk"
     },
-  ],
-  "settings": {}
+    {
+      "name": "ESP8386_Project",
+      "path": "../../ESP8386_Project"
+    },
+    {
+      "name": "ESP8266_Project_Sensor",
+      "path": "../../ESP8266_Project_Sensor"
+    },
+    {
+      "name": "ESP32 Api",
+      "path": "../../ESP32 Api"
+    },
+    {
+      "name": "ESP32 Telegram Bot",
+      "path": "../../ESP32 Telegram Bot"
+    },
+    {
+      "name": "ESP8266_Project_Blynk",
+      "path": "../../ESP8266_Project_Blynk"
+    },
+    {
+      "name": "ESP32_SmartDevice",
+      "path": "../../ESP32_SmartDevice"
+    }
+  ]
 }
