@@ -18,16 +18,15 @@
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "aQGBGdJcaKBcCaIffVGqvrBWit6R62aC"
 
-//Nguyễn Anh Trí -21T1020772
-// #define BLYNK_TEMPLATE_NAME "ESMART"
-// #define BLYNK_AUTH_TOKEN "nQ6gH_tq8WhJwmHHS2laejOVytO_jg_H"
-// #define BLYNK_PRINT Serial
+// Nguyễn Anh Trí -21T1020772
+//  #define BLYNK_TEMPLATE_ID "TMPL60LJI06BG"
+//  #define BLYNK_TEMPLATE_NAME "ESMART"
+//  #define BLYNK_AUTH_TOKEN "0P0pw_Qgr8RObz-yaO3EB5JAc0yWxh-u"
 
 // Trần Quốc Hưng - 21T1020403
 // #define BLYNK_TEMPLATE_ID "TMPL6zx9_fQlK"
 // #define BLYNK_TEMPLATE_NAME "ESMART"
 // #define BLYNK_AUTH_TOKEN "hSeNSB8cA_yCm_WNtTMtKOZj4kUIPd0P"
-
 
 char ssid[] = "Wokwi-GUEST";
 char pass[] = "";
@@ -40,6 +39,7 @@ char pass[] = "";
 #define YELLOW_LED 26
 #define GREEN_LED 25
 #define BLUE_LED 21
+
 #define BUTTON_PIN 23
 #define LDR_PIN 32
 #define CLK 18
