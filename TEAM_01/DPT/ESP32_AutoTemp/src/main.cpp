@@ -7,7 +7,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <WiFi.h>
-#include <PubSubClient.h>
 #include <BlynkSimpleEsp32.h>
 
 // Định nghĩa các tham số màn hình OLED
@@ -54,7 +53,6 @@ const char* ssid = "Wokwi-GUEST";           // Tên mạng WiFi
 const char* password = "";                  // Mật khẩu WiFi (trong trường hợp này không cần)
 
 WiFiClient espClient;         // Khởi tạo đối tượng WiFiClient cho ESP32
-PubSubClient client(espClient);  // Khởi tạo đối tượng PubSubClient cho MQTT, sử dụng WiFiClient
 
 // Hàm kết nối WiFi
 void connectWiFi() 
@@ -67,28 +65,6 @@ void connectWiFi()
       Serial.print(".");  // In ra dấu "." trong khi chờ kết nối
     }
     Serial.println(" Connected!");  // Thông báo đã kết nối thành công
-}
-
-// Hàm điều khiển relay dựa trên dữ liệu nhận được từ MQTT
-void controlRelay(char* message) {
-    if (!Mode_State) {  // Chỉ cho phép điều khiển relay khi ở chế độ HAND (thủ công)
-      if (strcmp(message, "TEMP_ON") == 0) {
-        relayTemp_State = true;
-        digitalWrite(relay_temp, HIGH);  // Bật relay nhiệt độ
-      } else if (strcmp(message, "TEMP_OFF") == 0) {
-        relayTemp_State = false;
-        digitalWrite(relay_temp, LOW);   // Tắt relay nhiệt độ
-    }
-    
-    // Điều khiển chuyển đổi chế độ giữa AUTO và HAND
-    if (strcmp(message, "MODE_AUTO") == 0) {
-      Mode_State = true;    // Chuyển sang chế độ tự động
-      digitalWrite(LED, HIGH);  // Bật đèn LED báo chế độ AUTO
-    } else if (strcmp(message, "MODE_HAND") == 0) {
-      Mode_State = false;   // Chuyển sang chế độ thủ công
-      digitalWrite(LED, LOW);   // Tắt đèn LED báo chế độ HAND
-    }
-  }
 }
 
 // Ngắt ngoài để điều khiển relay (nhiệt độ)
