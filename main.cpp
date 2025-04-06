@@ -1,28 +1,11 @@
-//Nguyen Dinh Ngoc Bao
-// #define BLYNK_TEMPLATE_ID "TMPL6fjFNdL5O"
-// #define BLYNK_TEMPLATE_NAME "ESP8266Project"
-// #define BLYNK_AUTH_TOKEN "EqapOpB088ZJ2obRlqC0FFqewej-al3E"
-// #define BOT_TOKEN "7647186542:AAE51tLWwz_fQbT8ceTq5ZC2x4_lpd2VYug"
-// #define TELEGRAM_GROUP_ID "-4624526302" 
-// #define TELEGRAM_USER_ID "7647186542" 
+// nguyen van hieu
+#define BLYNK_TEMPLATE_ID "TMPL6i5USzWvb"
+#define BLYNK_TEMPLATE_NAME "ESP8266 telegram"
+#define BLYNK_AUTH_TOKEN "NjVY4u1wFmTGYqKb0mrN0fs9KQNokrP9"
+#define BOT_TOKEN "7809208164:AAFeDvOxo-zA4OxX17YiRBKIFedRXObkOIU"
+#define TELEGRAM_GROUP_ID "-13353552003" 
+#define TELEGRAM_USER_ID "6007917270" 
 
-//Nguyen Huu Phuoc
-#define BLYNK_TEMPLATE_ID "TMPL6SgBJeLiw"
-#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
-#define BLYNK_AUTH_TOKEN "4XAvaz1jYQUtEY4FCXNTpjJ0fnIBUXcz"
-#define BOT_TOKEN "7549316952:AAE0fPPZhIhfTWRJBh9fzrZ9UHSr46hlnw0"
-#define TELEGRAM_GROUP_ID "-4690743789" 
-#define TELEGRAM_USER_ID "7835748681"
-
-
-//Phan Bá Dân
-
-#define BLYNK_TEMPLATE_ID "TMPL6-GCFqGVh"
-#define BLYNK_TEMPLATE_NAME "ESP8266 Project"
-#define BLYNK_AUTH_TOKEN "ble4eJLaOdlVPWzk_1iXPuGvkU_S4Uby"
-#define BOT_TOKEN "7551854688:AAG3MFPiyLVJpm2a2Mij-I2Qw7Yvac3LDws"
-#define TELEGRAM_GROUP_ID "-1002260132003" 
-#define TELEGRAM_USER_ID "5307641277" 
 
 
 #include <Arduino.h>
@@ -148,7 +131,7 @@ void ReadSensorData()
 
   if (temperatureVal != temperature)
   {
-    shouldUpdate = true;
+shouldUpdate = true;
     temperatureVal = temperature;
     Serial.print("Temperature: ");
     Serial.print(temperature);
