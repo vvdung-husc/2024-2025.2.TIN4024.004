@@ -1,4 +1,4 @@
-// Nguyễn Thị Bảo Ngọc
+// Đinh Viết Tín 
 #define BLYNK_TEMPLATE_ID "TMPL6dnv6jqMP"
 #define BLYNK_TEMPLATE_NAME "ESP8266 Blynk Telegram"
 #define BLYNK_AUTH_TOKEN "PVSrkog9yqc_F7CtlpAuuMH7aJYxBA0Z"
