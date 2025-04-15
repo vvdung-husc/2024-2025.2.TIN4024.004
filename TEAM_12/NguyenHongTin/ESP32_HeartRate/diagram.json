@@ -1,28 +1,43 @@
 {
   "version": 1,
-  "author": "Anonymous maker",
+  "author": "Nguyen Hong Tin",
   "editor": "wokwi",
   "parts": [
-    { "type": "wokwi-esp32-devkit-v1", "id": "esp1", "top": -33.7, "left": -120.2, "attrs": {} },
-    { "type": "wokwi-mpu6050", "id": "imu1", "top": 42.22, "left": 127.12, "attrs": {} },
     {
-      "type": "wokwi-lcd1602",
-      "id": "lcd1",
-      "top": 169.6,
-      "left": 53.6,
-      "attrs": { "pins": "i2c" }
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-max30100",
+      "id": "max30100",
+      "top": 150,
+      "left": 150,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-ssd1306",
+      "id": "oled",
+      "top": 150,
+      "left": 300,
+      "attrs": {
+        "i2cAddress": "0x3C"
+      }
     }
   ],
   "connections": [
-    [ "lcd1:GND", "esp1:GND.1", "black", [ "h-9.6", "v-86.4", "h-67.2" ] ],
-    [ "lcd1:VCC", "esp1:3V3", "red", [ "h0" ] ],
-    [ "lcd1:SDA", "esp1:D21", "green", [ "h-57.6", "v-191.8" ] ],
-    [ "lcd1:SCL", "esp1:D22", "green", [ "h-57.6", "v-230.1" ] ],
-    [ "imu1:VCC", "esp1:VIN", "red", [ "v105.6", "h-182.32", "v67.2", "h-163.2", "v-96" ] ],
-    [ "imu1:GND", "esp1:GND.2", "black", [ "v76.8", "h-182.32", "v57.6", "h-144", "v-67.2" ] ],
-    [ "imu1:SCL", "esp1:D22", "green", [ "v-19.2", "h-163.12", "v-19.2" ] ],
-    [ "imu1:SDA", "esp1:D21", "green", [ "v-28.8", "h-124.72", "v19.2" ] ],
-    [ "imu1:XDA", "imu1:XCL", "green", [ "v0" ] ]
-  ],
-  "dependencies": {}
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "esp:3V3", "max30100:VIN", "red", [] ],
+    [ "esp:GND", "max30100:GND", "black", [] ],
+    [ "esp:D22", "max30100:SCL", "blue", [] ],
+    [ "esp:D21", "max30100:SDA", "green", [] ],
+    [ "esp:D4", "max30100:INT", "yellow", [] ],
+    [ "esp:3V3", "oled:VCC", "red", [] ],
+    [ "esp:GND", "oled:GND", "black", [] ],
+    [ "esp:D22", "oled:SCL", "blue", [] ],   
+    [ "esp:D21", "oled:SDA", "green", [] ]  
+  ]
 }

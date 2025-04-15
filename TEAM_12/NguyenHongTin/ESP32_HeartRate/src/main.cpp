@@ -1,53 +1,59 @@
+#define BLYNK_TEMPLATE_ID "TMPL6YbDEEebI"
+#define BLYNK_TEMPLATE_NAME "GIAM SAT NHIP TIM"
+#define BLYNK_AUTH_TOKEN "Bba6vzmeMKW2rIBxJFByxHRdmyqty9Po"
+
 #include <Wire.h>
-#include "MAX30100_PulseOximeter.h"
-#include <LiquidCrystal_I2C.h>
+#include <MAX30100_PulseOximeter.h>
+#include <WiFi.h>
+#include <BlynkSimpleEsp32.h>
 
 #define REPORTING_PERIOD_MS 1000
 
-PulseOximeter pox;
-LiquidCrystal_I2C lcd(0x27, 16, 2);  // Địa chỉ LCD 0x27, 16 cột, 2 dòng
+char ssid[] = "Wokwi-GUEST";
+char pass[] = "";
+char auth[] = BLYNK_AUTH_TOKEN;
 
+PulseOximeter pox;
 uint32_t tsLastReport = 0;
 
-void onBeatDetected()
-{
-    Serial.println("Phát hiện nhịp tim!");
+void onBeatDetected() {
+  Serial.println("Beat detected");
 }
 
-void setup()
-{
-    Serial.begin(115200);
-    lcd.init();  // Khởi tạo LCD
-    lcd.backlight();
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
 
-    if (!pox.begin()) {
-        Serial.println("Lỗi cảm biến nhịp tim!");
-        lcd.print("Loi cam bien nhip tim!");
-    } else {
-        Serial.println("Cảm biến OK!");
-        lcd.print("Cam bien OK!");
-    }
+  WiFi.begin(ssid, pass);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
 
-    pox.setOnBeatDetectedCallback(onBeatDetected);
-    pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA);
+  Blynk.begin(auth, ssid, pass);
+
+  if (!pox.begin()) {
+    while (1);
+  }
+
+  pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA);
+  pox.setOnBeatDetectedCallback(onBeatDetected);
 }
 
-void loop()
-{
-    pox.update();
+void loop() {
+  Blynk.run();
+  pox.update();
 
-    if (millis() - tsLastReport > REPORTING_PERIOD_MS) {
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Nhip tim: ");
-        lcd.print(pox.getHeartRate());
-        lcd.print(" bpm");
+  if (millis() - tsLastReport > REPORTING_PERIOD_MS) {
+    tsLastReport = millis();
+    float bpm = pox.getHeartRate();
+    float spo2 = pox.getSpO2();
 
-        lcd.setCursor(0, 1);
-        lcd.print("Oxy: ");
-        lcd.print(pox.getSpO2());
-        lcd.print("%");
+    Serial.print("Heart rate: ");
+    Serial.print(bpm);
+    Serial.print(" bpm | SpO2: ");
+    Serial.println(spo2);
 
-        tsLastReport = millis();
-    }
+    Blynk.virtualWrite(V0, bpm);
+    Blynk.virtualWrite(V1, spo2);
+  }
 }
