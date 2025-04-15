@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "author": "Đỗ Khánh",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+      {
+        "type": "wokwi-pir-motion-sensor",
+        "id": "pir1",
+        "top": -120.8,
+        "left": -199.38,
+        "attrs": {}
+      }
+    ],
+    "connections": [
+      [ "esp:TX", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX", "$serialMonitor:TX", "", [] ],
+      [ "esp:3V3", "pir1:VCC", "red", [ "h-14.21", "v67.2", "h-153.6" ] ],
+      [ "pir1:GND", "esp:GND.1", "black", [ "v0" ] ],
+      [ "pir1:OUT", "esp:27", "green", [ "v0" ] ]
+    ],
+    "dependencies": {}
+  }
