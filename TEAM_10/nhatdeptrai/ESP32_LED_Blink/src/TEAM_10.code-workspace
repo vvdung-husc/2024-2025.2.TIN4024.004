@@ -56,8 +56,8 @@
       "path": "../../ESP8266_Project_Blynk"
     },
     {
-      "name": "ESP32_SmartDevice",
-      "path": "../../ESP32_SmartDevice"
+      "name": "SmartDevice_Wifi",
+      "path": "../../SmartDevice_Wifi"
     }
   ]
 }
