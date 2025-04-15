@@ -6,6 +6,14 @@
 #define TELEGRAM_GROUP_ID "-4649779262"  // ID nhóm Telegram
 #define TELEGRAM_USER_ID "6820377651"  // ID người dùng Telegram
 
+//Nguyễn Hồng Tín
+// #define BLYNK_TEMPLATE_ID "TMPL6gvTK8l4f"
+// #define BLYNK_TEMPLATE_NAME "Esp8266 Project"
+// #define BLYNK_AUTH_TOKEN "C3yJRyRTKnbnlrfL9d-rMAUq8Vhho9fu"
+// #define BOT_TOKEN "7724534897:AAEoPPPu3U9kTZ7_pE6rpL6Us0Nd-EfuypI"
+// #define TELEGRAM_GROUP_ID "-2697080811"
+// #define TELEGRAM_USER_ID "1333147355"
+
 #include <Arduino.h>
 #include "utils.h"
 #include <Adafruit_Sensor.h>
