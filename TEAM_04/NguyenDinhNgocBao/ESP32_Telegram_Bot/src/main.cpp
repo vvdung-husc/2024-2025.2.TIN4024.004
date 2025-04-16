@@ -9,9 +9,9 @@ const char* ssid = "Wokwi-GUEST";
 const char* password = "";
 
 // Initialize Telegram BOT
-#define BOTtoken "7647186542:AAE51tLWwz_fQbT8ceTq5ZC2x4_lpd2VYug"// your Bot Token (Get from Botfather)
+#define BOTtoken "7552941863:AAF4JEcQjticYybpI5rjdTqwqTuKV5zysqk"// your Bot Token (Get from Botfather)
 
-#define GROUP_ID "-4624526302"
+#define GROUP_ID "-1002362695474"
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);

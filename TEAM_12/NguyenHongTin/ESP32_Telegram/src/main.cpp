@@ -18,7 +18,6 @@ const char* password = "";
 
 // Initialize Telegram BOT
 #define BOTtoken "7724534897:AAEoPPPu3U9kTZ7_pE6rpL6Us0Nd-EfuypI"  // your Bot Token (Get from Botfather)
-#define CHAT_ID "1333147355"
 // Dùng ChatGPT để nhờ hướng dẫn tìm giá trị GROUP_ID này
 #define GROUP_ID "-2697080811" //thường là một số âm
 
