@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "author": "DPT",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+      { "type": "wokwi-hc-sr04", "id": "ultrasonic1", "top": 30.3, "left": -196.1, "attrs": {} },
+      { "type": "wokwi-relay-module", "id": "relay1", "top": 278.6, "left": 9.6, "attrs": {} },
+      { "type": "wokwi-led", "id": "led1", "top": 255.6, "left": 167, "attrs": { "color": "red" } },
+      {
+        "type": "wokwi-resistor",
+        "id": "r1",
+        "top": 339.95,
+        "left": 163.2,
+        "attrs": { "value": "220" }
+      }
+    ],
+    "connections": [
+      [ "esp:TX", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX", "$serialMonitor:TX", "", [] ],
+      [ "esp:5V", "ultrasonic1:VCC", "red", [ "h0" ] ],
+      [ "esp:GND.2", "ultrasonic1:GND", "black", [ "v-48", "h-110.36", "v172.8", "h-28.8" ] ],
+      [ "esp:5", "ultrasonic1:TRIG", "green", [ "h14.44", "v134.4", "h-172.8", "v0", "h-57.6" ] ],
+      [ "esp:18", "ultrasonic1:ECHO", "green", [ "h24.04", "v115.2", "h9.6" ] ],
+      [ "esp:5V", "relay1:VCC", "red", [ "h4.99", "v96" ] ],
+      [ "esp:GND.2", "relay1:GND", "black", [ "v0", "h43.24", "v240", "h-144", "v38.4" ] ],
+      [ "esp:16", "relay1:IN", "green", [ "h33.64", "v124.8", "h-153.6", "v57.6" ] ],
+      [ "led1:A", "esp:16", "green", [ "h9.6", "v-163.2" ] ],
+      [ "led1:C", "r1:2", "green", [ "v9.6", "h29.2" ] ],
+      [ "r1:1", "esp:GND.2", "green", [ "v0" ] ]
+    ],
+    "dependencies": {}
+  }

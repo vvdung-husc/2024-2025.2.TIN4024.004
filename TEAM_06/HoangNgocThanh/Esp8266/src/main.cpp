@@ -78,8 +78,10 @@ void updateDHT(){
   static ulong lastTimer = 0;  
   if (!IsReady(lastTimer, 2000)) return;
 
-  float h = dht.readHumidity();
-  float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
+  // float h = dht.readHumidity();
+  // float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
+    float h = random(0,101) / 10;
+    float t = random(-400, 801) / 10; // or dht.readTemperature(true) for Fahrenheit
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return;
