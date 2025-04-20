@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../ESP32_Blynk_LED"
+		},
+		{
+			"name": "ESP32_BlynkTrafficDHTSensor",
+			"path": "."
+		}
+	],
+	"settings": {}
+}

@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "author": "...",
+  "description": "Mô phỏng hệ thống giám sát vườn rau thủy canh bằng ESP32",
+  "devices": [
+    {
+      "type": "esp32-devkit-v1",
+      "id": "esp32",
+      "top": -13.33,
+      "left": 63.33,
+      "attrs": {}
+    },
+    {
+      "type": "dht22",
+      "id": "dht",
+      "top": -150.67,
+      "left": -26.67,
+      "attrs": {
+        "humidity": "50",
+        "temperature": "27"
+      }
+    },
+    {
+      "type": "ldr",
+      "id": "ldr",
+      "top": 80,
+      "left": -30,
+      "attrs": {}
+    },
+    {
+      "type": "potentiometer",
+      "id": "pot",
+      "top": 180,
+      "left": -30,
+      "attrs": {
+        "value": "0.5"
+      }
+    },
+    {
+      "type": "led",
+      "id": "led_light_warn",
+      "top": -110,
+      "left": 250,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "led",
+      "id": "led_ph_warn",
+      "top": -50,
+      "left": 250,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "led",
+      "id": "led_grow",
+      "top": 20,
+      "left": 250,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "led",
+      "id": "led_pump",
+      "top": 90,
+      "left": 250,
+      "attrs": {
+        "color": "blue"
+      }
+    }
+  ],
+  "connections": [
+    ["dht:DATA", "esp32:15", "yellow", ["v0"]],
+    ["dht:VCC", "esp32:3V3", "red", ["v0"]],
+    ["dht:GND", "esp32:GND", "black", ["v0"]],
+
+    ["ldr:AO", "esp32:34", "green", ["v0"]],
+    ["ldr:VCC", "esp32:3V3", "red", ["v0"]],
+    ["ldr:GND", "esp32:GND", "black", ["v0"]],
+
+    ["pot:SIG", "esp32:35", "orange", ["v0"]],
+    ["pot:VCC", "esp32:3V3", "red", ["v0"]],
+    ["pot:GND", "esp32:GND", "black", ["v0"]],
+
+    ["led_light_warn:A", "esp32:2", "blue", ["v0"]],
+    ["led_light_warn:C", "esp32:GND", "black", ["v0"]],
+
+    ["led_ph_warn:A", "esp32:4", "blue", ["v0"]],
+    ["led_ph_warn:C", "esp32:GND", "black", ["v0"]],
+
+    ["led_grow:A", "esp32:16", "green", ["v0"]],
+    ["led_grow:C", "esp32:GND", "black", ["v0"]],
+
+    ["led_pump:A", "esp32:17", "blue", ["v0"]],
+    ["led_pump:C", "esp32:GND", "black", ["v0"]]
+  ]
+}

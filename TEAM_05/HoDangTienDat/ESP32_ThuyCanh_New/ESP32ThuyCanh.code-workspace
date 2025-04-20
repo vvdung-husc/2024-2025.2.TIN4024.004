@@ -1,0 +1,20 @@
+{
+  "folders": [
+	{
+		"path": "../ESP32ThuyCanh"
+	},
+	{
+		"name": "ESP32_ThuyCanh_Final",
+		"path": "../ESP32_ThuyCanh_Final"
+	},
+	{
+		"name": "ESP32_Blynk_LED",
+		"path": "../../../../Desktop/HoDangTienDat/ESP32_Blynk_LED"
+	},
+	{
+		"name": "ESP32_ThuyCanh_New",
+		"path": "."
+	}
+],
+  "settings": {}
+}

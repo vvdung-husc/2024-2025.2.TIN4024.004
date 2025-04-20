@@ -1,0 +1,5 @@
+[wokwi]
+version = 1
+board = "nodemcu-32s"
+elf = ".pio/build/nodemcu-32s/firmware.elf"
+firmware = ".pio/build/nodemcu-32s/firmware.bin"

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "author": "Hồ Đăng Tiến Đạt",
+  "editor": "wokwi",
+  "firmware": ".pio/build/esp32dev/firmware.elf",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []]
+  ]
+}
