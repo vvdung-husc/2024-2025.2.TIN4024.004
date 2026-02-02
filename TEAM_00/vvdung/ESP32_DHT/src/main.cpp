@@ -17,7 +17,7 @@
 #define LED_BLUE    15
 #define LED_YELLOW  2
 #define LED_RED     4
-#define LED_CAM     5
+//#define LED_CAM     5
 
 ////**************** VVDUNG ********** */
 // create an OLED display object connected to I2C
@@ -37,12 +37,12 @@ void setup() {
   pinMode(LED_BLUE, OUTPUT);
   pinMode(LED_YELLOW, OUTPUT);
   pinMode(LED_RED, OUTPUT);
-  pinMode(LED_CAM, OUTPUT);
+  //pinMode(LED_CAM, OUTPUT);
 
   digitalWrite(LED_BLUE, LOW);//OFF
   digitalWrite(LED_YELLOW, LOW);//OFF
   digitalWrite(LED_RED, LOW);//OFF
-  digitalWrite(LED_CAM, LOW);//OFF
+  //digitalWrite(LED_CAM, LOW);//OFF
 
   dht.begin();
 
@@ -77,17 +77,17 @@ void loop() {
   
   strTemp = String("Temperature: ");
   bool bCamON = true;
-  if (t < 0.0){    
-    strTemp += "Too COOL";
-    ledNumber = LED_YELLOW;
+  if (t < 13.0){    
+    strTemp += "COOL";
+    ledNumber = LED_BLUE;
     bCamON = false;
   }
   else if (t < 40.0){
     strTemp += "Normal";
-    ledNumber = LED_BLUE;
+    ledNumber = LED_YELLOW;
   }
   else {    
-    strTemp += "Too HOT";
+    strTemp += "HOT";
     ledNumber = LED_RED;
   }      
 
@@ -114,10 +114,10 @@ void loop() {
   
   oled.display();   
   
-  if (bCamON) digitalWrite(LED_CAM, HIGH);
+  //if (bCamON) digitalWrite(LED_CAM, HIGH);
   digitalWrite(ledNumber, HIGH);
   delay(500);
   digitalWrite(ledNumber, LOW);  
-  if (!bCamON) digitalWrite(LED_CAM, LOW);
+  //if (!bCamON) digitalWrite(LED_CAM, LOW);
 }
 
