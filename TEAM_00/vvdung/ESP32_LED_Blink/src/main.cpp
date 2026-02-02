@@ -1,61 +1,27 @@
 #include <Arduino.h>
-#define LED_PIN 23  // Chọn chân GPIO 2 để điều khiển LED
 
-ulong currentMiliseconds = 0; // thời gian hiện tại ms
-ulong ledStart = 0;           // thời gian on/off LED
+#include <TM1637Display.h>
 
-void Use_Blocking();
-bool IsReady(ulong &ulTimer, uint32_t milisecond);
-void Use_Non_Blocking();
+const int CLK = 13; //Set the CLK pin connection to the display
+const int DIO = 12; //Set the DIO pin connection to the display
 
-void setup() {
-  Serial.begin(115200);     //Khởi tạo Serial
-  pinMode(LED_PIN, OUTPUT); // Cấu hình chân LED_PIN là đầu ra
-}
+int numCounter = 0;
 
-void loop() {
-  currentMiliseconds = millis();  //nhận thời gian hiện tại tính bằng msms
-  //Use_Blocking();         //blocking
-  Use_Non_Blocking();       //Non-blocking
+TM1637Display display(CLK, DIO); //set up the 4-Digit Display.
 
-  Serial.print("Timer :");
-  Serial.println(currentMiliseconds);
-
-}
-
-void Use_Blocking()
+void setup()
 {
-  digitalWrite(LED_PIN, HIGH); // Bật LED
-  Serial.println("LED -> ON");
-  delay(1000);               // Đợi 1 giây
-  digitalWrite(LED_PIN, LOW); // Tắt LED
-  Serial.println("LED -> OFF");
-  delay(1000); // Đợi 1 giây
+  Serial.begin(115200);
+display.setBrightness(0x0a); //set the diplay to maximum brightness  
+                             // Set brightness (0-7):
 }
 
-bool IsReady(ulong &ulTimer, uint32_t milisecond)
+void loop()
 {
-  if (currentMiliseconds - ulTimer < milisecond)
-    return false;
-  ulTimer = currentMiliseconds;
-  return true;
+for(numCounter = 0; numCounter < 1000; numCounter++) //Iterate numCounter
+{
+  Serial.print("COUNTER :");Serial.println(numCounter);
+display.showNumberDec(numCounter); //Display the numCounter value;
+delay(100);
 }
-
-void Use_Non_Blocking()
-{
-  static bool isLED_ON = false;
-  if (!IsReady(ledStart, 1000))
-    return;
-
-  if (!isLED_ON)
-  {
-    digitalWrite(LED_PIN, HIGH); // Bật LED
-    Serial.println("NonBlocking LED -> ON");
-  }
-  else
-  {
-    digitalWrite(LED_PIN, LOW); // Tắt LED
-    Serial.println("NonBlocking LED -> OFF");
-  }
-  isLED_ON = !isLED_ON;
 }
